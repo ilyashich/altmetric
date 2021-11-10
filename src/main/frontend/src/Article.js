@@ -19,10 +19,13 @@ export default function Article(){
     }
 
     function addItem(){
+        console.log('You want to add article: ' + doiAdd);
         axios.post(ARTICLES_URL, {id: doiAdd})
-            .then(() =>{
+            .then((response) => {
+                console.log(response)
                 alert('Article successfully added')
             })
+            .catch(error => console.error(error))
     }
 
     function getAllItems(){
@@ -84,11 +87,16 @@ export default function Article(){
                         </div>
                     )
                 })}
-                {article && article.twitter.results.map(search =>{
-                    return(
-                        <Tweet tweetId={search.id} />
-                    )
-                })}
+                {!article &&
+                    <div>
+                        This article is not yet in the base
+                    </div>
+                }
+                {/*{article && article.twitter.results.map(search =>{*/}
+                {/*    return(*/}
+                {/*        <Tweet tweetId={search.id} />*/}
+                {/*    )*/}
+                {/*})}*/}
             </Col>
             <Col>
                 <Form onSubmit={handleAddSubmit}>
@@ -100,7 +108,9 @@ export default function Article(){
                 </Form>
             </Col>
             <Col>
-                <input type="submit" value="Get all articles" onSubmit={handleGetAllSubmit} />
+                <Form onSubmit={handleGetAllSubmit}>
+                    <input type="submit" value="Get all articles" />
+                </Form>
                 {allArticles && allArticles.map(article =>
                     article && article.youtube.items.map(search =>
 
@@ -110,7 +120,6 @@ export default function Article(){
                             <p>{search.publishedAt}</p>
                             <img src={search.thumbnailUrl} alt=""/>
                         </div>
-
                     )
                 )}
             </Col>

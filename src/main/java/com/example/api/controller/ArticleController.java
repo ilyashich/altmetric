@@ -7,6 +7,7 @@ import com.example.api.model.twitter.TwitterDto;
 import com.example.api.model.wikipedia.WikipediaDto;
 import com.example.api.model.youtube.YoutubeDto;
 import com.example.api.service.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,17 +58,18 @@ public class ArticleController
     @PostMapping("/articles")
     public Article addArticle(@RequestBody String id) throws IOException
     {
-        MendeleyDto mendeley = mendeleyService.getCatalog(id);
-        WikipediaDto wikipedia = wikipediaService.getCitationsById(id);
+        String doi = new ObjectMapper().readTree(id).path("id").asText();
+        MendeleyDto mendeley = mendeleyService.getCatalog(doi);
+        WikipediaDto wikipedia = wikipediaService.getCitationsById(doi);
 
-        String url = crawl("https://doi.org/" + id);
+        String url = crawl("https://doi.org/" + doi);
 
         RedditDto reddit = redditService.searchReddit(url);
         TwitterDto twitter = twitterService.searchTwitter(url);
         YoutubeDto youtube = youtubeService.searchYoutube(url);
 
         return articleService.addArticle(Article.builder()
-                .doi(id)
+                .doi(doi)
                 .mendeley(mendeley)
                 .wikipedia(wikipedia)
                 .reddit(reddit)
