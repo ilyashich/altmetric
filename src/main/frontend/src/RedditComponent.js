@@ -4,7 +4,7 @@ export default function RedditComponent(props){
     return (
         <Container>
             {props.reddit.articles.map(result =>
-                <Row key={result.subreddit}>
+                <Row key={result.created}>
                     <div>Title: {result.title}</div>
                     <div>Author: {result.author}</div>
                     <div>Subreddit: {result.subreddit}</div>

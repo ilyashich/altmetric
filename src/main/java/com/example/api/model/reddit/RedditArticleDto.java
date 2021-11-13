@@ -12,5 +12,6 @@ public class RedditArticleDto
     private String subreddit;
     private String author;
     private String title;
+    private String created;
 }
 

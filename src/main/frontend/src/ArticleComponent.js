@@ -1,6 +1,7 @@
 import {Col, Container, Row, Tab, Tabs} from 'react-bootstrap';
 import WikipediaComponent from "./WikipediaComponent";
 import RedditComponent from "./RedditComponent";
+import TwitterComponent from "./TwitterComponent";
 
 export default function ArticleComponent(props){
     return (
@@ -9,7 +10,7 @@ export default function ArticleComponent(props){
                 <h2>{props.article.mendeley.title}</h2>
             </div>
             <Row>
-                <Col>
+                <Col xs lg="2">
                     <div>
                         Mendeley: {props.article.mendeley.readersCount}
                     </div>
@@ -35,7 +36,7 @@ export default function ArticleComponent(props){
                             <RedditComponent reddit={props.article.reddit}/>
                         </Tab>
                         <Tab eventKey="twitter" title="Twitter">
-
+                            <TwitterComponent twitter={props.article.twitter}/>
                         </Tab>
                         <Tab eventKey="youtube" title="Youtube">
 

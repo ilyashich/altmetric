@@ -68,62 +68,62 @@ export default function Article(){
 
     return (
         <Container>
-        <Row>
-            <Col>
-                <Form onSubmit={handleGetSubmit}>
-                    <label>Get article by DOI</label>
-                    <br/>
-                    <input type="text" value={doiGet} onChange={handleDoiGetChange}/>
-                    <br/>
-                    <input type="submit" value="Confirm"/>
-                </Form>
-                {article && article.youtube.items.map(search =>{
-                    return(
-                        <div key={search.videoId}>
-                            <p>{search.title}</p>
-                            <p>{search.description}</p>
-                            <p>{search.publishedAt}</p>
-                            <img src={search.thumbnailUrl} alt=""/>
+            <Row>
+                <Col>
+                    <Form onSubmit={handleGetSubmit}>
+                        <label>Get article by DOI</label>
+                        <br/>
+                        <input type="text" value={doiGet} onChange={handleDoiGetChange}/>
+                        <br/>
+                        <input type="submit" value="Confirm"/>
+                    </Form>
+                    {article && article.youtube.items.map(search =>{
+                        return(
+                            <div key={search.videoId}>
+                                <p>{search.title}</p>
+                                <p>{search.description}</p>
+                                <p>{search.publishedAt}</p>
+                                <img src={search.thumbnailUrl} alt=""/>
+                            </div>
+                        )
+                    })}
+                    {!article &&
+                        <div>
+                            This article is not yet in the base
                         </div>
-                    )
-                })}
-                {!article &&
-                    <div>
-                        This article is not yet in the base
-                    </div>
-                }
-                {/*{article && article.twitter.results.map(search =>{*/}
-                {/*    return(*/}
-                {/*        <Tweet tweetId={search.id} />*/}
-                {/*    )*/}
-                {/*})}*/}
-            </Col>
-            <Col>
-                <Form onSubmit={handleAddSubmit}>
-                    <label>Add article</label>
-                    <br/>
-                    <input type="text" value={doiAdd} onChange={handleDoiAddChange}/>
-                    <br/>
-                    <input type="submit" value="Confirm"/>
-                </Form>
-            </Col>
-            <Col>
-                <Form onSubmit={handleGetAllSubmit}>
-                    <input type="submit" value="Get all articles" />
-                </Form>
-                {allArticles && allArticles.map(article =>
-                    article && article.youtube.items.map(search =>
+                    }
+                    {/*{article && article.twitter.results.map(search =>{*/}
+                    {/*    return(*/}
+                    {/*        <Tweet tweetId={search.id} />*/}
+                    {/*    )*/}
+                    {/*})}*/}
+                </Col>
+                <Col>
+                    <Form onSubmit={handleAddSubmit}>
+                        <label>Add article</label>
+                        <br/>
+                        <input type="text" value={doiAdd} onChange={handleDoiAddChange}/>
+                        <br/>
+                        <input type="submit" value="Confirm"/>
+                    </Form>
+                </Col>
+                <Col>
+                    <Form onSubmit={handleGetAllSubmit}>
+                        <input type="submit" value="Get all articles" />
+                    </Form>
+                    {allArticles && allArticles.map(article =>
+                        article && article.youtube.items.map(search =>
 
-                        <div key={search.videoId}>
-                            <p>{search.title}</p>
-                            <p>{search.description}</p>
-                            <p>{search.publishedAt}</p>
-                            <img src={search.thumbnailUrl} alt=""/>
-                        </div>
-                    )
-                )}
-            </Col>
-        </Row>
+                            <div key={search.videoId}>
+                                <p>{search.title}</p>
+                                <p>{search.description}</p>
+                                <p>{search.publishedAt}</p>
+                                <img src={search.thumbnailUrl} alt=""/>
+                            </div>
+                        )
+                    )}
+                </Col>
+            </Row>
         </Container>
     );
 }

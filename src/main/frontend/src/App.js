@@ -5,6 +5,7 @@ import axios from "axios";
 import ArticleComponent from "./ArticleComponent";
 import {useEffect, useState} from "react";
 import {Row} from "react-bootstrap";
+import Article from "./Article";
 
 const ARTICLES_URL = 'http://localhost:8080/articles';
 
@@ -24,6 +25,9 @@ function App() {
                         <ArticleComponent article={article} />
                     </Route>
                     )}
+                    <Route path="/add">
+                        <Article />
+                    </Route>
                     <Route path="/">
                         {allArticles.map(article =>
                             <Row key={article.doi}>
@@ -32,6 +36,7 @@ function App() {
                                 <Link to={"/details/" + article.doi}>Link</Link>
                             </Row>
                         )}
+                        <Link to="/add">Add article</Link>
                     </Route>
                 </Switch>
             </BrowserRouter>

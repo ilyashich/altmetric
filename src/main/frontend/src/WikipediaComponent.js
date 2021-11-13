@@ -5,8 +5,9 @@ export default function WikipediaComponent(props){
         <Container>
             {props.wikipedia.citationInfo.map(result =>
                 <Row key={result.pageId}>
-                    <div>Title: {result.title}</div>
-                    <div>Page ID: {result.pageId}</div>
+                    <a href={"http://en.wikipedia.org/?curid=" + result.pageId} target="_blank">
+                        <h3>{result.title}</h3>
+                    </a>
                 </Row>
             )}
         </Container>

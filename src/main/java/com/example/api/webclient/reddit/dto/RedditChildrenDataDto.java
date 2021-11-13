@@ -8,4 +8,5 @@ public class RedditChildrenDataDto
     private String subreddit;
     private String title;
     private String author;
+    private String created;
 }

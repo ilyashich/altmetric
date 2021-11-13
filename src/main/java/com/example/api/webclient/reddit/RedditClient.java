@@ -46,6 +46,7 @@ public class RedditClient
                 articles.add(RedditArticleDto.builder().subreddit(redditChildrenDto.getData().getSubreddit())
                         .author(redditChildrenDto.getData().getAuthor())
                         .title(redditChildrenDto.getData().getTitle())
+                        .created(redditChildrenDto.getData().getCreated())
                         .build());
             }
         }
