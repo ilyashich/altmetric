@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios';
-import { Tweet } from 'react-twitter-widgets'
 import {Row, Col, Form, Container} from 'react-bootstrap';
 
 export default function Article(){
