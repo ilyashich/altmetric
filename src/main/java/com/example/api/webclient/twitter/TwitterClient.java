@@ -27,7 +27,7 @@ public class TwitterClient
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.add("Authorization", "Bearer " + TWITTER_API_TOKEN);
             request = new HttpEntity<>("parameters", headers);
-            TwitterSearchDto twitterSearchDto = callExchangeMethod("search/recent?query=url:\"{url}\"&tweet.fields=created_at&max_results=100", request, TwitterSearchDto.class, url);
+            TwitterSearchDto twitterSearchDto = callExchangeMethod("search/recent?query=url:\"{url}\"&tweet.fields=created_at,author_id&max_results=100", request, TwitterSearchDto.class, url);
 
             List<TwitterResultDto> results = new ArrayList<>();
             if(twitterSearchDto.getData() != null)
@@ -36,7 +36,8 @@ public class TwitterClient
                 {
                     results.add(TwitterResultDto.builder()
                             .createdAt(data.getCreated_at())
-                            .id(data.getId())
+                            .tweetId(data.getId())
+                            .authorId(data.getAuthor_id())
                             .text(data.getText())
                             .build());
                 }

@@ -2,10 +2,10 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {BrowserRouter, Route, Link, Switch} from "react-router-dom";
 import axios from "axios";
-import ArticleComponent from "./ArticleComponent";
+import ArticleComponent from "./components/ArticleComponent";
 import {useEffect, useState} from "react";
 import {Row} from "react-bootstrap";
-import Article from "./Article";
+import Article from "./components/Article";
 
 const ARTICLES_URL = 'http://localhost:8080/articles';
 

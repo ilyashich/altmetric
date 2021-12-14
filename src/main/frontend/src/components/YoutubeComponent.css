@@ -1,0 +1,121 @@
+.block_link{
+    -webkit-text-size-adjust: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+    outline: none;
+    display: block;
+    text-decoration: none;
+    color: #383844;
+}
+
+.postVideos{
+    color: #383844;
+    -webkit-text-size-adjust: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+    display: block;
+    overflow: hidden;
+    padding: 0 12px 0 12px;
+    border-top-width: 0.07143em;
+    border-top-style: solid;
+    padding-top: 1.64286em;
+    padding-bottom: 1.71429em;
+    border-color: #eeeeee;
+}
+
+.avatar{
+    -webkit-text-size-adjust: 100%;
+    color: #383844;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+    float: left;
+    width: 200px;
+    height: auto;
+    margin-top: 5px;
+}
+
+.contentWith-image{
+    -webkit-text-size-adjust: 100%;
+    color: #383844;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+    padding-left: 114px;
+}
+
+.summary{
+    -webkit-text-size-adjust: 100%;
+    color: #383844;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+#datetime{
+    -webkit-text-size-adjust: 100%;
+    color: #bbbbbb;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+#laysStrong{
+    -webkit-text-size-adjust: 100%;
+    color: #bbbbbb;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+    font-weight: bold;
+}
+
+#header4{
+    -webkit-text-size-adjust: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+    color: #bbbbbb;
+}
+
+#header3{
+    -webkit-text-size-adjust: 100%;
+    color: #383844;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+    font-size: 1.28571em;
+    line-height: 1.33333em;
+    font-weight: bold;
+}
+
+.post-list{
+    column-count: 2;
+}

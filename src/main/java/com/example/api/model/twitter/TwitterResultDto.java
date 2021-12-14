@@ -10,6 +10,7 @@ import lombok.Getter;
 public class TwitterResultDto
 {
     private String createdAt;
-    private String id;
+    private String tweetId;
+    private String authorId;
     private String text;
 }

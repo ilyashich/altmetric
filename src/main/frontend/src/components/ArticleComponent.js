@@ -2,6 +2,7 @@ import {Col, Container, Row, Tab, Tabs} from 'react-bootstrap';
 import WikipediaComponent from "./WikipediaComponent";
 import RedditComponent from "./RedditComponent";
 import TwitterComponent from "./TwitterComponent";
+import YoutubeComponent from "./YoutubeComponent";
 
 export default function ArticleComponent(props){
     return (
@@ -39,7 +40,7 @@ export default function ArticleComponent(props){
                             <TwitterComponent twitter={props.article.twitter}/>
                         </Tab>
                         <Tab eventKey="youtube" title="Youtube">
-
+                            <YoutubeComponent youtube={props.article.youtube} />
                         </Tab>
                     </Tabs>
                 </Col>
