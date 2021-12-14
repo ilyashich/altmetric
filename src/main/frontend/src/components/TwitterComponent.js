@@ -20,36 +20,36 @@ export default function TwitterComponent(props){
 
     return (
         <Container>
-            <Row>
-                <Col>
+
+                <Row>
                     {firstColumn.map(result =>
-                        <div key={result.tweetId}>
+                        <Col key={result.tweetId}>
                             <Tweet tweet={result} />
-                        </div>
+                        </Col>
                     )}
-                </Col>
-                <Col>
+                </Row>
+                <Row>
                     {secondColumn.map(result =>
-                        <div key={result.tweetId}>
+                        <Col key={result.tweetId}>
                             <Tweet tweet={result} />
-                        </div>
+                        </Col>
                     )}
-                </Col>
-                <Col>
+                </Row>
+                <Row>
                     {thirdColumn.map(result =>
-                        <div key={result.tweetId}>
+                        <Col key={result.tweetId}>
                             <Tweet tweet={result} />
-                        </div>
+                        </Col>
                     )}
-                </Col>
-                <Col>
+                </Row>
+                <Row>
                     {fourthColumn.map(result =>
-                        <div key={result.tweetId}>
+                        <Col key={result.tweetId}>
                             <Tweet tweet={result} />
-                        </div>
+                        </Col>
                     )}
-                </Col>
-            </Row>
+                </Row>
+
             <Pagination itemsPerPage={tweetsPerPage} totalItems={props.twitter.results.length} paginate={paginate} />
         </Container>
     );
