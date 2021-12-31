@@ -7,4 +7,5 @@ public class WikipediaSearchResultDto
 {
     private String title;
     private String pageid;
+    private String snippet;
 }

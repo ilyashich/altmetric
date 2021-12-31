@@ -1,5 +1,6 @@
 package com.example.api.service;
 
+import com.example.api.model.scopus.ScopusDto;
 import com.example.api.webclient.scopus.ScopusClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +13,8 @@ public class ScopusService
 {
     private final ScopusClient scopusClient;
 
-    public String getCitationsByDoi()
+    public ScopusDto getCitationsByDoi(String query)
     {
-        return scopusClient.getCitationsByDoi("10.1007/s10844-015-0393-0");
+        return scopusClient.getCitationsByDoi(query);
     }
 }

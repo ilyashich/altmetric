@@ -4,6 +4,7 @@ import com.example.api.model.wikipedia.WikipediaArticleDto;
 import com.example.api.model.wikipedia.WikipediaDto;
 import com.example.api.webclient.wikipedia.dto.WikipediaResultDto;
 import com.example.api.webclient.wikipedia.dto.WikipediaSearchResultDto;
+import org.jsoup.Jsoup;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,19 +19,23 @@ public class WikipediaClient
 
     public WikipediaDto getCitationsById(String id)
     {
-        WikipediaResultDto wikipediaResultDto = callGetMethod("?srsearch={id}&action=query&list=search&utf8=&format=json", WikipediaResultDto.class, id);
+        WikipediaResultDto wikipediaResultDto = callGetMethod("?srsearch={id}&action=query&list=search&utf8=&format=json&srlimit=100", WikipediaResultDto.class, id);
 
         List<WikipediaArticleDto> search = new ArrayList<>();
         for(WikipediaSearchResultDto wikipediaSearchResultDto : wikipediaResultDto.getQuery().getSearch())
         {
-            search.add(WikipediaArticleDto.builder()
-                            .pageId(wikipediaSearchResultDto.getPageid())
-                            .title(wikipediaSearchResultDto.getTitle())
-                            .build());
+            String snippet = Jsoup.parse(wikipediaSearchResultDto.getSnippet()).text();
+            if(snippet.contains(id))
+            {
+                search.add(WikipediaArticleDto.builder()
+                        .pageId(wikipediaSearchResultDto.getPageid())
+                        .title(wikipediaSearchResultDto.getTitle())
+                        .build());
+            }
         }
 
         return WikipediaDto.builder()
-                .totalHits(wikipediaResultDto.getQuery().getSearchinfo().getTotalhits())
+                .totalHits(String.valueOf(search.size()))
                 .citationInfo(search)
                 .build();
 
