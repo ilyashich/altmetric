@@ -18,24 +18,24 @@ public class MendeleyController
     public MendeleyDto getCatalog(HttpServletRequest request)
     {
         String requestURL = request.getRequestURL().toString();
-        String query = requestURL.split("/mendeley/catalog/")[1];
-        return mendeleyService.getCatalog(query);
+        String doi = requestURL.split("/mendeley/catalog/")[1];
+        return mendeleyService.getCatalog(doi);
     }
 
     @GetMapping("/mendeley/doi/**")
     public String getReadersByDoi(HttpServletRequest request)
     {
         String requestURL = request.getRequestURL().toString();
-        String query = requestURL.split("/mendeley/doi/")[1];
-        return mendeleyService.getReadersByDoi(query);
+        String doi = requestURL.split("/mendeley/doi/")[1];
+        return mendeleyService.getReadersByDoi(doi);
     }
 
     @GetMapping("/mendeley/scopus_id/**")
     public String getReadersByScopusId(HttpServletRequest request)
     {
         String requestURL = request.getRequestURL().toString();
-        String query = requestURL.split("/mendeley/scopus_id/")[1];
-        return mendeleyService.getReadersByScopusId(query);
+        String scopusId = requestURL.split("/mendeley/scopus_id/")[1];
+        return mendeleyService.getReadersByScopusId(scopusId);
     }
 
 }

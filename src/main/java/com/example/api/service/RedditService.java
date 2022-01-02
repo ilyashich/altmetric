@@ -14,8 +14,8 @@ public class RedditService
 {
     private final RedditClient redditClient;
 
-    public RedditDto searchReddit(String query) throws JsonProcessingException
+    public RedditDto searchReddit(String url) throws JsonProcessingException
     {
-        return redditClient.searchReddit(query);
+        return redditClient.searchReddit(url);
     }
 }

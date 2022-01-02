@@ -1,0 +1,18 @@
+.postReddit{
+    color: #383844;
+    -webkit-text-size-adjust: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+    display: block;
+    overflow: hidden;
+    padding: 0 12px 0 12px;
+    border-top-width: 0.07143em;
+    border-top-style: solid;
+    padding-top: 1.64286em;
+    padding-bottom: 1.71429em;
+    border-color: #eeeeee;
+    text-align: left;
+}

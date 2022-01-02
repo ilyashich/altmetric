@@ -3,13 +3,13 @@ import './YoutubeComponent.css'
 import {useState} from "react";
 import Pagination from "./Pagination";
 
-export default function YoutubeComponent(props){
+export default function YoutubeComponent( {youtube} ){
     const [currentPage, setCurrentPage] = useState(1);
     const [videosPerPage] = useState(10);
 
     const indexOfLastVideo = currentPage * videosPerPage;
     const indexOfFirstVideo = indexOfLastVideo - videosPerPage;
-    const currentVideos = props.youtube.items.slice(indexOfFirstVideo, indexOfLastVideo);
+    const currentVideos = youtube.items.slice(indexOfFirstVideo, indexOfLastVideo);
     const firstColumn = currentVideos.slice(0, 5);
     const secondColumn = currentVideos.slice(5, currentVideos.length);
 
@@ -20,7 +20,7 @@ export default function YoutubeComponent(props){
             <div className="col">
                 {firstColumn.map(item =>
                     <article key={item.videoId} className="postVideos">
-                        <a target="_blank" className="block_link" href={"https://www.youtube.com/watch?v=" + item.videoId}>
+                        <a target="_blank" rel="noreferrer" className="block_link" href={"https://www.youtube.com/watch?v=" + item.videoId}>
                             <img alt={item.channelTitle} className="avatar" src={item.thumbnailUrl} />
                             <div className="contentWith_image">
                                 <h3 id="header3">{item.title}</h3>
@@ -35,7 +35,7 @@ export default function YoutubeComponent(props){
             <div className="col">
                 {secondColumn.map(item =>
                     <article key={item.videoId} className="postVideos">
-                        <a target="_blank" className="block_link" href={"https://www.youtube.com/watch?v=" + item.videoId}>
+                        <a target="_blank" rel="noreferrer" className="block_link" href={"https://www.youtube.com/watch?v=" + item.videoId}>
                             <img alt={item.channelTitle} className="avatar" src={item.thumbnailUrl} />
                             <div className="contentWith_image">
                                 <h3 id="header3">{item.title}</h3>
@@ -47,7 +47,7 @@ export default function YoutubeComponent(props){
                     </article>
                 )}
             </div>
-            <Pagination itemsPerPage={videosPerPage} totalItems={props.youtube.items.length} paginate={paginate} />
+            <Pagination itemsPerPage={videosPerPage} totalItems={youtube.items.length} paginate={paginate} />
         </div>
     );
 }

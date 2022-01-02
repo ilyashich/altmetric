@@ -5,45 +5,66 @@ import RedditComponent from "./RedditComponent";
 import TwitterComponent from "./TwitterComponent";
 import YoutubeComponent from "./YoutubeComponent";
 
-export default function ArticleComponent(props){
+export default function ArticleComponent( {article} ){
     return (
         <Container fluid>
             <div className="document-header">
                 <h3 id="article-header">
-                    <a id="article-a" target="_blank" href={"https://doi.org/" + props.article.doi}>{props.article.mendeley.title}</a>
+                    <a id="article-a" target="_blank" rel="noreferrer" href={"https://doi.org/" + article.doi}>{article.mendeley.title}</a>
                 </h3>
             </div>
             <Row>
                 <Col xs lg="3">
                     <div>
-                        Mendeley: {props.article.mendeley.readersCount}
+                        Mendeley: {article.mendeley.readersCount}
                     </div>
                     <div>
-                        Wikipedia: {props.article.wikipedia.totalHits}
+                        <a id="article-a" target="_blank" rel="noreferrer" href={article.scopus.link}>
+                            Scopus:
+                        </a>
+                         {article.scopus.citationsCount}
                     </div>
                     <div>
-                        Reddit: {props.article.reddit.articles.length}
+                        Crossref: {article.crossref.referencedByCount}
                     </div>
                     <div>
-                        Twitter: {props.article.twitter.resultCount}
+                        Wikipedia: {article.wikipedia.totalHits}
                     </div>
                     <div>
-                        Youtube: {props.article.youtube.totalResults}
+                        Reddit: {article.reddit.articles.length}
+                    </div>
+                    <div>
+                        Twitter: {article.twitter.resultCount}
+                    </div>
+                    <div>
+                        Youtube: {article.youtube.totalResults}
+                    </div>
+                    <div>
+                        Facebook:
+                        <li>
+                            Likes: {article.facebook.reactionCount}
+                        </li>
+                        <li>
+                            Shares: {article.facebook.shareCount}
+                        </li>
+                        <li>
+                            Comments: {article.facebook.commentCount}
+                        </li>
                     </div>
                 </Col>
                 <Col>
                     <Tabs variant="pills" mountOnEnter="true" fill justify defaultActiveKey="wikipedia">
                         <Tab eventKey="wikipedia" title="Wikipedia">
-                            <WikipediaComponent wikipedia={props.article.wikipedia}/>
+                            <WikipediaComponent wikipedia={article.wikipedia}/>
                         </Tab>
                         <Tab eventKey="reddit" title="Reddit">
-                            <RedditComponent reddit={props.article.reddit}/>
+                            <RedditComponent reddit={article.reddit}/>
                         </Tab>
                         <Tab eventKey="twitter" title="Twitter">
-                            <TwitterComponent twitter={props.article.twitter}/>
+                            <TwitterComponent twitter={article.twitter}/>
                         </Tab>
                         <Tab eventKey="youtube" title="Youtube">
-                            <YoutubeComponent youtube={props.article.youtube} />
+                            <YoutubeComponent youtube={article.youtube} />
                         </Tab>
                     </Tabs>
                 </Col>

@@ -19,8 +19,8 @@ public class WikipediaController
     public WikipediaDto getCitationsByDoi(HttpServletRequest request)
     {
         String requestURL = request.getRequestURL().toString();
-        String query = requestURL.split("/wiki/")[1];
-        return wikipediaService.getCitationsById(query);
+        String url = requestURL.split("/wiki/")[1];
+        return wikipediaService.getCitationsById(url);
     }
 }
 

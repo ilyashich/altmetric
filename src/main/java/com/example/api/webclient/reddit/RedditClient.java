@@ -13,8 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class RedditClient
@@ -22,13 +21,13 @@ public class RedditClient
     private final RestTemplate restTemplate = new RestTemplate();
     private static final String REDDIT_API_URL = "https://www.reddit.com/search.json?";
 
-    public RedditDto searchReddit(String searchQuery) throws JsonProcessingException
+    public RedditDto searchReddit(String url) throws JsonProcessingException
     {
         HttpHeaders headers = new HttpHeaders();
         headers.set("User-agent", "com.example.altmetric.webclient.twitter:v1.0");
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        String response = callExchangeMethod("q={link}", entity, String.class, searchQuery);
+        String response = callExchangeMethod("q={link}", entity, String.class, url);
 
         Gson g = new Gson();
         RedditMainDto redditMainDto = null;
@@ -47,6 +46,7 @@ public class RedditClient
                         .author(redditChildrenDto.getData().getAuthor())
                         .title(redditChildrenDto.getData().getTitle())
                         .created(redditChildrenDto.getData().getCreated())
+                        .permalink("https://www.reddit.com" + redditChildrenDto.getData().getPermalink())
                         .build());
             }
         }

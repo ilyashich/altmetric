@@ -18,7 +18,7 @@ public class CrossrefController
     public CrossrefDto searchTwitter(HttpServletRequest request)
     {
         String requestURL = request.getRequestURL().toString();
-        String query = requestURL.split("/crossref/")[1];
-        return crossrefService.searchCrossref(query);
+        String doi = requestURL.split("/crossref/")[1];
+        return crossrefService.searchCrossref(doi);
     }
 }

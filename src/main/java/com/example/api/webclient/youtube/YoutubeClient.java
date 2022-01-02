@@ -17,11 +17,11 @@ public class YoutubeClient
     private static final String YOUTUBE_API_URL = "https://youtube.googleapis.com/youtube/v3/";
     private static final String API_KEY = "XXXXXXX";
 
-    public YoutubeDto searchYoutube(String searchQuery)
+    public YoutubeDto searchYoutube(String url)
     {
         YoutubeSearchDto youtubeSearch = callGetMethod(
                 "search?part=snippet&maxResults=500&q={search query}&type=video&key={YOUR_API_KEY}", YoutubeSearchDto.class,
-                searchQuery, API_KEY);
+                url, API_KEY);
 
         List<YoutubeItemDto> items = new ArrayList<>();
         if(youtubeSearch.getItems() != null)

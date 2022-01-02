@@ -14,18 +14,18 @@ public class MendeleyService
 {
     private final MendeleyClient mendeleyClient;
 
-    public MendeleyDto getCatalog(String query)
+    public MendeleyDto getCatalog(String doi)
     {
-        return mendeleyClient.getCatalog(query);
+        return mendeleyClient.getCatalog(doi);
     }
 
-    public String getReadersByDoi(String query)
+    public String getReadersByDoi(String doi)
     {
-        return mendeleyClient.getReadersByDoi(query);
+        return mendeleyClient.getReadersByDoi(doi);
     }
 
-    public String getReadersByScopusId(String query)
+    public String getReadersByScopusId(String scopusId)
     {
-        return mendeleyClient.getReadersByScopusId(query);
+        return mendeleyClient.getReadersByScopusId(scopusId);
     }
 }

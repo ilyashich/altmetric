@@ -19,8 +19,8 @@ public class ScopusController
     public ScopusDto getCitationsByDoi(HttpServletRequest request)
     {
         String requestURL = request.getRequestURL().toString();
-        String query = requestURL.split("/scopus/")[1];
-        return scopusService.getCitationsByDoi(query);
+        String doi = requestURL.split("/scopus/")[1];
+        return scopusService.getCitationsByDoi(doi);
     }
 
 }

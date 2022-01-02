@@ -21,8 +21,8 @@ public class RedditController
     public RedditDto searchReddit(HttpServletRequest request) throws JsonProcessingException
     {
         String requestURL = request.getRequestURL().toString();
-        String query = requestURL.split("/reddit/")[1];
-        return redditService.searchReddit(query);
+        String url = requestURL.split("/reddit/")[1];
+        return redditService.searchReddit(url);
     }
 }
 

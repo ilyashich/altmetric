@@ -13,8 +13,8 @@ public class CrossrefService
 {
     private final CrossrefClient crossrefClient;
 
-    public CrossrefDto searchCrossref(String query)
+    public CrossrefDto searchCrossref(String doi)
     {
-        return crossrefClient.searchCrossref(query);
+        return crossrefClient.searchCrossref(doi);
     }
 }

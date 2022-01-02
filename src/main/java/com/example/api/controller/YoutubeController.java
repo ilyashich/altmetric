@@ -21,7 +21,7 @@ public class YoutubeController
     public YoutubeDto searchYoutube(HttpServletRequest request)
     {
         String requestURL = request.getRequestURL().toString();
-        String query = requestURL.split("/youtube/")[1];
-        return youtubeService.searchYoutube(query);
+        String url = requestURL.split("/youtube/")[1];
+        return youtubeService.searchYoutube(url);
     }
 }

@@ -1,8 +1,11 @@
 package com.example.api.controller;
 
 import com.example.api.model.Article;
+import com.example.api.model.crossref.CrossrefDto;
+import com.example.api.model.facebook.FacebookDto;
 import com.example.api.model.mendeley.MendeleyDto;
 import com.example.api.model.reddit.RedditDto;
+import com.example.api.model.scopus.ScopusDto;
 import com.example.api.model.twitter.TwitterDto;
 import com.example.api.model.wikipedia.WikipediaDto;
 import com.example.api.model.youtube.YoutubeDto;
@@ -32,9 +35,12 @@ public class ArticleController
 {
     private final ArticleService articleService;
     private final MendeleyService mendeleyService;
+    private final CrossrefService crossrefService;
+    private final ScopusService scopusService;
     private final RedditService redditService;
     private final TwitterService twitterService;
     private final WikipediaService wikipediaService;
+    private final FacebookService facebookService;
     private final YoutubeService youtubeService;
 
     @GetMapping("/articles")
@@ -61,19 +67,25 @@ public class ArticleController
         String doi = new ObjectMapper().readTree(id).path("id").asText();
         MendeleyDto mendeley = mendeleyService.getCatalog(doi);
         WikipediaDto wikipedia = wikipediaService.getCitationsById(doi);
+        CrossrefDto crossref = crossrefService.searchCrossref(doi);
+        ScopusDto scopus = scopusService.getCitationsByDoi(doi);
 
         String url = crawl("https://doi.org/" + doi);
 
         RedditDto reddit = redditService.searchReddit(url);
         TwitterDto twitter = twitterService.searchTwitter(url);
+        FacebookDto facebook = facebookService.searchFacebook(url);
         YoutubeDto youtube = youtubeService.searchYoutube(url);
 
         return articleService.addArticle(Article.builder()
                 .doi(doi)
                 .mendeley(mendeley)
+                .crossref(crossref)
+                .scopus(scopus)
                 .wikipedia(wikipedia)
                 .reddit(reddit)
                 .twitter(twitter)
+                .facebook(facebook)
                 .youtube(youtube)
                 .build());
     }

@@ -13,8 +13,8 @@ public class ScopusService
 {
     private final ScopusClient scopusClient;
 
-    public ScopusDto getCitationsByDoi(String query)
+    public ScopusDto getCitationsByDoi(String doi)
     {
-        return scopusClient.getCitationsByDoi(query);
+        return scopusClient.getCitationsByDoi(doi);
     }
 }

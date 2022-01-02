@@ -20,7 +20,7 @@ public class FacebookController
     public FacebookDto searchFacebook(HttpServletRequest request)
     {
         String requestURL = request.getRequestURL().toString();
-        String query = requestURL.split("/facebook/")[1];
-        return facebookService.searchFacebook(query);
+        String url = requestURL.split("/facebook/")[1];
+        return facebookService.searchFacebook(url);
     }
 }

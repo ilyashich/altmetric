@@ -13,8 +13,8 @@ public class FacebookService
 {
     private final FacebookClient facebookClient;
 
-    public FacebookDto searchFacebook(String searchQuery)
+    public FacebookDto searchFacebook(String url)
     {
-        return facebookClient.searchFacebook(searchQuery);
+        return facebookClient.searchFacebook(url);
     }
 }

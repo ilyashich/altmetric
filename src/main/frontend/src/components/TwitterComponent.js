@@ -3,13 +3,13 @@ import {useState} from "react";
 import Pagination from "./Pagination";
 import Tweet from "./Tweet";
 
-export default function TwitterComponent(props){
+export default function TwitterComponent( {twitter} ){
     const [currentPage, setCurrentPage] = useState(1);
     const [tweetsPerPage] = useState(8);
 
     const indexOfLastTweet = currentPage * tweetsPerPage;
     const indexOfFirstTweet = indexOfLastTweet - tweetsPerPage;
-    const currentTweets = props.twitter.results.slice(indexOfFirstTweet, indexOfLastTweet);
+    const currentTweets = twitter.results.slice(indexOfFirstTweet, indexOfLastTweet);
 
     const firstColumn = currentTweets.slice(0, 2);
     const secondColumn = currentTweets.slice(2, 4);
@@ -50,7 +50,7 @@ export default function TwitterComponent(props){
                     )}
                 </Row>
 
-            <Pagination itemsPerPage={tweetsPerPage} totalItems={props.twitter.results.length} paginate={paginate} />
+            <Pagination itemsPerPage={tweetsPerPage} totalItems={twitter.results.length} paginate={paginate} />
         </Container>
     );
 }

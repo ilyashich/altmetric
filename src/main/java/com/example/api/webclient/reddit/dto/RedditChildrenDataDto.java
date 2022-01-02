@@ -9,4 +9,5 @@ public class RedditChildrenDataDto
     private String title;
     private String author;
     private String created;
+    private String permalink;
 }

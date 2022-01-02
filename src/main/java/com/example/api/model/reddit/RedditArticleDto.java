@@ -13,5 +13,6 @@ public class RedditArticleDto
     private String author;
     private String title;
     private String created;
+    private String permalink;
 }
 

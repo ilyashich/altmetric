@@ -18,8 +18,8 @@ public class TwitterController
     public TwitterDto searchTwitter(HttpServletRequest request)
     {
         String requestURL = request.getRequestURL().toString();
-        String query = requestURL.split("/twitter/")[1];
-        return twitterService.searchTwitter(query);
+        String url = requestURL.split("/twitter/")[1];
+        return twitterService.searchTwitter(url);
     }
 }
 

@@ -14,8 +14,8 @@ public class YoutubeService
 {
     private final YoutubeClient youtubeClient;
 
-    public YoutubeDto searchYoutube(String searchQuery)
+    public YoutubeDto searchYoutube(String url)
     {
-        return youtubeClient.searchYoutube(searchQuery);
+        return youtubeClient.searchYoutube(url);
     }
 }

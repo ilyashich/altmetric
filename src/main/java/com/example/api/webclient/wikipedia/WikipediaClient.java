@@ -17,15 +17,15 @@ public class WikipediaClient
     public final String API_URL = "https://en.wikipedia.org/w/api.php";
     public RestTemplate restTemplate = new RestTemplate();
 
-    public WikipediaDto getCitationsById(String id)
+    public WikipediaDto getCitationsById(String doi)
     {
-        WikipediaResultDto wikipediaResultDto = callGetMethod("?srsearch={id}&action=query&list=search&utf8=&format=json&srlimit=100", WikipediaResultDto.class, id);
+        WikipediaResultDto wikipediaResultDto = callGetMethod("?srsearch={id}&action=query&list=search&utf8=&format=json&srlimit=100", WikipediaResultDto.class, doi);
 
         List<WikipediaArticleDto> search = new ArrayList<>();
         for(WikipediaSearchResultDto wikipediaSearchResultDto : wikipediaResultDto.getQuery().getSearch())
         {
             String snippet = Jsoup.parse(wikipediaSearchResultDto.getSnippet()).text();
-            if(snippet.contains(id))
+            if(snippet.contains(doi))
             {
                 search.add(WikipediaArticleDto.builder()
                         .pageId(wikipediaSearchResultDto.getPageid())

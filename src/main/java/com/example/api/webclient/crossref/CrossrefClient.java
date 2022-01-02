@@ -11,9 +11,9 @@ public class CrossrefClient
     private final RestTemplate restTemplate = new RestTemplate();
     private static final String CROSSREF_API_URL = "https://api.crossref.org/works/";
 
-    public CrossrefDto searchCrossref(String searchQuery)
+    public CrossrefDto searchCrossref(String doi)
     {
-        CrossrefSearchDto response = callGetMethod("q={link}", CrossrefSearchDto.class, searchQuery);
+        CrossrefSearchDto response = callGetMethod("q={link}", CrossrefSearchDto.class, doi);
 
         return CrossrefDto.builder()
                 .referencedByCount(response.message.isReferencedByCount)
