@@ -14,7 +14,7 @@ import java.util.List;
 public class YoutubeClient
 {
     private final RestTemplate restTemplate = new RestTemplate();
-    private static final String YOUTUBE_API_URL = "https://youtube.googleapis.com/youtube/v3/";
+    private static final String YOUTUBE_API_URL = "https://www.googleapis.com/youtube/v3/";
     private static final String API_KEY = "XXXXXXX";
 
     public YoutubeDto searchYoutube(String url)
@@ -26,21 +26,29 @@ public class YoutubeClient
         List<YoutubeItemDto> items = new ArrayList<>();
         if(youtubeSearch.getItems() != null)
         {
+            System.out.println(youtubeSearch.getItems().size());
             for(YoutubeItemsDto item : youtubeSearch.getItems())
             {
-                items.add(YoutubeItemDto.builder()
-                        .videoId(item.getId().getVideoId())
-                        .publishedAt(item.getSnippet().getPublishedAt())
-                        .channelTitle(item.getSnippet().getChannelTitle())
-                        .title(item.getSnippet().getTitle())
-                        .description(item.getSnippet().getDescription())
-                        .thumbnailUrl(item.getSnippet().getThumbnails().getHigh().getUrl())
-                        .build());
+                String video = callGetMethod(
+                    "videos?id={video id}&part=snippet&key={YOUR_API_KEY}", String.class,
+                    item.getId().getVideoId(), API_KEY);
+                if(video.contains(url))
+                {
+                    items.add(YoutubeItemDto.builder()
+                            .videoId(item.getId().getVideoId())
+                            .publishedAt(item.getSnippet().getPublishedAt())
+                            .channelTitle(item.getSnippet().getChannelTitle())
+                            .title(item.getSnippet().getTitle())
+                            .description(item.getSnippet().getDescription())
+                            .thumbnailUrl(item.getSnippet().getThumbnails().getHigh().getUrl())
+                            .build());
+                }
             }
         }
+        System.out.println(items.size());
         return YoutubeDto.builder()
                 .nextPageToken(youtubeSearch.getNextPageToken())
-                .totalResults(youtubeSearch.getPageInfo().getTotalResults())
+                .totalResults(String.valueOf(items.size()))
                 .items(items)
                 .build();
 

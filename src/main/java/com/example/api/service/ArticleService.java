@@ -31,6 +31,11 @@ public class ArticleService
         return this.repository.findById(id);
     }
 
+    public Optional<Article> getArticleByDoi(String doi)
+    {
+        return this.repository.findByDoi(doi);
+    }
+
     public void deleteArticle(Article oldArticle)
     {
         this.repository.delete(oldArticle);

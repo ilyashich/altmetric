@@ -21,7 +21,7 @@ function App() {
             <BrowserRouter>
                 <Switch>
                     {allArticles.map(article =>
-                    <Route key={article.doi} path={"/details/" + article.doi}>
+                    <Route key={article.id} path={"/details/" + article.id}>
                         <ArticleComponent article={article} />
                     </Route>
                     )}
@@ -30,10 +30,10 @@ function App() {
                     </Route>
                     <Route path="/">
                         {allArticles.map(article =>
-                            <Row key={article.doi}>
+                            <Row key={article.id}>
                                 <div>DOI: {article.doi}</div>
                                 <div>Title: {article.mendeley.title}</div>
-                                <Link to={"/details/" + article.doi}>Link</Link>
+                                <Link to={"/details/" + article.id}>Link</Link>
                             </Row>
                         )}
                         <Link to="/add">Add article</Link>

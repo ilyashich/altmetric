@@ -10,23 +10,24 @@ import javax.servlet.http.HttpServletRequest;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api")
 public class MendeleyController
 {
     private final MendeleyService mendeleyService;
 
-    @GetMapping("/mendeley/catalog/**")
-    public MendeleyDto getCatalog(HttpServletRequest request)
+    @GetMapping("/mendeley/catalog/{doiPrefix}/{doiSuffix}")
+    public MendeleyDto getCatalog(@PathVariable String doiPrefix, @PathVariable String doiSuffix)
     {
-        String requestURL = request.getRequestURL().toString();
-        String doi = requestURL.split("/mendeley/catalog/")[1];
+        String doi = doiPrefix + "/" + doiSuffix;
+
         return mendeleyService.getCatalog(doi);
     }
 
-    @GetMapping("/mendeley/doi/**")
-    public String getReadersByDoi(HttpServletRequest request)
+    @GetMapping("/mendeley/doi/{doiPrefix}/{doiSuffix}")
+    public String getReadersByDoi(@PathVariable String doiPrefix, @PathVariable String doiSuffix)
     {
-        String requestURL = request.getRequestURL().toString();
-        String doi = requestURL.split("/mendeley/doi/")[1];
+        String doi = doiPrefix + "/" + doiSuffix;
+
         return mendeleyService.getReadersByDoi(doi);
     }
 

@@ -25,6 +25,7 @@ import java.util.List;
 public class Article
 {
     @Id
+    private String id;
     private String doi;
     private List<String> links;
     private MendeleyDto mendeley;

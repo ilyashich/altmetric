@@ -30,7 +30,7 @@ import org.jsoup.select.Elements;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/")
+@RequestMapping("/api")
 public class ArticleController
 {
     private final ArticleService articleService;
@@ -49,13 +49,21 @@ public class ArticleController
         return articleService.getAllArticles();
     }
 
-    @GetMapping("/articles/**")
-    public Article getArticleById(HttpServletRequest request)
+    @GetMapping("/articles/doi/{doiPrefix}/{doiSuffix}")
+    public Article getArticleByDoi(@PathVariable String doiPrefix, @PathVariable String doiSuffix)
     {
-        String requestURL = request.getRequestURL().toString();
-        String query = requestURL.split("/articles/")[1];
+        String doi = doiPrefix + "/" + doiSuffix;
 
-        Optional<Article> article = articleService.getArticleById(query);
+        Optional<Article> article = articleService.getArticleByDoi(doi);
+
+        return article.orElse(null);
+
+    }
+
+    @GetMapping("/articles/id/{id}")
+    public Article getArticleById(@PathVariable String id)
+    {
+        Optional<Article> article = articleService.getArticleById(id);
 
         return article.orElse(null);
 
