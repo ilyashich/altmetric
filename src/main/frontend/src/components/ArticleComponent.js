@@ -4,6 +4,7 @@ import WikipediaComponent from "./WikipediaComponent";
 import RedditComponent from "./RedditComponent";
 import TwitterComponent from "./TwitterComponent";
 import YoutubeComponent from "./YoutubeComponent";
+import StackExchangeComponent from "./StackExchangeComponent";
 
 export default function ArticleComponent( {article} ){
     const mendeleyCount = article.mendeley.readersCount > 0 ?
@@ -58,6 +59,11 @@ export default function ArticleComponent( {article} ){
             </li>
         </div>
         : <></>;
+    const stackExchangeCount = article.stackExchange.items.length > 0 ?
+        <div>
+            Q&A: {article.stackExchange.items.length}
+        </div>
+        : <></>;
     return (
         <Container fluid>
             <div className="document-header">
@@ -72,6 +78,7 @@ export default function ArticleComponent( {article} ){
                     {crossrefCount}
                     {wikipediaCount}
                     {redditCount}
+                    {stackExchangeCount}
                     {twitterCount}
                     {youtubeCount}
                     {facebookCount}
@@ -89,6 +96,9 @@ export default function ArticleComponent( {article} ){
                         </Tab>
                         <Tab eventKey="youtube" title="Youtube">
                             <YoutubeComponent youtube={article.youtube} />
+                        </Tab>
+                        <Tab eventKey="stackExchange" title="Q&A">
+                            <StackExchangeComponent stackExchange={article.stackExchange} />
                         </Tab>
                     </Tabs>
                 </Col>

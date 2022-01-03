@@ -6,6 +6,7 @@ import com.example.api.model.facebook.FacebookDto;
 import com.example.api.model.mendeley.MendeleyDto;
 import com.example.api.model.reddit.RedditDto;
 import com.example.api.model.scopus.ScopusDto;
+import com.example.api.model.stackexchange.StackExchangeDto;
 import com.example.api.model.twitter.TwitterDto;
 import com.example.api.model.twitter.TwitterResultDto;
 import com.example.api.model.wikipedia.WikipediaDto;
@@ -39,6 +40,7 @@ public class ArticleController
     private final CrossrefService crossrefService;
     private final ScopusService scopusService;
     private final RedditService redditService;
+    private final StackExchangeService stackExchangeService;
     private final TwitterService twitterService;
     private final WikipediaService wikipediaService;
     private final FacebookService facebookService;
@@ -82,6 +84,7 @@ public class ArticleController
         String url = crawl("https://doi.org/" + doi);
 
         RedditDto reddit = redditService.searchReddit(url);
+        StackExchangeDto stackExchange = stackExchangeService.searchStackExchange(url);
         TwitterDto twitter = twitterService.searchTwitter(url);
         FacebookDto facebook = facebookService.searchFacebook(url);
         YoutubeDto youtube = youtubeService.searchYoutube(url);
@@ -94,6 +97,7 @@ public class ArticleController
             article.get().setScopus(scopus);
             article.get().setWikipedia(wikipedia);
             article.get().setReddit(reddit);
+            article.get().setStackExchange(stackExchange);
             article.get().setFacebook(facebook);
             article.get().setYoutube(youtube);
 
@@ -119,6 +123,7 @@ public class ArticleController
                 .scopus(scopus)
                 .wikipedia(wikipedia)
                 .reddit(reddit)
+                .stackExchange(stackExchange)
                 .twitter(twitter)
                 .facebook(facebook)
                 .youtube(youtube)
