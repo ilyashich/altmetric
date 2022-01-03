@@ -3,7 +3,7 @@ import axios from 'axios';
 import {Row, Col, Form, Container} from 'react-bootstrap';
 
 export default function Article(){
-    const ARTICLES_URL = 'http://localhost:8080/articles';
+    const ARTICLES_URL = 'http://localhost:8080/api/articles';
     const [article, setArticle] = useState(null);
     const [allArticles, setAllArticles] = useState([]);
     const [doiGet, setDoiGet] = useState('');

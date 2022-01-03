@@ -6,6 +6,58 @@ import TwitterComponent from "./TwitterComponent";
 import YoutubeComponent from "./YoutubeComponent";
 
 export default function ArticleComponent( {article} ){
+    const mendeleyCount = article.mendeley.readersCount > 0 ?
+        <div>
+            Mendeley: {article.mendeley.readersCount}
+        </div>
+        : <></>;
+    const scopusCount = article.scopus.citationsCount > 0 ?
+        <div>
+            <a id="article-a" target="_blank" rel="noreferrer" href={article.scopus.link}>
+                Scopus:
+            </a>
+            {article.scopus.citationsCount}
+        </div>
+        : <></>;
+    const crossrefCount = article.crossref.referencedByCount > 0 ?
+        <div>
+            Crossref: {article.crossref.referencedByCount}
+        </div>
+        : <></>;
+    const wikipediaCount = article.wikipedia.totalHits > 0 ?
+        <div>
+            Wikipedia: {article.wikipedia.totalHits}
+        </div>
+        : <></>;
+    const redditCount = article.reddit.articles.length > 0 ?
+        <div>
+            Reddit: {article.reddit.articles.length}
+        </div>
+        : <></>;
+    const twitterCount = article.twitter.resultCount > 0 ?
+        <div>
+            Twitter: {article.twitter.resultCount}
+        </div>
+        : <></>;
+    const youtubeCount = article.youtube.totalResults > 0 ?
+        <div>
+            Youtube: {article.youtube.totalResults}
+        </div>
+        : <></>;
+    const facebookCount = article.facebook.reactionCount + article.facebook.shareCount + article.facebook.commentCount > 0 ?
+        <div>
+            Facebook:
+            <li>
+                Likes: {article.facebook.reactionCount}
+            </li>
+            <li>
+                Shares: {article.facebook.shareCount}
+            </li>
+            <li>
+                Comments: {article.facebook.commentCount}
+            </li>
+        </div>
+        : <></>;
     return (
         <Container fluid>
             <div className="document-header">
@@ -15,42 +67,14 @@ export default function ArticleComponent( {article} ){
             </div>
             <Row>
                 <Col xs lg="3">
-                    <div>
-                        Mendeley: {article.mendeley.readersCount}
-                    </div>
-                    <div>
-                        <a id="article-a" target="_blank" rel="noreferrer" href={article.scopus.link}>
-                            Scopus:
-                        </a>
-                         {article.scopus.citationsCount}
-                    </div>
-                    <div>
-                        Crossref: {article.crossref.referencedByCount}
-                    </div>
-                    <div>
-                        Wikipedia: {article.wikipedia.totalHits}
-                    </div>
-                    <div>
-                        Reddit: {article.reddit.articles.length}
-                    </div>
-                    <div>
-                        Twitter: {article.twitter.resultCount}
-                    </div>
-                    <div>
-                        Youtube: {article.youtube.totalResults}
-                    </div>
-                    <div>
-                        Facebook:
-                        <li>
-                            Likes: {article.facebook.reactionCount}
-                        </li>
-                        <li>
-                            Shares: {article.facebook.shareCount}
-                        </li>
-                        <li>
-                            Comments: {article.facebook.commentCount}
-                        </li>
-                    </div>
+                    {mendeleyCount}
+                    {scopusCount}
+                    {crossrefCount}
+                    {wikipediaCount}
+                    {redditCount}
+                    {twitterCount}
+                    {youtubeCount}
+                    {facebookCount}
                 </Col>
                 <Col>
                     <Tabs variant="pills" mountOnEnter="true" fill justify defaultActiveKey="wikipedia">

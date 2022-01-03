@@ -7,7 +7,7 @@ import {useEffect, useState} from "react";
 import {Row} from "react-bootstrap";
 import Article from "./components/Article";
 
-const ARTICLES_URL = 'http://localhost:8080/articles';
+const ARTICLES_URL = 'http://localhost:8080/api/articles';
 
 function App() {
 

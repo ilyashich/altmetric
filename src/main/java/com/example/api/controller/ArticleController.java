@@ -7,6 +7,7 @@ import com.example.api.model.mendeley.MendeleyDto;
 import com.example.api.model.reddit.RedditDto;
 import com.example.api.model.scopus.ScopusDto;
 import com.example.api.model.twitter.TwitterDto;
+import com.example.api.model.twitter.TwitterResultDto;
 import com.example.api.model.wikipedia.WikipediaDto;
 import com.example.api.model.youtube.YoutubeDto;
 import com.example.api.service.*;
@@ -14,10 +15,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -84,6 +85,32 @@ public class ArticleController
         TwitterDto twitter = twitterService.searchTwitter(url);
         FacebookDto facebook = facebookService.searchFacebook(url);
         YoutubeDto youtube = youtubeService.searchYoutube(url);
+
+        Optional<Article> article = articleService.getArticleByDoi(doi);
+        if(article.isPresent())
+        {
+            article.get().setMendeley(mendeley);
+            article.get().setCrossref(crossref);
+            article.get().setScopus(scopus);
+            article.get().setWikipedia(wikipedia);
+            article.get().setReddit(reddit);
+            article.get().setFacebook(facebook);
+            article.get().setYoutube(youtube);
+
+            TwitterDto oldTwitter = article.get().getTwitter();
+            for(TwitterResultDto result : twitter.getResults())
+            {
+                if(!oldTwitter.getResults().contains(result))
+                {
+                    oldTwitter.getResults().add(result);
+                }
+            }
+            article.get().getTwitter().getResults().sort(Comparator.comparing(TwitterResultDto::getCreatedAt).reversed());
+
+            article.get().setTwitter(oldTwitter);
+
+            return articleService.addArticle(article.get());
+        }
 
         return articleService.addArticle(Article.builder()
                 .doi(doi)
