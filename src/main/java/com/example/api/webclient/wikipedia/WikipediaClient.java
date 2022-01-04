@@ -19,19 +19,17 @@ public class WikipediaClient
 
     public WikipediaDto getCitationsById(String doi)
     {
-        WikipediaResultDto wikipediaResultDto = callGetMethod("?srsearch={id}&action=query&list=search&utf8=&format=json&srlimit=100", WikipediaResultDto.class, doi);
+        WikipediaResultDto wikipediaResultDto = callGetMethod("?srsearch=\"{id}\"&action=query&list=search&utf8=&format=json&srlimit=100", WikipediaResultDto.class, doi);
 
         List<WikipediaArticleDto> search = new ArrayList<>();
         for(WikipediaSearchResultDto wikipediaSearchResultDto : wikipediaResultDto.getQuery().getSearch())
         {
-            String snippet = Jsoup.parse(wikipediaSearchResultDto.getSnippet()).text();
-            if(snippet.contains(doi))
-            {
-                search.add(WikipediaArticleDto.builder()
-                        .pageId(wikipediaSearchResultDto.getPageid())
-                        .title(wikipediaSearchResultDto.getTitle())
-                        .build());
-            }
+
+            search.add(WikipediaArticleDto.builder()
+                    .pageId(wikipediaSearchResultDto.getPageid())
+                    .title(wikipediaSearchResultDto.getTitle())
+                    .build());
+
         }
 
         return WikipediaDto.builder()

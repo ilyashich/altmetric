@@ -3,6 +3,8 @@ package com.example.api.controller;
 
 import com.example.api.model.mendeley.MendeleyDto;
 import com.example.api.service.MendeleyService;
+import com.example.api.webclient.mendeley.dto.MendeleyCatalogDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +18,7 @@ public class MendeleyController
     private final MendeleyService mendeleyService;
 
     @GetMapping("/mendeley/catalog/{doiPrefix}/{doiSuffix}")
-    public MendeleyDto getCatalog(@PathVariable String doiPrefix, @PathVariable String doiSuffix)
+    public MendeleyCatalogDto getCatalog(@PathVariable String doiPrefix, @PathVariable String doiSuffix) throws JsonProcessingException
     {
         String doi = doiPrefix + "/" + doiSuffix;
 

@@ -9,6 +9,7 @@ import com.example.api.model.stackexchange.StackExchangeDto;
 import com.example.api.model.twitter.TwitterDto;
 import com.example.api.model.wikipedia.WikipediaDto;
 import com.example.api.model.youtube.YoutubeDto;
+import com.example.api.webclient.mendeley.dto.MendeleyCatalogDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,7 +30,7 @@ public class Article
     private String id;
     private String doi;
     private List<String> links;
-    private MendeleyDto mendeley;
+    private MendeleyCatalogDto mendeley;
     private CrossrefDto crossref;
     private ScopusDto scopus;
     private WikipediaDto wikipedia;

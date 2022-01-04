@@ -23,7 +23,7 @@ public class StackExchangeClient
 
     public StackExchangeDto searchStackExchange(String url)
     {
-        List<String> fields = Arrays.asList("stackoverflow", "biology", "math", "physics", "chemistry", "cs", "astronomy", "ai", "bioinformatics");
+        List<String> fields = Arrays.asList("stackoverflow", "biology", "math", "physics", "chemistry", "cs", "astronomy", "ai", "bioinformatics", "medicalsciences", "skeptics");
         StackExchangeDto results = StackExchangeDto.builder().items(new ArrayList<>()).build();
         for(String field : fields)
         {

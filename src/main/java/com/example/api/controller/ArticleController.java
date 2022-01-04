@@ -12,6 +12,7 @@ import com.example.api.model.twitter.TwitterResultDto;
 import com.example.api.model.wikipedia.WikipediaDto;
 import com.example.api.model.youtube.YoutubeDto;
 import com.example.api.service.*;
+import com.example.api.webclient.mendeley.dto.MendeleyCatalogDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -76,7 +77,7 @@ public class ArticleController
     public Article addArticle(@RequestBody String id) throws IOException
     {
         String doi = new ObjectMapper().readTree(id).path("id").asText();
-        MendeleyDto mendeley = mendeleyService.getCatalog(doi);
+        MendeleyCatalogDto mendeley = mendeleyService.getCatalog(doi);
         WikipediaDto wikipedia = wikipediaService.getCitationsById(doi);
         CrossrefDto crossref = crossrefService.searchCrossref(doi);
         ScopusDto scopus = scopusService.getCitationsByDoi(doi);
@@ -110,6 +111,8 @@ public class ArticleController
                 }
             }
             article.get().getTwitter().getResults().sort(Comparator.comparing(TwitterResultDto::getCreatedAt).reversed());
+
+            article.get().getTwitter().setResultCount(article.get().getTwitter().getResults().size());
 
             article.get().setTwitter(oldTwitter);
 

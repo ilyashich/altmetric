@@ -3,6 +3,8 @@ package com.example.api.service;
 
 import com.example.api.model.mendeley.MendeleyDto;
 import com.example.api.webclient.mendeley.MendeleyClient;
+import com.example.api.webclient.mendeley.dto.MendeleyCatalogDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,7 +16,7 @@ public class MendeleyService
 {
     private final MendeleyClient mendeleyClient;
 
-    public MendeleyDto getCatalog(String doi)
+    public MendeleyCatalogDto getCatalog(String doi) throws JsonProcessingException
     {
         return mendeleyClient.getCatalog(doi);
     }

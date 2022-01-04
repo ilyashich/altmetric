@@ -5,11 +5,16 @@ import RedditComponent from "./RedditComponent";
 import TwitterComponent from "./TwitterComponent";
 import YoutubeComponent from "./YoutubeComponent";
 import StackExchangeComponent from "./StackExchangeComponent";
+import MendeleyComponent from "./MendeleyComponent";
+import ArticleInfoComponent from "./ArticleInfoComponent";
 
 export default function ArticleComponent( {article} ){
-    const mendeleyCount = article.mendeley.readersCount > 0 ?
+    const mendeleyCount = article.mendeley.reader_count > 0 ?
         <div>
-            Mendeley: {article.mendeley.readersCount}
+            <a id="article-a" target="_blank" rel="noreferrer" href={article.mendeley.link}>
+                Mendeley:
+            </a>
+            {article.mendeley.reader_count}
         </div>
         : <></>;
     const scopusCount = article.scopus.citationsCount > 0 ?
@@ -64,6 +69,37 @@ export default function ArticleComponent( {article} ){
             Q&A: {article.stackExchange.items.length}
         </div>
         : <></>;
+
+    const mendeleyTab = article.mendeley.reader_count > 0 ?
+        <Tab eventKey="mendeley" title="Mendeley">
+            <MendeleyComponent mendeley={article.mendeley}/>
+        </Tab>
+        : <></>;
+    const wikipediaTab = article.wikipedia.totalHits > 0 ?
+        <Tab eventKey="wikipedia" title="Wikipedia">
+            <WikipediaComponent wikipedia={article.wikipedia}/>
+        </Tab>
+        : <></>;
+    const redditTab = article.reddit.articles.length > 0 ?
+        <Tab eventKey="reddit" title="Reddit">
+            <RedditComponent reddit={article.reddit}/>
+        </Tab>
+        : <></>;
+    const twitterTab =  article.twitter.resultCount > 0 ?
+        <Tab eventKey="twitter" title="Twitter">
+            <TwitterComponent twitter={article.twitter}/>
+        </Tab>
+        : <></>;
+    const youtubeTab = article.youtube.totalResults > 0 ?
+        <Tab eventKey="youtube" title="Youtube">
+            <YoutubeComponent youtube={article.youtube} />
+        </Tab>
+        : <></>;
+    const stackExchangeTab = article.stackExchange.items.length > 0 ?
+        <Tab eventKey="stackExchange" title="Q&A">
+            <StackExchangeComponent stackExchange={article.stackExchange} />
+        </Tab>
+        : <></>;
     return (
         <Container fluid>
             <div className="document-header">
@@ -84,22 +120,16 @@ export default function ArticleComponent( {article} ){
                     {facebookCount}
                 </Col>
                 <Col>
-                    <Tabs variant="pills" mountOnEnter="true" fill justify defaultActiveKey="wikipedia">
-                        <Tab eventKey="wikipedia" title="Wikipedia">
-                            <WikipediaComponent wikipedia={article.wikipedia}/>
+                    <Tabs variant="pills" mountOnEnter="true" fill justify defaultActiveKey="info">
+                        <Tab eventKey="info" title="Article Info">
+                            <ArticleInfoComponent mendeley={article.mendeley}/>
                         </Tab>
-                        <Tab eventKey="reddit" title="Reddit">
-                            <RedditComponent reddit={article.reddit}/>
-                        </Tab>
-                        <Tab eventKey="twitter" title="Twitter">
-                            <TwitterComponent twitter={article.twitter}/>
-                        </Tab>
-                        <Tab eventKey="youtube" title="Youtube">
-                            <YoutubeComponent youtube={article.youtube} />
-                        </Tab>
-                        <Tab eventKey="stackExchange" title="Q&A">
-                            <StackExchangeComponent stackExchange={article.stackExchange} />
-                        </Tab>
+                        {mendeleyTab}
+                        {wikipediaTab}
+                        {redditTab}
+                        {twitterTab}
+                        {youtubeTab}
+                        {stackExchangeTab}
                     </Tabs>
                 </Col>
             </Row>

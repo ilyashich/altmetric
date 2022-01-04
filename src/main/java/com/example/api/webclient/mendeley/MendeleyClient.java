@@ -39,18 +39,19 @@ public class MendeleyClient
     }
 
 
-    public MendeleyDto getCatalog(String doi)
+    public MendeleyCatalogDto getCatalog(String doi)
     {
-        MendeleyCatalogDto[] mendeleyCatalogDto = callGetMethod("/catalog?doi={doi}&view=stats&access_token={access token}", MendeleyCatalogDto[].class, doi,  API_TOKEN);
+        MendeleyCatalogDto[] mendeleyCatalogDto = callGetMethod("/catalog?doi={doi}&view=all&access_token={access token}", MendeleyCatalogDto[].class, doi,  API_TOKEN);
 
         List<MendeleyCatalogDto> listCatalog = Arrays.asList(mendeleyCatalogDto);
-        return MendeleyDto.builder()
-                .title(listCatalog.get(0).getTitle())
-                .authors(listCatalog.get(0).getAuthors())
-                .readersCount(listCatalog.get(0).getReader_count())
-                .doi(listCatalog.get(0).getIdentifiers().getDoi())
-                .scopusId(listCatalog.get(0).getIdentifiers().getScopus())
-                .build();
+        return listCatalog.get(0);
+//        return MendeleyDto.builder()
+//                .title(listCatalog.get(0).getTitle())
+//                .authors(listCatalog.get(0).getAuthors())
+//                .readersCount(listCatalog.get(0).getReader_count())
+//                .doi(listCatalog.get(0).getIdentifiers().getDoi())
+//                .scopusId(listCatalog.get(0).getIdentifiers().getScopus())
+//                .build();
     }
 
     private <T> T callGetMethod(String url, Class<T> responseType, Object...objects)
@@ -68,7 +69,7 @@ public class MendeleyClient
         MendeleyCatalogDto[] mendeleyCatalogDto = callGetMethod("/catalog?doi={doi}&view=stats&access_token={access token}", MendeleyCatalogDto[].class, doi,  API_TOKEN);
 
         List<MendeleyCatalogDto> listCatalog = Arrays.asList(mendeleyCatalogDto);
-        return listCatalog.get(0).getReader_count();
+        return listCatalog.get(0).getReaderCount();
     }
 
     public String getReadersByScopusId(String scopus)
@@ -76,7 +77,7 @@ public class MendeleyClient
         MendeleyCatalogDto[] mendeleyCatalogDto = callGetMethod("/catalog?scopus={scopus}&view=stats&access_token={access token}", MendeleyCatalogDto[].class, scopus,  API_TOKEN);
 
         List<MendeleyCatalogDto> listCatalog = Arrays.asList(mendeleyCatalogDto);
-        return listCatalog.get(0).getReader_count();
+        return listCatalog.get(0).getReaderCount();
     }
 
 }
