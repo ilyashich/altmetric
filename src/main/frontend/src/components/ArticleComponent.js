@@ -41,9 +41,9 @@ export default function ArticleComponent( {article} ){
             Reddit: {article.reddit.articles.length}
         </div>
         : <></>;
-    const twitterCount = article.twitter.resultCount > 0 ?
+    const twitterCount = article.twitter.resultCount > 0 || article.eventDataTwitter.totalResults > 0 ?
         <div>
-            Twitter: {article.twitter.resultCount}
+            Twitter: {article.twitter.resultCount + article.eventDataTwitter.totalResults}
         </div>
         : <></>;
     const youtubeCount = article.youtube.totalResults > 0 ?
@@ -114,7 +114,7 @@ export default function ArticleComponent( {article} ){
                 </h3>
             </div>
             <Row>
-                <Col xs lg="3">
+                <Col xs lg="2">
                     {mendeleyCount}
                     {scopusCount}
                     {crossrefCount}
