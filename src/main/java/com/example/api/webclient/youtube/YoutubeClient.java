@@ -26,7 +26,6 @@ public class YoutubeClient
         List<YoutubeItemDto> items = new ArrayList<>();
         if(youtubeSearch.getItems() != null)
         {
-            System.out.println(youtubeSearch.getItems().size());
             for(YoutubeItemsDto item : youtubeSearch.getItems())
             {
                 String video = callGetMethod(
@@ -45,7 +44,6 @@ public class YoutubeClient
                 }
             }
         }
-        System.out.println(items.size());
         return YoutubeDto.builder()
                 .nextPageToken(youtubeSearch.getNextPageToken())
                 .totalResults(String.valueOf(items.size()))

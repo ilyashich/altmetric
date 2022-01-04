@@ -1,6 +1,8 @@
 package com.example.api.model;
 
 import com.example.api.model.crossref.CrossrefDto;
+import com.example.api.model.eventdata.news.EventDataNewsDto;
+import com.example.api.model.eventdata.twitter.EventDataTwitterDto;
 import com.example.api.model.facebook.FacebookDto;
 import com.example.api.model.mendeley.MendeleyDto;
 import com.example.api.model.reddit.RedditDto;
@@ -39,4 +41,6 @@ public class Article
     private TwitterDto twitter;
     private FacebookDto facebook;
     private YoutubeDto youtube;
+    private EventDataNewsDto news;
+    private EventDataTwitterDto eventDataTwitter;
 }

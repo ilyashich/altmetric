@@ -2,6 +2,8 @@ package com.example.api.controller;
 
 import com.example.api.model.Article;
 import com.example.api.model.crossref.CrossrefDto;
+import com.example.api.model.eventdata.news.EventDataNewsDto;
+import com.example.api.model.eventdata.twitter.EventDataTwitterDto;
 import com.example.api.model.facebook.FacebookDto;
 import com.example.api.model.mendeley.MendeleyDto;
 import com.example.api.model.reddit.RedditDto;
@@ -46,6 +48,7 @@ public class ArticleController
     private final WikipediaService wikipediaService;
     private final FacebookService facebookService;
     private final YoutubeService youtubeService;
+    private final EventDataService eventDataService;
 
     @GetMapping("/articles")
     public List<Article> getArticles()
@@ -89,6 +92,8 @@ public class ArticleController
         TwitterDto twitter = twitterService.searchTwitter(url);
         FacebookDto facebook = facebookService.searchFacebook(url);
         YoutubeDto youtube = youtubeService.searchYoutube(url);
+        EventDataNewsDto news = eventDataService.searchEventDataNews(doi);
+        EventDataTwitterDto eventDataTwitter = eventDataService.searchEventDataTwitter(doi);
 
         Optional<Article> article = articleService.getArticleByDoi(doi);
         if(article.isPresent())
@@ -101,6 +106,8 @@ public class ArticleController
             article.get().setStackExchange(stackExchange);
             article.get().setFacebook(facebook);
             article.get().setYoutube(youtube);
+            article.get().setNews(news);
+            article.get().setEventDataTwitter(eventDataTwitter);
 
             TwitterDto oldTwitter = article.get().getTwitter();
             for(TwitterResultDto result : twitter.getResults())
@@ -130,6 +137,8 @@ public class ArticleController
                 .twitter(twitter)
                 .facebook(facebook)
                 .youtube(youtube)
+                .news(news)
+                .eventDataTwitter(eventDataTwitter)
                 .build());
     }
 

@@ -11,8 +11,8 @@ export default function StackExchangeComponent( {stackExchange} ){
     const indexOfLastQuestion= currentPage * questionsPerPage;
     const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
     const currentVideos = stackExchange.items.slice(indexOfFirstQuestion, indexOfLastQuestion);
-    const firstColumn = currentVideos.slice(0, 2);
-    const secondColumn = currentVideos.slice(2, currentVideos.length);
+    const firstColumn = currentVideos.slice(0, 3);
+    const secondColumn = currentVideos.slice(3, currentVideos.length);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 

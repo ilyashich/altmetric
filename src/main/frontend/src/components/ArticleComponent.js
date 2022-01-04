@@ -7,6 +7,7 @@ import YoutubeComponent from "./YoutubeComponent";
 import StackExchangeComponent from "./StackExchangeComponent";
 import MendeleyComponent from "./MendeleyComponent";
 import ArticleInfoComponent from "./ArticleInfoComponent";
+import NewsComponent from "./NewsComponent";
 
 export default function ArticleComponent( {article} ){
     const mendeleyCount = article.mendeley.reader_count > 0 ?
@@ -85,9 +86,9 @@ export default function ArticleComponent( {article} ){
             <RedditComponent reddit={article.reddit}/>
         </Tab>
         : <></>;
-    const twitterTab =  article.twitter.resultCount > 0 ?
+    const twitterTab =  article.twitter.resultCount > 0 || article.eventDataTwitter.events.length > 0 ?
         <Tab eventKey="twitter" title="Twitter">
-            <TwitterComponent twitter={article.twitter}/>
+            <TwitterComponent twitter={article.twitter} eventDataTwitter={article.eventDataTwitter}/>
         </Tab>
         : <></>;
     const youtubeTab = article.youtube.totalResults > 0 ?
@@ -98,6 +99,11 @@ export default function ArticleComponent( {article} ){
     const stackExchangeTab = article.stackExchange.items.length > 0 ?
         <Tab eventKey="stackExchange" title="Q&A">
             <StackExchangeComponent stackExchange={article.stackExchange} />
+        </Tab>
+        : <></>;
+    const newsTab = article.news.events.length > 0 ?
+        <Tab eventKey="news" title="News">
+            <NewsComponent news={article.news}/>
         </Tab>
         : <></>;
     return (
@@ -130,6 +136,7 @@ export default function ArticleComponent( {article} ){
                         {twitterTab}
                         {youtubeTab}
                         {stackExchangeTab}
+                        {newsTab}
                     </Tabs>
                 </Col>
             </Row>

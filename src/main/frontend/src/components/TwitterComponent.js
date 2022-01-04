@@ -1,15 +1,26 @@
 import {Container, Row, Col} from 'react-bootstrap';
 import {useState} from "react";
 import Pagination from "./Pagination";
-import Tweet from "./Tweet";
+import TweetComponent from "./TweetComponent";
 
-export default function TwitterComponent( {twitter} ){
+export default function TwitterComponent( {twitter, eventDataTwitter} ){
     const [currentPage, setCurrentPage] = useState(1);
     const [tweetsPerPage] = useState(8);
 
+    const allTweets = [];
+    for(let i = 0; i < twitter.results.length; i++) {
+        allTweets.push(twitter.results[i].tweetId);
+    }
+
+    for(let i = 0; i < eventDataTwitter.events.length; i++){
+        allTweets.push(eventDataTwitter.events[i].tweetId);
+    }
+
+    console.log(allTweets);
+
     const indexOfLastTweet = currentPage * tweetsPerPage;
     const indexOfFirstTweet = indexOfLastTweet - tweetsPerPage;
-    const currentTweets = twitter.results.slice(indexOfFirstTweet, indexOfLastTweet);
+    const currentTweets = allTweets.slice(indexOfFirstTweet, indexOfLastTweet);
 
     const firstColumn = currentTweets.slice(0, 2);
     const secondColumn = currentTweets.slice(2, 4);
@@ -22,35 +33,35 @@ export default function TwitterComponent( {twitter} ){
         <Container>
 
                 <Row>
-                    {firstColumn.map(result =>
-                        <Col key={result.tweetId}>
-                            <Tweet tweet={result} />
+                    {firstColumn.map((result, i) =>
+                        <Col key={i}>
+                            <TweetComponent tweet={result} />
                         </Col>
                     )}
                 </Row>
                 <Row>
-                    {secondColumn.map(result =>
-                        <Col key={result.tweetId}>
-                            <Tweet tweet={result} />
+                    {secondColumn.map((result, i) =>
+                        <Col key={i}>
+                            <TweetComponent tweet={result} />
                         </Col>
                     )}
                 </Row>
                 <Row>
-                    {thirdColumn.map(result =>
-                        <Col key={result.tweetId}>
-                            <Tweet tweet={result} />
+                    {thirdColumn.map((result, i) =>
+                        <Col key={i}>
+                            <TweetComponent tweet={result} />
                         </Col>
                     )}
                 </Row>
                 <Row>
-                    {fourthColumn.map(result =>
-                        <Col key={result.tweetId}>
-                            <Tweet tweet={result} />
+                    {fourthColumn.map((result, i) =>
+                        <Col key={i}>
+                            <TweetComponent tweet={result} />
                         </Col>
                     )}
                 </Row>
 
-            <Pagination itemsPerPage={tweetsPerPage} totalItems={twitter.results.length} paginate={paginate} />
+            <Pagination itemsPerPage={tweetsPerPage} totalItems={allTweets.length} paginate={paginate} />
         </Container>
     );
 }
