@@ -71,6 +71,12 @@ export default function ArticleComponent( {article} ){
         </div>
         : <></>;
 
+    const newsCount = article.news.totalResults > 0 ?
+        <div>
+            News: {article.news.totalResults}
+        </div>
+        : <></>;
+
     const mendeleyTab = article.mendeley.reader_count > 0 ?
         <Tab eventKey="mendeley" title="Mendeley">
             <MendeleyComponent mendeley={article.mendeley}/>
@@ -121,6 +127,7 @@ export default function ArticleComponent( {article} ){
                     {wikipediaCount}
                     {redditCount}
                     {stackExchangeCount}
+                    {newsCount}
                     {twitterCount}
                     {youtubeCount}
                     {facebookCount}

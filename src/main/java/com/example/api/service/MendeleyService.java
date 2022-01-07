@@ -16,7 +16,7 @@ public class MendeleyService
 {
     private final MendeleyClient mendeleyClient;
 
-    public MendeleyCatalogDto getCatalog(String doi) throws JsonProcessingException
+    public MendeleyCatalogDto getCatalog(String doi)
     {
         return mendeleyClient.getCatalog(doi);
     }

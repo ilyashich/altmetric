@@ -46,6 +46,7 @@ public class EventDataClient
             String author = event.subj.author.url.split("=")[1];
             String tweet = event.subj.originalTweetUrl.split("=")[1];
             events.add(EventDataTwitterEventsDto.builder()
+                    .occurredAt(event.occurredAt)
                     .tweetId(tweet)
                     .authorName(author)
                     .build());

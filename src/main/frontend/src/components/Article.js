@@ -19,7 +19,7 @@ export default function Article(){
 
     function addItem(){
         console.log('You want to add article: ' + doiAdd);
-        axios.post(ARTICLES_URL, {id: doiAdd})
+        axios.post(ARTICLES_URL, doiAdd, { headers: { 'Content-Type' : 'text/plain'} })
             .then((response) => {
                 console.log(response)
                 alert('Article successfully added')

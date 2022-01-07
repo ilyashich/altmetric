@@ -9,6 +9,7 @@ import lombok.Getter;
 @Data
 public class EventDataTwitterEventsDto
 {
+    private String occurredAt;
     private String authorName;
     private String tweetId;
 }
