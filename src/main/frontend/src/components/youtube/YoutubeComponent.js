@@ -1,7 +1,7 @@
 import Moment from 'moment'
 import './YoutubeComponent.css'
 import {useState} from "react";
-import Pagination from "./Pagination";
+import Pagination from "../Pagination";
 
 export default function YoutubeComponent( {youtube} ){
     const [currentPage, setCurrentPage] = useState(1);
@@ -18,8 +18,8 @@ export default function YoutubeComponent( {youtube} ){
     return (
         <div className="row">
             <div className="col">
-                {firstColumn.map(item =>
-                    <article key={item.videoId} className="postVideos">
+                {firstColumn.map((item, i) =>
+                    <article key={i} className="postVideos">
                         <a target="_blank" rel="noreferrer" className="block_link" href={"https://www.youtube.com/watch?v=" + item.videoId}>
                             <img alt={item.channelTitle} className="avatar" src={item.thumbnailUrl} />
                             <div className="contentWith_image">
@@ -33,8 +33,8 @@ export default function YoutubeComponent( {youtube} ){
                 )}
             </div>
             <div className="col">
-                {secondColumn.map(item =>
-                    <article key={item.videoId} className="postVideos">
+                {secondColumn.map((item, i) =>
+                    <article key={i} className="postVideos">
                         <a target="_blank" rel="noreferrer" className="block_link" href={"https://www.youtube.com/watch?v=" + item.videoId}>
                             <img alt={item.channelTitle} className="avatar" src={item.thumbnailUrl} />
                             <div className="contentWith_image">

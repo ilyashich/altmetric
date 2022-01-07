@@ -1,6 +1,6 @@
 import Moment from 'moment'
 import {useState} from "react";
-import Pagination from "./Pagination";
+import Pagination from "../Pagination";
 import {Col, Row} from "react-bootstrap";
 import "./NewsComponent.css"
 

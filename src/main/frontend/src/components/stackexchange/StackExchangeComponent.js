@@ -1,7 +1,7 @@
 import Moment from 'moment'
 import './StackExchangeComponent.css'
 import {useState} from "react";
-import Pagination from "./Pagination";
+import Pagination from "../Pagination";
 import {Col, Row} from "react-bootstrap";
 
 export default function StackExchangeComponent( {stackExchange} ){
@@ -16,27 +16,31 @@ export default function StackExchangeComponent( {stackExchange} ){
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+    const siteName = (link) => {
+        return link.split("://")[1].split("/questions")[0];
+    }
+
     return (
         <Row>
             <Col>
-                {firstColumn.map(result =>
-                    <article key={result.creationDate} className="questionStackExchange">
+                {firstColumn.map((result, i) =>
+                    <article key={i} className="questionStackExchange">
                         <a id="article-a" target="_blank" rel="noreferrer" className="block_link" href={result.link}>
                             <h5 className="header3">{result.title}</h5>
 
-                            <div>{Moment.unix(result.creationDate).format("DD MMMM YYYY")}</div>
+                            <div>Posted at <strong>{siteName(result.link)}</strong>, {Moment.unix(result.creationDate).format("DD MMMM YYYY")}</div>
                             <div>{result.excerpt}</div>
                         </a>
                     </article>
                 )}
             </Col>
             <Col>
-                {secondColumn.map(result =>
-                    <article key={result.creationDate} className="questionStackExchange">
+                {secondColumn.map((result, i) =>
+                    <article key={i} className="questionStackExchange">
                         <a id="article-a" target="_blank" rel="noreferrer" className="block_link" href={result.link}>
                             <h5 className="header3">{result.title}</h5>
 
-                            <div>{Moment.unix(result.creationDate).format("DD MMMM YYYY")}</div>
+                            <div>Posted at <strong>{siteName(result.link)}</strong>, {Moment.unix(result.creationDate).format("DD MMMM YYYY")}</div>
                             <div>{result.excerpt}</div>
                         </a>
                     </article>

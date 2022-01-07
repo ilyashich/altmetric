@@ -1,6 +1,6 @@
 import {Container, Row, Col} from 'react-bootstrap';
 import {useState, useEffect} from "react";
-import Pagination from "./Pagination";
+import Pagination from "../Pagination";
 import {Tweet} from "react-twitter-widgets";
 
 export default function TwitterComponent( {twitter, eventDataTwitter} ){

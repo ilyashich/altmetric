@@ -1,7 +1,7 @@
 import {Container, Row, Col} from 'react-bootstrap';
 import Moment from 'moment';
 import {useState} from "react";
-import Pagination from "./Pagination";
+import Pagination from "../Pagination";
 import "./RedditComponent.css"
 
 export default function RedditComponent( {reddit} ){
@@ -23,8 +23,8 @@ export default function RedditComponent( {reddit} ){
     return (
         <Container>
             <Row>
-                {firstColumn.map(result =>
-                    <Col key={result.created} className="postReddit">
+                {firstColumn.map((result, i) =>
+                    <Col key={i} className="postReddit">
                         <a id="article-a" target="_blank" rel="noreferrer" className="block_link" href={result.permalink}>
                             <h5 className="header3">{result.title}</h5>
 
@@ -45,8 +45,8 @@ export default function RedditComponent( {reddit} ){
                 )}
             </Row>
             <Row>
-                {thirdColumn.map(result =>
-                    <Col key={result.created} className="postReddit">
+                {thirdColumn.map((result, i) =>
+                    <Col key={i} className="postReddit">
                         <a id="article-a" target="_blank" rel="noreferrer" className="block_link" href={result.permalink}>
                             <h5 className="header3">{result.title}</h5>
 
@@ -56,8 +56,8 @@ export default function RedditComponent( {reddit} ){
                 )}
             </Row>
             <Row>
-                {fourthColumn.map(result =>
-                    <Col key={result.created} className="postReddit">
+                {fourthColumn.map((result, i) =>
+                    <Col key={i} className="postReddit">
                         <a id="article-a" target="_blank" rel="noreferrer" className="block_link" href={result.permalink}>
                             <h5 className="header3">{result.title}</h5>
 
@@ -67,8 +67,8 @@ export default function RedditComponent( {reddit} ){
                 )}
             </Row>
             <Row>
-                {fifthColumn.map(result =>
-                    <Col key={result.created} className="postReddit">
+                {fifthColumn.map((result, i) =>
+                    <Col key={i} className="postReddit">
                         <a id="article-a" target="_blank" rel="noreferrer" className="block_link" href={result.permalink}>
                             <h5 className="header3">{result.title}</h5>
 
