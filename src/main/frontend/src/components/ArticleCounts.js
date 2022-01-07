@@ -7,7 +7,7 @@ export default function ArticleCounts( { article } ){
                     <a target="_blank" rel="noreferrer" href={article.mendeley.link}>
                         Mendeley:
                     </a>
-                    {article.mendeley.reader_count}
+                    {" " + article.mendeley.reader_count}
                 </li>
             </ul>
         </li>
@@ -17,7 +17,7 @@ export default function ArticleCounts( { article } ){
             <a target="_blank" rel="noreferrer" href={article.scopus.link}>
                 Scopus:
             </a>
-            {article.scopus.citationsCount}
+            {" " + article.scopus.citationsCount}
         </li>
         : null;
     const crossrefCount = article && article.crossref.referencedByCount > 0 ?

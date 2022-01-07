@@ -6,7 +6,7 @@ import ArticleComponent from "./components/ArticleComponent";
 import {useEffect, useState} from "react";
 import {Row} from "react-bootstrap";
 import Article from "./components/Article";
-import ArticleCounts from "./components/ArticleCounts";
+import ArticleWidget from "./components/ArticleWidget";
 
 const ARTICLES_URL = 'http://localhost:8080/api/articles';
 
@@ -27,16 +27,22 @@ function App() {
                     <Route path="/add">
                         <Article />
                     </Route>
+                    <Route path="/widget">
+                        <ArticleWidget doi="10.1038/s41591-020-0820-9" />
+                    </Route>
                     <Route path="/">
                         {allArticles.map((article, i) =>
                             <Row key={i}>
                                 <div>DOI: {article.doi}</div>
                                 <div>Title: {article.mendeley.title}</div>
                                 <Link to={"/details/?doi=" + article.doi}>Link</Link>
-                                <ArticleCounts article={article} />
+
                             </Row>
                         )}
                         <Link to="/add">Add article</Link>
+                        <Row>
+                            <Link to="/widget">Widget</Link>
+                        </Row>
                     </Route>
                 </Switch>
             </BrowserRouter>
