@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 import ArticleCounts from "./ArticleCounts";
 import ArticleTabs from "./ArticleTabs";
 
-const ARTICLE_URL = "http://localhost:8080/api/articles/doi/";
+const ARTICLE_URL = "/metrics/api/articles/doi/";
 
 export default function ArticleComponent(){
     const [article, setArticle] = useState(null);

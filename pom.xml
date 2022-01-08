@@ -64,7 +64,7 @@
     </dependencies>
 
     <build>
-        <finalName>api</finalName>
+        <finalName>metrics</finalName>
         <plugins>
             <plugin>
                 <groupId>com.github.eirslett</groupId>

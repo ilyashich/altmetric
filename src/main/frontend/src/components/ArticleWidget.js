@@ -3,7 +3,7 @@ import axios from "axios";
 import {Col, Container} from "react-bootstrap";
 import "./ArticleWidget.css"
 
-const ARTICLE_URL = "http://localhost:8080/api/articles/doi/";
+const ARTICLE_URL = "http://localhost:8080/metrics/api/articles/doi/";
 
 export default function ArticleWidget( { doi } ){
     const [article, setArticle] = useState(null);
@@ -101,7 +101,7 @@ export default function ArticleWidget( { doi } ){
                     {youtubeCount}
                     {twitterCount}
                     {facebookCount}
-                    <a target="_blank" rel="noreferrer" href={"http://localhost:3000/details/?doi=" + doi}>
+                    <a target="_blank" rel="noreferrer" href={"http://localhost:8080/metrics/details/?doi=" + doi}>
                         View Details
                     </a>
                 </small>

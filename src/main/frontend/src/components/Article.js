@@ -1,21 +1,13 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import axios from 'axios';
 import {Row, Col, Form, Container} from 'react-bootstrap';
+import ArticleWidget from "./ArticleWidget";
 
 export default function Article(){
-    const ARTICLES_URL = 'http://localhost:8080/api/articles';
-    const [article, setArticle] = useState(null);
-    const [allArticles, setAllArticles] = useState([]);
+    const ARTICLES_URL = '/metrics/api/articles';
     const [doiGet, setDoiGet] = useState('');
     const [doiAdd, setDoiAdd] = useState('');
-
-    function getItemById(){
-        axios.get(ARTICLES_URL + '/' + doiGet)
-            .then((response) => {
-                setArticle(response.data)
-            })
-            .catch(error => console.error('Error: ' + error));
-    }
+    const [showWidget, setShowWidget] = useState(false);
 
     function addItem(){
         console.log('You want to add article: ' + doiAdd);
@@ -27,27 +19,8 @@ export default function Article(){
             .catch(error => console.error(error))
     }
 
-    function getAllItems(){
-        axios.get(ARTICLES_URL)
-            .then((response) => {
-                setAllArticles(response.data)
-            })
-            .catch(error => console.error('Error: ' + error));
-    }
-
-    useEffect(() => {
-        console.log(article)
-    }, [article])
-
-
-
     function handleGetSubmit(e) {
-        getItemById();
-        e.preventDefault();
-    }
-
-    function handleGetAllSubmit(e) {
-        getAllItems();
+        setShowWidget(true);
         e.preventDefault();
     }
 
@@ -70,32 +43,15 @@ export default function Article(){
             <Row>
                 <Col>
                     <Form onSubmit={handleGetSubmit}>
-                        <label>Get article by DOI</label>
+                        <label>Get article widget</label>
                         <br/>
                         <input type="text" value={doiGet} onChange={handleDoiGetChange}/>
                         <br/>
                         <input type="submit" value="Confirm"/>
                     </Form>
-                    {article && article.youtube.items.map(search =>{
-                        return(
-                            <div key={search.videoId}>
-                                <p>{search.title}</p>
-                                <p>{search.description}</p>
-                                <p>{search.publishedAt}</p>
-                                <img src={search.thumbnailUrl} alt=""/>
-                            </div>
-                        )
-                    })}
-                    {!article &&
-                        <div>
-                            This article is not yet in the base
-                        </div>
+                    {showWidget &&
+                        <ArticleWidget doi={doiGet} />
                     }
-                    {/*{article && article.twitter.results.map(search =>{*/}
-                    {/*    return(*/}
-                    {/*        <Tweet tweetId={search.id} />*/}
-                    {/*    )*/}
-                    {/*})}*/}
                 </Col>
                 <Col>
                     <Form onSubmit={handleAddSubmit}>
@@ -105,22 +61,6 @@ export default function Article(){
                         <br/>
                         <input type="submit" value="Confirm"/>
                     </Form>
-                </Col>
-                <Col>
-                    <Form onSubmit={handleGetAllSubmit}>
-                        <input type="submit" value="Get all articles" />
-                    </Form>
-                    {allArticles && allArticles.map(article =>
-                        article && article.youtube.items.map(search =>
-
-                            <div key={search.videoId}>
-                                <p>{search.title}</p>
-                                <p>{search.description}</p>
-                                <p>{search.publishedAt}</p>
-                                <img src={search.thumbnailUrl} alt=""/>
-                            </div>
-                        )
-                    )}
                 </Col>
             </Row>
         </Container>

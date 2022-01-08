@@ -12,13 +12,11 @@ import com.example.api.model.reddit.RedditDto;
 import com.example.api.model.scopus.ScopusDto;
 import com.example.api.model.stackexchange.StackExchangeDto;
 import com.example.api.model.twitter.TwitterDto;
-import com.example.api.model.twitter.TwitterResultDto;
 import com.example.api.model.wikipedia.WikipediaDto;
 import com.example.api.model.youtube.YoutubeDto;
 import com.example.api.model.youtube.YoutubeItemDto;
 import com.example.api.service.*;
 import com.example.api.webclient.mendeley.dto.MendeleyCatalogDto;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
