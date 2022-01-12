@@ -1,13 +1,17 @@
 package com.example.api.webclient.mendeley;
 
 import com.example.api.model.mendeley.MendeleyAuthDto;
+import com.example.api.model.mendeley.MendeleyAuthorsDto;
 import com.example.api.model.mendeley.MendeleyDto;
+import com.example.api.webclient.crossref.dto.CrossrefAuthorDto;
+import com.example.api.webclient.mendeley.dto.MendeleyAuthorDto;
 import com.example.api.webclient.mendeley.dto.MendeleyCatalogDto;
 import com.example.api.webclient.mendeley.dto.MendeleyTokenDto;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -39,19 +43,45 @@ public class MendeleyClient
     }
 
 
-    public MendeleyCatalogDto getCatalog(String doi)
+    public MendeleyDto getCatalog(String doi)
     {
         MendeleyCatalogDto[] mendeleyCatalogDto = callGetMethod("/catalog?doi={doi}&view=all&access_token={access token}", MendeleyCatalogDto[].class, doi,  API_TOKEN);
 
         List<MendeleyCatalogDto> listCatalog = Arrays.asList(mendeleyCatalogDto);
-        return listCatalog.get(0);
-//        return MendeleyDto.builder()
-//                .title(listCatalog.get(0).getTitle())
-//                .authors(listCatalog.get(0).getAuthors())
-//                .readersCount(listCatalog.get(0).getReader_count())
-//                .doi(listCatalog.get(0).getIdentifiers().getDoi())
-//                .scopusId(listCatalog.get(0).getIdentifiers().getScopus())
-//                .build();
+        if(listCatalog.size() == 0)
+        {
+            return MendeleyDto.builder().build();
+        }
+
+        List<MendeleyAuthorsDto> authors = new ArrayList<>();
+        for(MendeleyAuthorDto author : listCatalog.get(0).getAuthors())
+        {
+            authors.add(MendeleyAuthorsDto.builder()
+                    .scopusAuthorId(author.getScopusAuthorId())
+                    .name(author.getFirstName() + " " + author.getLastName())
+                    .build());
+        }
+
+        //return listCatalog.get(0);
+        return MendeleyDto.builder()
+                .title(listCatalog.get(0).getTitle())
+                .authors(authors)
+                .readersCount(listCatalog.get(0).getReaderCount())
+                .issue(listCatalog.get(0).getIssue())
+                .issn(listCatalog.get(0).getIdentifiers().getIssn())
+                .link(listCatalog.get(0).getLink())
+                .publisher(listCatalog.get(0).getPublisher())
+                .month(listCatalog.get(0).getMonth())
+                .year(listCatalog.get(0).getYear())
+                .pages(listCatalog.get(0).getPages())
+                .source(listCatalog.get(0).getSource())
+                .volume(listCatalog.get(0).getVolume())
+                .pmid(listCatalog.get(0).getIdentifiers().getPmid())
+                .doi(listCatalog.get(0).getIdentifiers().getDoi())
+                .scopusId(listCatalog.get(0).getIdentifiers().getScopus())
+                .readerCountByAcademicStatus(listCatalog.get(0).getReaderCountByAcademicStatus())
+                .readerCountBySubjectArea(listCatalog.get(0).getReaderCountBySubjectArea())
+                .build();
     }
 
     private <T> T callGetMethod(String url, Class<T> responseType, Object...objects)

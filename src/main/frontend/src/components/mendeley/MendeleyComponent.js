@@ -7,18 +7,18 @@ export default function MendeleyComponent( {mendeley} ){
     let academicStatusOther = 0;
     let academicStatusUnknown = 0;
 
-    Object.keys(mendeley.reader_count_by_academic_status).forEach((entry) => {
-        if(parseFloat(mendeley.reader_count_by_academic_status[entry]) / parseFloat(mendeley.reader_count) > 0.03 && entry !== "Other"){
-            academicStatus.push( [entry, parseInt(mendeley.reader_count_by_academic_status[entry]) ]);
+    Object.keys(mendeley.readerCountByAcademicStatus).forEach((entry) => {
+        if(parseFloat(mendeley.readerCountByAcademicStatus[entry]) / parseFloat(mendeley.readersCount) > 0.03 && entry !== "Other"){
+            academicStatus.push( [entry, parseInt(mendeley.readerCountByAcademicStatus[entry]) ]);
         }
         else{
-            academicStatusOther += parseInt(mendeley.reader_count_by_academic_status[entry]);
+            academicStatusOther += parseInt(mendeley.readerCountByAcademicStatus[entry]);
         }
-        academicStatusSum += parseInt(mendeley.reader_count_by_academic_status[entry]);
+        academicStatusSum += parseInt(mendeley.readerCountByAcademicStatus[entry]);
     });
 
-    if(academicStatusSum < parseInt(mendeley.reader_count)){
-        academicStatusUnknown = parseInt(mendeley.reader_count) - academicStatusSum;
+    if(academicStatusSum < parseInt(mendeley.readersCount)){
+        academicStatusUnknown = parseInt(mendeley.readersCount) - academicStatusSum;
     }
 
     academicStatus.sort((a, b) =>  b[1] - a[1]);
@@ -29,18 +29,18 @@ export default function MendeleyComponent( {mendeley} ){
     let subjectAreaOther = 0;
     let subjectAreaUnknown = 0;
 
-    Object.keys(mendeley.reader_count_by_subject_area).forEach((entry) => {
-        if(parseFloat(mendeley.reader_count_by_subject_area[entry]) / parseFloat(mendeley.reader_count) > 0.03 && entry !== "Other"){
-            subjectArea.push( [entry, parseInt(mendeley.reader_count_by_subject_area[entry]) ]);
+    Object.keys(mendeley.readerCountBySubjectArea).forEach((entry) => {
+        if(parseFloat(mendeley.readerCountBySubjectArea[entry]) / parseFloat(mendeley.readersCount) > 0.03 && entry !== "Other"){
+            subjectArea.push( [entry, parseInt(mendeley.readerCountBySubjectArea[entry]) ]);
         }
         else{
-            subjectAreaOther += parseInt(mendeley.reader_count_by_subject_area[entry]);
+            subjectAreaOther += parseInt(mendeley.readerCountBySubjectArea[entry]);
         }
-        subjectAreaSum += parseInt(mendeley.reader_count_by_subject_area[entry]);
+        subjectAreaSum += parseInt(mendeley.readerCountBySubjectArea[entry]);
     });
 
-    if(subjectAreaSum < parseInt(mendeley.reader_count)){
-        subjectAreaUnknown = parseInt(mendeley.reader_count) - subjectAreaSum;
+    if(subjectAreaSum < parseInt(mendeley.readersCount)){
+        subjectAreaUnknown = parseInt(mendeley.readersCount) - subjectAreaSum;
     }
 
     subjectArea.sort((a, b) =>  b[1] - a[1]);

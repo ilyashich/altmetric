@@ -32,7 +32,7 @@ public class Article
     private String id;
     private String doi;
     private List<String> links;
-    private MendeleyCatalogDto mendeley;
+    private MendeleyDto mendeley;
     private CrossrefDto crossref;
     private ScopusDto scopus;
     private WikipediaDto wikipedia;

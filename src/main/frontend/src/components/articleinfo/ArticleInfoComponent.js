@@ -1,24 +1,38 @@
 import Moment from 'moment';
 import "./ArticleInfoComponent.css"
 
-export default function ArticleInfoComponent( { mendeley } ){
-    const dateString = "0" + mendeley.month + "-01-" + mendeley.year;
+export default function ArticleInfoComponent( { doi, mendeley, crossref } ){
+    const dateString = mendeley.title === null ?
+        crossref.published
+        :mendeley.month + "-01-" + mendeley.year;
     const date = new Date(dateString);
 
     const authorRow = (author, i) => {
-        if(author.scopus_author_id !== undefined){
+        if(author.scopusAuthorId !== null && author.scopusAuthorId !== undefined){
             return(
-                <a key={i} target="_blank" rel="noreferrer" href={"https://www.scopus.com/authid/detail.uri?authorId=" + author.scopus_author_id}>
-                    <div>{author.first_name + " " + author.last_name}</div>
+                <a key={i} target="_blank" rel="noreferrer" href={"https://www.scopus.com/authid/detail.uri?authorId=" + author.scopusAuthorId}>
+                    <div>{author.name}</div>
                 </a>
             );
         }
         else{
-            return(
-                <div key={i} >{author.first_name + " " + author.last_name}</div>
+            return (
+                <div key={i}>{author.name}</div>
             );
         }
     }
+
+    const title = mendeley.title === null ?
+        crossref.title
+        : mendeley.title;
+
+    const published = mendeley.title === null ?
+        crossref.source + ", ISSN: " + crossref.issn[0] + ", Vol: " + crossref.volume + ", Issue: " + crossref.issue + ", Page: " + crossref.page
+        : mendeley.source + ", ISSN: " + mendeley.issn + ", Vol: " + mendeley.volume + ", Issue: " + mendeley.issue + ", Page: " + mendeley.pages;
+
+    const authors = mendeley.title === null ?
+        crossref.authors
+        :mendeley.authors;
     return(
         <table id="info-table" className='table small table-striped' aria-labelledby="tabelLabel">
             <tbody>
@@ -27,7 +41,7 @@ export default function ArticleInfoComponent( { mendeley } ){
                     Title
                 </th>
                 <td className="text-md-start">
-                    {mendeley.title}
+                    {title}
                 </td>
             </tr>
             <tr>
@@ -35,7 +49,7 @@ export default function ArticleInfoComponent( { mendeley } ){
                     Published in
                 </th>
                 <td className="text-md-start">
-                    {mendeley.source}, ISSN: {mendeley.identifiers.issn}, Vol: {mendeley.volume}, Issue: {mendeley.issue}, Page: {mendeley.pages}
+                    {published}
                 </td>
             </tr>
             <tr>
@@ -51,8 +65,8 @@ export default function ArticleInfoComponent( { mendeley } ){
                     DOI
                 </th>
                 <td className="text-md-start">
-                    <a target="_blank" rel="noreferrer" href={"https://www.doi.org/" + mendeley.identifiers.doi}>
-                        <div>{mendeley.identifiers.doi}</div>
+                    <a target="_blank" rel="noreferrer" href={"https://www.doi.org/" + doi}>
+                        <div>{doi}</div>
                     </a>
 
                 </td>
@@ -62,7 +76,7 @@ export default function ArticleInfoComponent( { mendeley } ){
                     Authors
                 </th>
                 <td className="text-md-start">
-                    {mendeley.authors.map((author, i) =>
+                    {authors.map((author, i) =>
                         authorRow(author, i)
                     )}
                 </td>

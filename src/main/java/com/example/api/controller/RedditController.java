@@ -20,7 +20,15 @@ public class RedditController
     @GetMapping("/reddit/**")
     public RedditDto searchReddit(HttpServletRequest request) throws JsonProcessingException
     {
-        String requestURL = request.getRequestURL().toString();
+        String requestURL;
+        if(request.getQueryString() == null)
+        {
+            requestURL = request.getRequestURL().toString();
+        }
+        else
+        {
+            requestURL = request.getRequestURL().append('?').append(request.getQueryString()).toString();
+        }
         String url = requestURL.split("/reddit/")[1];
         return redditService.searchReddit(url);
     }

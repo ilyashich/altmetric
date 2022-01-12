@@ -33,7 +33,14 @@ public class RedditClient
         RedditMainDto redditMainDto = null;
         if(!response.equals("\"{}\""))
         {
-            redditMainDto = g.fromJson(response, RedditMainDto.class);
+            if(response.charAt(0) == '[')
+            {
+                redditMainDto = g.fromJson(response, RedditMainDto[].class)[0];
+            }
+            else
+            {
+                redditMainDto = g.fromJson(response, RedditMainDto.class);
+            }
         }
 
 

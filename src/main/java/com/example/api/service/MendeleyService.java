@@ -16,7 +16,7 @@ public class MendeleyService
 {
     private final MendeleyClient mendeleyClient;
 
-    public MendeleyCatalogDto getCatalog(String doi)
+    public MendeleyDto getCatalog(String doi)
     {
         return mendeleyClient.getCatalog(doi);
     }

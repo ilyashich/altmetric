@@ -18,7 +18,7 @@ public class MendeleyController
     private final MendeleyService mendeleyService;
 
     @GetMapping("/mendeley/catalog/{doiPrefix}/{doiSuffix}")
-    public MendeleyCatalogDto getCatalog(@PathVariable String doiPrefix, @PathVariable String doiSuffix) throws JsonProcessingException
+    public MendeleyDto getCatalog(@PathVariable String doiPrefix, @PathVariable String doiSuffix) throws JsonProcessingException
     {
         String doi = doiPrefix + "/" + doiSuffix;
 

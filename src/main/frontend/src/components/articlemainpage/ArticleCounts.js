@@ -1,13 +1,13 @@
 
 export default function ArticleCounts( { article } ){
-    const mendeleyCount = article && article.mendeley.reader_count > 0 ?
+    const mendeleyCount = article && article.mendeley.readersCount > 0 ?
         <li> Readers
             <ul>
                 <li>
                     <a target="_blank" rel="noreferrer" href={article.mendeley.link}>
                         Mendeley:
                     </a>
-                    {" " + article.mendeley.reader_count}
+                    {" " + article.mendeley.readersCount}
                 </li>
             </ul>
         </li>

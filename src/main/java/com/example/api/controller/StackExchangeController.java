@@ -22,7 +22,15 @@ public class StackExchangeController
     @GetMapping("/stackexchange/**")
     public StackExchangeDto searchTwitter(HttpServletRequest request)
     {
-        String requestURL = request.getRequestURL().toString();
+        String requestURL;
+        if(request.getQueryString() == null)
+        {
+            requestURL = request.getRequestURL().toString();
+        }
+        else
+        {
+            requestURL = request.getRequestURL().append('?').append(request.getQueryString()).toString();
+        }
         String url = requestURL.split("/stackexchange/")[1];
         return stackExchangeService.searchStackExchange(url);
     }

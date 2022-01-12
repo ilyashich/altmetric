@@ -43,8 +43,18 @@ public class EventDataClient
         List<EventDataTwitterEventsDto> events = new ArrayList<>();
         for(var event : twitter.message.events)
         {
-            String author = event.subj.author.url.split("=")[1];
-            String tweet = event.subj.originalTweetUrl.split("=")[1];
+            String author;
+            String tweet;
+            if(event.subj.author.url.contains("twitter://user?screen_name"))
+            {
+                author = event.subj.author.url.split("=")[1];
+                tweet = event.subj.originalTweetUrl.split("=")[1];
+            }
+            else
+            {
+                author = event.subj.author.url.split("www.twitter.com/")[1];
+                tweet = event.subj.originalTweetUrl.split("/statuses/")[1];
+            }
             events.add(EventDataTwitterEventsDto.builder()
                     .occurredAt(event.occurredAt)
                     .tweetId(tweet)

@@ -11,6 +11,7 @@ const ARTICLE_URL = "/metrics/api/articles/doi/";
 export default function ArticleComponent(){
     const [article, setArticle] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [title, setTitle] = useState("");
     const { search } = useLocation();
     const params = new URLSearchParams(search);
     const doi = params.get('doi');
@@ -18,6 +19,12 @@ export default function ArticleComponent(){
         const loadArticle = async () => {
             const response = await axios.get(ARTICLE_URL + doi);
             setArticle(response.data);
+            if(response.data.mendeley.title === null){
+                setTitle(response.data.crossref.title);
+            }
+            else{
+                setTitle(response.data.mendeley.title);
+            }
             setLoading(false);
         }
 
@@ -30,7 +37,7 @@ export default function ArticleComponent(){
         : <Container fluid>
             <div className="document-header">
                 <h3 id="article-header">
-                    <a id="article-a" target="_blank" rel="noreferrer" href={"https://doi.org/" + article.doi}>{article.mendeley.title}</a>
+                    <a id="article-a" target="_blank" rel="noreferrer" href={"https://doi.org/" + article.doi}>{title}</a>
                 </h3>
             </div>
             <Row>

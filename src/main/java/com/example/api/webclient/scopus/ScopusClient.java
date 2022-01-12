@@ -27,23 +27,26 @@ public class ScopusClient
         ResponseEntity<ScopusSearchDto> response = restTemplate.exchange(SCOPUS_URL + "?query=DOI({doi})", HttpMethod.GET, request, ScopusSearchDto.class, doi);
         ScopusSearchDto scopusSearchDto = response.getBody();
         List<Link> links = new ArrayList<>();
-        String citationsCount = "";
+        String citationsCount = "0";
         if (scopusSearchDto != null)
         {
             links = scopusSearchDto.searchResults.entry.get(0).link;
             citationsCount = scopusSearchDto.searchResults.entry.get(0).citedbyCount;
         }
-        Link selected = new Link();
-        for(Link link : links)
+        String selected = null;
+        if(links != null)
         {
-            if(link.ref.equals("scopus-citedby"))
+            for (Link link : links)
             {
-                selected = link;
+                if (link.ref.equals("scopus-citedby"))
+                {
+                    selected = link.href;
+                }
             }
         }
         return ScopusDto.builder()
                 .citationsCount(citationsCount)
-                .link(selected.href)
+                .link(selected)
                 .build();
     }
 

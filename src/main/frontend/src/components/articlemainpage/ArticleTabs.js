@@ -1,16 +1,16 @@
 import {Tab, Tabs} from "react-bootstrap";
-import MendeleyComponent from "./mendeley/MendeleyComponent";
-import WikipediaComponent from "./wikipedia/WikipediaComponent";
-import RedditComponent from "./reddit/RedditComponent";
-import TwitterComponent from "./twitter/TwitterComponent";
-import YoutubeComponent from "./youtube/YoutubeComponent";
-import StackExchangeComponent from "./stackexchange/StackExchangeComponent";
-import NewsComponent from "./news/NewsComponent";
-import ArticleInfoComponent from "./articleinfo/ArticleInfoComponent";
+import MendeleyComponent from "../mendeley/MendeleyComponent";
+import WikipediaComponent from "../wikipedia/WikipediaComponent";
+import RedditComponent from "../reddit/RedditComponent";
+import TwitterComponent from "../twitter/TwitterComponent";
+import YoutubeComponent from "../youtube/YoutubeComponent";
+import StackExchangeComponent from "../stackexchange/StackExchangeComponent";
+import NewsComponent from "../news/NewsComponent";
+import ArticleInfoComponent from "../articleinfo/ArticleInfoComponent";
 
 
 export default function ArticleTabs( { article } ){
-    const mendeleyTab = article.mendeley.reader_count > 0 ?
+    const mendeleyTab = article.mendeley.readersCount > 0 ?
         <Tab eventKey="mendeley" title="Mendeley">
             <MendeleyComponent mendeley={article.mendeley}/>
         </Tab>
@@ -49,7 +49,7 @@ export default function ArticleTabs( { article } ){
     return(
         <Tabs variant="pills" mountOnEnter="true" fill justify defaultActiveKey="info">
             <Tab eventKey="info" title="Article Info">
-                <ArticleInfoComponent mendeley={article.mendeley}/>
+                <ArticleInfoComponent doi={article.doi} mendeley={article.mendeley} crossref={article.crossref}/>
             </Tab>
             {mendeleyTab}
             {wikipediaTab}

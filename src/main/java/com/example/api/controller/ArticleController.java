@@ -7,6 +7,7 @@ import com.example.api.model.eventdata.news.EventDataNewsEventsDto;
 import com.example.api.model.eventdata.twitter.EventDataTwitterDto;
 import com.example.api.model.eventdata.twitter.EventDataTwitterEventsDto;
 import com.example.api.model.facebook.FacebookDto;
+import com.example.api.model.mendeley.MendeleyDto;
 import com.example.api.model.reddit.RedditArticleDto;
 import com.example.api.model.reddit.RedditDto;
 import com.example.api.model.scopus.ScopusDto;
@@ -16,7 +17,6 @@ import com.example.api.model.wikipedia.WikipediaDto;
 import com.example.api.model.youtube.YoutubeDto;
 import com.example.api.model.youtube.YoutubeItemDto;
 import com.example.api.service.*;
-import com.example.api.webclient.mendeley.dto.MendeleyCatalogDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -86,7 +86,7 @@ public class ArticleController
             return null;
         }
 
-        MendeleyCatalogDto mendeley = mendeleyService.getCatalog(doi);
+        MendeleyDto mendeley = mendeleyService.getCatalog(doi);
         article.get().setMendeley(mendeley);
         return articleService.addArticle(article.get());
     }
@@ -249,7 +249,7 @@ public class ArticleController
     @PostMapping("/articles")
     public Article addOrUpdateArticle(@RequestBody String doi) throws IOException
     {
-        MendeleyCatalogDto mendeley = mendeleyService.getCatalog(doi);
+        MendeleyDto mendeley = mendeleyService.getCatalog(doi);
         WikipediaDto wikipedia = wikipediaService.getCitationsById(doi);
         CrossrefDto crossref = crossrefService.searchCrossref(doi);
         ScopusDto scopus = scopusService.getCitationsByDoi(doi);
@@ -294,7 +294,7 @@ public class ArticleController
                 .build());
     }
 
-    public Article updateArticle(Article article, MendeleyCatalogDto mendeley, CrossrefDto crossref,
+    public Article updateArticle(Article article, MendeleyDto mendeley, CrossrefDto crossref,
                                  ScopusDto scopus, WikipediaDto wikipedia, RedditDto reddit,
                                  StackExchangeDto stackExchange, TwitterDto twitter,
                                  FacebookDto facebook, YoutubeDto youtube, EventDataNewsDto news,

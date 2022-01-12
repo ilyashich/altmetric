@@ -19,7 +19,15 @@ public class FacebookController
     @GetMapping("/facebook/**")
     public FacebookDto searchFacebook(HttpServletRequest request)
     {
-        String requestURL = request.getRequestURL().toString();
+        String requestURL;
+        if(request.getQueryString() == null)
+        {
+            requestURL = request.getRequestURL().toString();
+        }
+        else
+        {
+            requestURL = request.getRequestURL().append('?').append(request.getQueryString()).toString();
+        }
         String url = requestURL.split("/facebook/")[1];
         return facebookService.searchFacebook(url);
     }
