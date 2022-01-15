@@ -21,6 +21,11 @@ public class MendeleyService
         return mendeleyClient.getCatalog(doi);
     }
 
+    public MendeleyDto searchCatalogByTitle(String title) throws JsonProcessingException
+    {
+        return mendeleyClient.searchCatalogByTitle(title);
+    }
+
     public String getReadersByDoi(String doi)
     {
         return mendeleyClient.getReadersByDoi(doi);

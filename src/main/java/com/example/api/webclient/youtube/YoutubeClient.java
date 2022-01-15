@@ -17,21 +17,37 @@ public class YoutubeClient
     private static final String YOUTUBE_API_URL = "https://www.googleapis.com/youtube/v3/";
     private static final String API_KEY = "XXXXXXX";
 
-    public YoutubeDto searchYoutube(String url)
+    public YoutubeDto searchYoutubeByUrl(String url)
     {
         YoutubeSearchDto youtubeSearch = callGetMethod(
-                "search?part=snippet&maxResults=500&q={search query}&type=video&key={YOUR_API_KEY}", YoutubeSearchDto.class,
+                "search?part=snippet&maxResults=500&q={search query}&type=video&order=viewCount&key={YOUR_API_KEY}", YoutubeSearchDto.class,
                 url, API_KEY);
 
+        return getYoutubeDto(url, youtubeSearch);
+
+    }
+
+    public YoutubeDto searchYoutubeByTitle(String title)
+    {
+        YoutubeSearchDto youtubeSearch = callGetMethod(
+                "search?part=snippet&maxResults=500&q=\"{search query}\"&type=video&order=viewCount&key={YOUR_API_KEY}", YoutubeSearchDto.class,
+                title, API_KEY);
+
+        return getYoutubeDto(title, youtubeSearch);
+
+    }
+
+    private YoutubeDto getYoutubeDto(String query, YoutubeSearchDto youtubeSearch)
+    {
         List<YoutubeItemDto> items = new ArrayList<>();
         if(youtubeSearch.getItems() != null)
         {
             for(YoutubeItemsDto item : youtubeSearch.getItems())
             {
                 String video = callGetMethod(
-                    "videos?id={video id}&part=snippet&key={YOUR_API_KEY}", String.class,
-                    item.getId().getVideoId(), API_KEY);
-                if(video.contains(url))
+                        "videos?id={video id}&part=snippet&key={YOUR_API_KEY}", String.class,
+                        item.getId().getVideoId(), API_KEY);
+                if(video.contains(query))
                 {
                     items.add(YoutubeItemDto.builder()
                             .videoId(item.getId().getVideoId())
@@ -49,7 +65,6 @@ public class YoutubeClient
                 .totalResults(String.valueOf(items.size()))
                 .items(items)
                 .build();
-
     }
 
     private <T> T callGetMethod(String url, Class<T> responseType, Object...objects)

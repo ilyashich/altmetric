@@ -14,8 +14,13 @@ public class StackExchangeService
 {
     private final StackExchangeClient stackExchangeClient;
 
-    public StackExchangeDto searchStackExchange(String url)
+    public StackExchangeDto searchStackExchangeByUrl(String url)
     {
-        return stackExchangeClient.searchStackExchange(url);
+        return stackExchangeClient.searchStackExchangeByUrl(url);
+    }
+
+    public StackExchangeDto searchStackExchangeByTitle(String title)
+    {
+        return stackExchangeClient.searchStackExchangeByTitle(title);
     }
 }

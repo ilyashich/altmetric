@@ -20,7 +20,7 @@ public class TwitterClient
 
 
 
-        public TwitterDto searchTwitter(String url)
+        public TwitterDto searchTwitterByUrl(String url)
         {
             HttpHeaders headers = new HttpHeaders();
             HttpEntity<String> request;
@@ -29,29 +29,46 @@ public class TwitterClient
             request = new HttpEntity<>("parameters", headers);
             TwitterSearchDto twitterSearchDto = callExchangeMethod("search/recent?query=url:\"{url}\"&tweet.fields=created_at,author_id&max_results=100", request, TwitterSearchDto.class, url);
 
-            List<TwitterResultDto> results = new ArrayList<>();
-            if(twitterSearchDto.getData() != null)
-            {
-                for (TwitterDataDto data : twitterSearchDto.getData())
-                {
-                    results.add(TwitterResultDto.builder()
-                            .createdAt(data.getCreated_at())
-                            .tweetId(data.getId())
-                            .authorId(data.getAuthor_id())
-                            .text(data.getText())
-                            .build());
-                }
-            }
-
-            return TwitterDto.builder()
-                    .results(results)
-                    .resultCount(twitterSearchDto.getMeta().getResult_count())
-                    .build();
+            return getTwitterDto(twitterSearchDto);
         }
 
-        private <T> T callExchangeMethod(String url, HttpEntity<String> request, Class<T> responseType, Object... objects)
+    public TwitterDto searchTwitterByTitle(String title)
+    {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<String> request;
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Authorization", "Bearer " + TWITTER_API_TOKEN);
+        request = new HttpEntity<>("parameters", headers);
+        TwitterSearchDto twitterSearchDto = callExchangeMethod("search/recent?query=\"{title}\"&tweet.fields=created_at,author_id&max_results=100", request, TwitterSearchDto.class, title);
+
+        return getTwitterDto(twitterSearchDto);
+    }
+
+    private TwitterDto getTwitterDto(TwitterSearchDto twitterSearchDto)
+    {
+        List<TwitterResultDto> results = new ArrayList<>();
+        if(twitterSearchDto.getData() != null)
         {
-            return restTemplate.exchange(TWITTER_API_URL + url, HttpMethod.GET, request, responseType, objects).getBody();
+            for (TwitterDataDto data : twitterSearchDto.getData())
+            {
+                results.add(TwitterResultDto.builder()
+                        .createdAt(data.getCreated_at())
+                        .tweetId(data.getId())
+                        .authorId(data.getAuthor_id())
+                        .text(data.getText())
+                        .build());
+            }
         }
+
+        return TwitterDto.builder()
+                .results(results)
+                .resultCount(twitterSearchDto.getMeta().getResult_count())
+                .build();
+    }
+
+    private <T> T callExchangeMethod(String url, HttpEntity<String> request, Class<T> responseType, Object... objects)
+    {
+        return restTemplate.exchange(TWITTER_API_URL + url, HttpMethod.GET, request, responseType, objects).getBody();
+    }
 
 }

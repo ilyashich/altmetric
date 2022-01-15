@@ -17,9 +17,9 @@ public class WikipediaClient
     public final String API_URL = "https://en.wikipedia.org/w/api.php";
     public RestTemplate restTemplate = new RestTemplate();
 
-    public WikipediaDto getCitationsById(String doi)
+    public WikipediaDto getCitations(String query)
     {
-        WikipediaResultDto wikipediaResultDto = callGetMethod("?srsearch=\"{id}\"&action=query&list=search&utf8=&format=json&srlimit=100", WikipediaResultDto.class, doi);
+        WikipediaResultDto wikipediaResultDto = callGetMethod("?srsearch=\"{id}\"&action=query&list=search&utf8=&format=json&srlimit=100", WikipediaResultDto.class, query);
 
         List<WikipediaArticleDto> search = new ArrayList<>();
         for(WikipediaSearchResultDto wikipediaSearchResultDto : wikipediaResultDto.getQuery().getSearch())

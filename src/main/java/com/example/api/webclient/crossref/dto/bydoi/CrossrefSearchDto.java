@@ -1,4 +1,4 @@
-package com.example.api.webclient.crossref.dto;
+package com.example.api.webclient.crossref.dto.bydoi;
 
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;

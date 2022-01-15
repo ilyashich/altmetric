@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,8 +21,8 @@ public class StackExchangeController
 {
     private final StackExchangeService stackExchangeService;
 
-    @GetMapping("/stackexchange/**")
-    public StackExchangeDto searchTwitter(HttpServletRequest request)
+    @GetMapping("/stackexchange/url/**")
+    public StackExchangeDto searchStackExchangeByUrl(HttpServletRequest request)
     {
         String requestURL;
         if(request.getQueryString() == null)
@@ -31,7 +33,24 @@ public class StackExchangeController
         {
             requestURL = request.getRequestURL().append('?').append(request.getQueryString()).toString();
         }
-        String url = requestURL.split("/stackexchange/")[1];
-        return stackExchangeService.searchStackExchange(url);
+        String url = requestURL.split("/stackexchange/url/")[1];
+        return stackExchangeService.searchStackExchangeByUrl(url);
+    }
+
+    @GetMapping("/stackexchange/title/**")
+    public StackExchangeDto searchStackExchangeByTitle(HttpServletRequest request)
+    {
+        String requestURL;
+        if(request.getQueryString() == null)
+        {
+            requestURL = request.getRequestURL().toString();
+        }
+        else
+        {
+            requestURL = request.getRequestURL().append('?').append(request.getQueryString()).toString();
+        }
+        String encoded = requestURL.split("/stackexchange/title/")[1];
+        String title = URLDecoder.decode(encoded, StandardCharsets.UTF_8);
+        return stackExchangeService.searchStackExchangeByTitle(title);
     }
 }

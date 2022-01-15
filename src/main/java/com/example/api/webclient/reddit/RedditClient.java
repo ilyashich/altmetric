@@ -21,7 +21,7 @@ public class RedditClient
     private final RestTemplate restTemplate = new RestTemplate();
     private static final String REDDIT_API_URL = "https://www.reddit.com/search.json?";
 
-    public RedditDto searchReddit(String url) throws JsonProcessingException
+    public RedditDto searchRedditByUrl(String url) throws JsonProcessingException
     {
         HttpHeaders headers = new HttpHeaders();
         headers.set("User-agent", "com.example.altmetric.webclient.twitter:v1.0");
@@ -29,6 +29,22 @@ public class RedditClient
 
         String response = callExchangeMethod("q={link}", entity, String.class, url);
 
+        return getRedditDto(response);
+    }
+
+    public RedditDto searchRedditByTitle(String title) throws JsonProcessingException
+    {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("User-agent", "com.example.altmetric.webclient.twitter:v1.0");
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        String response = callExchangeMethod("q=\"{title}\"", entity, String.class, title);
+
+        return getRedditDto(response);
+    }
+
+    private RedditDto getRedditDto(String response)
+    {
         Gson g = new Gson();
         RedditMainDto redditMainDto = null;
         if(!response.equals("\"{}\""))

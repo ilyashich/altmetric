@@ -13,8 +13,13 @@ public class TwitterService
 {
     private final TwitterClient twitterClient;
 
-    public TwitterDto searchTwitter(String url)
+    public TwitterDto searchTwitterByUrl(String url)
     {
-        return twitterClient.searchTwitter(url);
+        return twitterClient.searchTwitterByUrl(url);
+    }
+
+    public TwitterDto searchTwitterByTitle(String title)
+    {
+        return twitterClient.searchTwitterByTitle(title);
     }
 }

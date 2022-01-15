@@ -1,9 +1,9 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {Col, Container} from "react-bootstrap";
+import {Container} from "react-bootstrap";
 import "./ArticleWidget.css"
 
-const ARTICLE_URL = "http://localhost:8080/metrics/api/articles/doi/";
+const ARTICLE_URL = "http://localhost:8080/api/articles/doi/";
 
 export default function ArticleWidget( { doi } ){
     const [article, setArticle] = useState(null);
@@ -15,7 +15,7 @@ export default function ArticleWidget( { doi } ){
             setArticle(response.data);
             setLoading(false);
         }
-        loadArticle();
+        loadArticle()
     }, [doi]);
 
     let mendeleyCount = null;
@@ -30,55 +30,55 @@ export default function ArticleWidget( { doi } ){
     let newsCount = null;
 
     if(!loading && article !== null){
-        mendeleyCount = article.mendeley.reader_count > 0 ?
+        mendeleyCount = article.mendeley.readersCount > 0 ?
             <li>
-                Mendeley readers: {article.mendeley.reader_count}
+                Mendeley readers: <strong>{article.mendeley.readersCount}</strong>
             </li>
             : null;
         scopusCount = article.scopus.citationsCount > 0 ?
             <li>
-                Scopus citations: {article.scopus.citationsCount}
+                Scopus citations: <strong>{article.scopus.citationsCount}</strong>
             </li>
             : null;
         crossrefCount = article.crossref.referencedByCount > 0 ?
             <li>
-                Crossref citations: {article.crossref.referencedByCount}
+                Crossref citations: <strong>{article.crossref.referencedByCount}</strong>
             </li>
             : null;
         wikipediaCount = article.wikipedia.totalHits > 0 ?
             <li>
-                Wikipedia mentions: {article.wikipedia.totalHits}
+                Wikipedia mentions: <strong>{article.wikipedia.totalHits}</strong>
             </li>
             : null;
         redditCount = article.reddit.articles.length > 0 ?
             <li>
-                Reddit mentions: {article.reddit.articles.length}
+                Reddit mentions: <strong>{article.reddit.articles.length}</strong>
             </li>
             : null;
         twitterCount = article.twitter.resultCount > 0 || article.eventDataTwitter.totalResults > 0 ?
             <li>
-                Tweets: {article.twitter.resultCount + article.eventDataTwitter.totalResults}
+                Tweets: <strong>{article.twitter.resultCount + article.eventDataTwitter.totalResults}</strong>
             </li>
             : null;
         youtubeCount = article.youtube.totalResults > 0 ?
             <li>
-                Youtube videos: {article.youtube.totalResults}
+                Youtube videos: <strong>{article.youtube.totalResults}</strong>
             </li>
             : null;
         facebookCount = article.facebook.reactionCount + article.facebook.shareCount + article.facebook.commentCount > 0 ?
             <li>
-                Facebook likes, shares and comments: {article.facebook.reactionCount + article.facebook.shareCount + article.facebook.commentCount}
+                Likes, shares and comments: <strong>{article.facebook.reactionCount + article.facebook.shareCount + article.facebook.commentCount}</strong>
             </li>
             : null;
         stackExchangeCount = article.stackExchange.items.length > 0 ?
             <li>
-                Q&A threads: {article.stackExchange.items.length}
+                Q&A threads: <strong>{article.stackExchange.items.length}</strong>
             </li>
             : null;
 
         newsCount = article.news.totalResults > 0 ?
             <li>
-                News mentions: {article.news.totalResults}
+                News mentions: <strong>{article.news.totalResults}</strong>
             </li>
             : null;
 
@@ -86,26 +86,22 @@ export default function ArticleWidget( { doi } ){
 
     return(
         <Container className="text-start">
-            <Col xs="3">
-                <small>
-                    <h5>
-                        <strong>Metrics</strong>
-                    </h5>
-                    {mendeleyCount}
-                    {scopusCount}
-                    {crossrefCount}
-                    {wikipediaCount}
-                    {redditCount}
-                    {stackExchangeCount}
-                    {newsCount}
-                    {youtubeCount}
-                    {twitterCount}
-                    {facebookCount}
-                    <a target="_blank" rel="noreferrer" href={"http://localhost:8080/metrics/details/?doi=" + doi}>
-                        View Details
-                    </a>
-                </small>
-            </Col>
+            <h5>
+                <strong>Metrics</strong>
+            </h5>
+            {mendeleyCount}
+            {scopusCount}
+            {crossrefCount}
+            {wikipediaCount}
+            {redditCount}
+            {stackExchangeCount}
+            {newsCount}
+            {youtubeCount}
+            {twitterCount}
+            {facebookCount}
+            <a target="_blank" rel="noreferrer" href={"http://localhost:3000/metrics/details/?doi=" + doi}>
+                View Details
+            </a>
         </Container>
     );
 }

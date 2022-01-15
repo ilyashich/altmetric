@@ -20,6 +20,7 @@ public class CrossrefDto
     private List<CrossrefAuthorsDto> authors;
     private String source;
     private List<String> issn;
+    private String doi;
     private String published;
 
 }

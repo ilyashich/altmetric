@@ -100,7 +100,7 @@ public class ArticleController
             return null;
         }
 
-        WikipediaDto wikipedia = wikipediaService.getCitationsById(doi);
+        WikipediaDto wikipedia = wikipediaService.getCitations(doi);
         article.get().setWikipedia(wikipedia);
         return articleService.addArticle(article.get());
     }
@@ -128,7 +128,7 @@ public class ArticleController
             return null;
         }
 
-        CrossrefDto crossref = crossrefService.searchCrossref(doi);
+        CrossrefDto crossref = crossrefService.searchCrossrefByDoi(doi);
         article.get().setCrossref(crossref);
         return articleService.addArticle(article.get());
     }
@@ -172,7 +172,7 @@ public class ArticleController
             return null;
         }
         String url = crawl("https://doi.org/" + doi);
-        RedditDto reddit = redditService.searchReddit(url);
+        RedditDto reddit = redditService.searchRedditByUrl(url);
         reddit.getArticles().sort(Comparator.comparing(RedditArticleDto::getCreated).reversed());
         article.get().setReddit(reddit);
         return articleService.addArticle(article.get());
@@ -187,7 +187,7 @@ public class ArticleController
             return null;
         }
         String url = crawl("https://doi.org/" + doi);
-        StackExchangeDto stackExchange = stackExchangeService.searchStackExchange(url);
+        StackExchangeDto stackExchange = stackExchangeService.searchStackExchangeByUrl(url);
         article.get().setStackExchange(stackExchange);
         return articleService.addArticle(article.get());
     }
@@ -215,8 +215,7 @@ public class ArticleController
             return null;
         }
         String url = crawl("https://doi.org/" + doi);
-        YoutubeDto youtube = youtubeService.searchYoutube(url);
-        youtube.getItems().sort(Comparator.comparing(YoutubeItemDto::getPublishedAt).reversed());
+        YoutubeDto youtube = youtubeService.searchYoutubeByUrl(url);
         article.get().setYoutube(youtube);
         return articleService.addArticle(article.get());
     }
@@ -230,7 +229,7 @@ public class ArticleController
             return null;
         }
         String url = crawl("https://doi.org/" + doi);
-        TwitterDto twitter = twitterService.searchTwitter(url);
+        TwitterDto twitter = twitterService.searchTwitterByUrl(url);
         TwitterDto oldTwitter = article.get().getTwitter();
         for(int i = twitter.getResults().size() - 1; i >= 0; i--)
         {
@@ -250,22 +249,21 @@ public class ArticleController
     public Article addOrUpdateArticle(@RequestBody String doi) throws IOException
     {
         MendeleyDto mendeley = mendeleyService.getCatalog(doi);
-        WikipediaDto wikipedia = wikipediaService.getCitationsById(doi);
-        CrossrefDto crossref = crossrefService.searchCrossref(doi);
+        WikipediaDto wikipedia = wikipediaService.getCitations(doi);
+        CrossrefDto crossref = crossrefService.searchCrossrefByDoi(doi);
         ScopusDto scopus = scopusService.getCitationsByDoi(doi);
 
         String url = crawl("https://doi.org/" + doi);
 
-        RedditDto reddit = redditService.searchReddit(url);
-        StackExchangeDto stackExchange = stackExchangeService.searchStackExchange(url);
-        TwitterDto twitter = twitterService.searchTwitter(url);
+        RedditDto reddit = redditService.searchRedditByUrl(url);
+        StackExchangeDto stackExchange = stackExchangeService.searchStackExchangeByUrl(url);
+        TwitterDto twitter = twitterService.searchTwitterByUrl(url);
         FacebookDto facebook = facebookService.searchFacebook(url);
-        YoutubeDto youtube = youtubeService.searchYoutube(url);
+        YoutubeDto youtube = youtubeService.searchYoutubeByUrl(url);
         EventDataNewsDto news = eventDataService.searchEventDataNews(doi);
         EventDataTwitterDto eventDataTwitter = eventDataService.searchEventDataTwitter(doi);
 
         reddit.getArticles().sort(Comparator.comparing(RedditArticleDto::getCreated).reversed());
-        youtube.getItems().sort(Comparator.comparing(YoutubeItemDto::getPublishedAt).reversed());
         news.getEvents().sort(Comparator.comparing(EventDataNewsEventsDto::getOcurredAt).reversed());
         eventDataTwitter.getEvents().sort(Comparator.comparing(EventDataTwitterEventsDto::getOccurredAt).reversed());
 

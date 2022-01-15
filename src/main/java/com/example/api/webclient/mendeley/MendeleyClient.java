@@ -3,18 +3,16 @@ package com.example.api.webclient.mendeley;
 import com.example.api.model.mendeley.MendeleyAuthDto;
 import com.example.api.model.mendeley.MendeleyAuthorsDto;
 import com.example.api.model.mendeley.MendeleyDto;
-import com.example.api.webclient.crossref.dto.CrossrefAuthorDto;
 import com.example.api.webclient.mendeley.dto.MendeleyAuthorDto;
 import com.example.api.webclient.mendeley.dto.MendeleyCatalogDto;
 import com.example.api.webclient.mendeley.dto.MendeleyTokenDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 @Component
@@ -47,14 +45,42 @@ public class MendeleyClient
     {
         MendeleyCatalogDto[] mendeleyCatalogDto = callGetMethod("/catalog?doi={doi}&view=all&access_token={access token}", MendeleyCatalogDto[].class, doi,  API_TOKEN);
 
-        List<MendeleyCatalogDto> listCatalog = Arrays.asList(mendeleyCatalogDto);
-        if(listCatalog.size() == 0)
+        return getMendeleyDto(mendeleyCatalogDto[0]);
+    }
+
+    public MendeleyDto searchCatalogByTitle(String title) throws JsonProcessingException
+    {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<String> request;
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Authorization", "Bearer " + API_TOKEN);
+        request = new HttpEntity<>("parameters", headers);
+
+        ResponseEntity<String> mendeleyCatalogDto = restTemplate.exchange(
+                MENDELEY_URL + "/search/catalog?title=\"{title}\"&limit=1&view=all",
+                HttpMethod.GET,
+                request,
+                String.class,
+                title
+        );
+
+        String toSingle = mendeleyCatalogDto.getBody().substring(1, mendeleyCatalogDto.getBody().length() - 1);
+
+        ObjectMapper mapper = new ObjectMapper();
+        MendeleyCatalogDto response = mapper.readValue(toSingle, MendeleyCatalogDto.class);
+
+        return getMendeleyDto(response);
+    }
+
+    private MendeleyDto getMendeleyDto(MendeleyCatalogDto catalog)
+    {
+        if(catalog == null)
         {
             return MendeleyDto.builder().build();
         }
 
         List<MendeleyAuthorsDto> authors = new ArrayList<>();
-        for(MendeleyAuthorDto author : listCatalog.get(0).getAuthors())
+        for(MendeleyAuthorDto author : catalog.getAuthors())
         {
             authors.add(MendeleyAuthorsDto.builder()
                     .scopusAuthorId(author.getScopusAuthorId())
@@ -64,23 +90,23 @@ public class MendeleyClient
 
         //return listCatalog.get(0);
         return MendeleyDto.builder()
-                .title(listCatalog.get(0).getTitle())
+                .title(catalog.getTitle())
                 .authors(authors)
-                .readersCount(listCatalog.get(0).getReaderCount())
-                .issue(listCatalog.get(0).getIssue())
-                .issn(listCatalog.get(0).getIdentifiers().getIssn())
-                .link(listCatalog.get(0).getLink())
-                .publisher(listCatalog.get(0).getPublisher())
-                .month(listCatalog.get(0).getMonth())
-                .year(listCatalog.get(0).getYear())
-                .pages(listCatalog.get(0).getPages())
-                .source(listCatalog.get(0).getSource())
-                .volume(listCatalog.get(0).getVolume())
-                .pmid(listCatalog.get(0).getIdentifiers().getPmid())
-                .doi(listCatalog.get(0).getIdentifiers().getDoi())
-                .scopusId(listCatalog.get(0).getIdentifiers().getScopus())
-                .readerCountByAcademicStatus(listCatalog.get(0).getReaderCountByAcademicStatus())
-                .readerCountBySubjectArea(listCatalog.get(0).getReaderCountBySubjectArea())
+                .readersCount(catalog.getReaderCount())
+                .issue(catalog.getIssue())
+                .issn(catalog.getIdentifiers().getIssn())
+                .link(catalog.getLink())
+                .publisher(catalog.getPublisher())
+                .month(catalog.getMonth())
+                .year(catalog.getYear())
+                .pages(catalog.getPages())
+                .source(catalog.getSource())
+                .volume(catalog.getVolume())
+                .pmid(catalog.getIdentifiers().getPmid())
+                .doi(catalog.getIdentifiers().getDoi())
+                .scopusId(catalog.getIdentifiers().getScopus())
+                .readerCountByAcademicStatus(catalog.getReaderCountByAcademicStatus())
+                .readerCountBySubjectArea(catalog.getReaderCountBySubjectArea())
                 .build();
     }
 

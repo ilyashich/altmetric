@@ -13,8 +13,8 @@ public class WikipediaService
 {
     private final WikipediaClient wikipediaClient;
 
-    public WikipediaDto getCitationsById(String doi)
+    public WikipediaDto getCitations(String doi)
     {
-        return wikipediaClient.getCitationsById(doi);
+        return wikipediaClient.getCitations(doi);
     }
 }

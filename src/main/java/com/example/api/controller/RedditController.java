@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,8 +19,8 @@ public class RedditController
 {
     private final RedditService redditService;
 
-    @GetMapping("/reddit/**")
-    public RedditDto searchReddit(HttpServletRequest request) throws JsonProcessingException
+    @GetMapping("/reddit/url/**")
+    public RedditDto searchRedditByUrl(HttpServletRequest request) throws JsonProcessingException
     {
         String requestURL;
         if(request.getQueryString() == null)
@@ -29,8 +31,25 @@ public class RedditController
         {
             requestURL = request.getRequestURL().append('?').append(request.getQueryString()).toString();
         }
-        String url = requestURL.split("/reddit/")[1];
-        return redditService.searchReddit(url);
+        String url = requestURL.split("/reddit/url/")[1];
+        return redditService.searchRedditByUrl(url);
+    }
+
+    @GetMapping("/reddit/title/**")
+    public RedditDto searchRedditByTitle(HttpServletRequest request) throws JsonProcessingException
+    {
+        String requestURL;
+        if(request.getQueryString() == null)
+        {
+            requestURL = request.getRequestURL().toString();
+        }
+        else
+        {
+            requestURL = request.getRequestURL().append('?').append(request.getQueryString()).toString();
+        }
+        String encoded = requestURL.split("/reddit/title/")[1];
+        String title = URLDecoder.decode(encoded, StandardCharsets.UTF_8);
+        return redditService.searchRedditByTitle(title);
     }
 }
 

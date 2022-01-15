@@ -1,4 +1,4 @@
-package com.example.api.webclient.crossref.dto;
+package com.example.api.webclient.crossref.dto.bydoi;
 
 import java.util.List;
 import javax.annotation.Generated;

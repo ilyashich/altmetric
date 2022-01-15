@@ -14,8 +14,13 @@ public class RedditService
 {
     private final RedditClient redditClient;
 
-    public RedditDto searchReddit(String url) throws JsonProcessingException
+    public RedditDto searchRedditByUrl(String url) throws JsonProcessingException
     {
-        return redditClient.searchReddit(url);
+        return redditClient.searchRedditByUrl(url);
+    }
+
+    public RedditDto searchRedditByTitle(String title) throws JsonProcessingException
+    {
+        return redditClient.searchRedditByTitle(title);
     }
 }
