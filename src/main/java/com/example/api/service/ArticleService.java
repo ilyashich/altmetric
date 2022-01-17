@@ -33,7 +33,12 @@ public class ArticleService
 
     public Optional<Article> getArticleByDoi(String doi)
     {
-        return this.repository.findByDoi(doi);
+        return this.repository.findArticleByDoi(doi);
+    }
+
+    public Optional<Article> getArticleByTitle(String title)
+    {
+        return this.repository.findArticleByTitle(title);
     }
 
     public void deleteArticle(Article oldArticle)

@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface ArticleRepository extends MongoRepository<Article, String>
 {
-    Optional<Article> findByDoi(String doi);
+    Optional<Article> findArticleByDoi(String doi);
+    Optional<Article> findArticleByTitle(String title);
 }

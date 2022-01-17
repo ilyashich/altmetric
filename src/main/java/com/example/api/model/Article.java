@@ -17,11 +17,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Getter
 @Builder
 @Data
 @Document
@@ -30,7 +30,10 @@ public class Article
 {
     @Id
     private String id;
+    @Indexed(unique = true, sparse = true)
     private String doi;
+    @Indexed(unique = true, sparse = true)
+    private String title;
     private List<String> links;
     private MendeleyDto mendeley;
     private CrossrefDto crossref;

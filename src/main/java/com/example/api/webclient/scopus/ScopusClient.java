@@ -25,6 +25,19 @@ public class ScopusClient
         headers.set("X-ELS-APIKey", API_KEY);
         request = new HttpEntity<>(headers);
         ResponseEntity<ScopusSearchDto> response = restTemplate.exchange(SCOPUS_URL + "?query=DOI({doi})", HttpMethod.GET, request, ScopusSearchDto.class, doi);
+        return getScopusDto(response);
+    }
+
+    public ScopusDto getCitationsByTitleAndAuthor(String title, String author)
+    {
+        headers.set("X-ELS-APIKey", API_KEY);
+        request = new HttpEntity<>(headers);
+        ResponseEntity<ScopusSearchDto> response = restTemplate.exchange(SCOPUS_URL + "?query=TITLE(\"{title}\") AND AUTHOR-NAME({author})", HttpMethod.GET, request, ScopusSearchDto.class, title, author);
+        return getScopusDto(response);
+    }
+
+    private ScopusDto getScopusDto(ResponseEntity<ScopusSearchDto> response)
+    {
         ScopusSearchDto scopusSearchDto = response.getBody();
         List<Link> links = new ArrayList<>();
         String citationsCount = "0";

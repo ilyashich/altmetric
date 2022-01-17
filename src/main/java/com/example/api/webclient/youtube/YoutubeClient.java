@@ -20,44 +20,38 @@ public class YoutubeClient
     public YoutubeDto searchYoutubeByUrl(String url)
     {
         YoutubeSearchDto youtubeSearch = callGetMethod(
-                "search?part=snippet&maxResults=500&q={search query}&type=video&order=viewCount&key={YOUR_API_KEY}", YoutubeSearchDto.class,
+                "search?part=snippet&maxResults=500&q={search query}&type=video&key={YOUR_API_KEY}", YoutubeSearchDto.class,
                 url, API_KEY);
 
-        return getYoutubeDto(url, youtubeSearch);
+        return getYoutubeDto(youtubeSearch);
 
     }
 
     public YoutubeDto searchYoutubeByTitle(String title)
     {
         YoutubeSearchDto youtubeSearch = callGetMethod(
-                "search?part=snippet&maxResults=500&q=\"{search query}\"&type=video&order=viewCount&key={YOUR_API_KEY}", YoutubeSearchDto.class,
+                "search?part=snippet&maxResults=500&q=\"{search query}\"&type=video&key={YOUR_API_KEY}", YoutubeSearchDto.class,
                 title, API_KEY);
 
-        return getYoutubeDto(title, youtubeSearch);
+        return getYoutubeDto(youtubeSearch);
 
     }
 
-    private YoutubeDto getYoutubeDto(String query, YoutubeSearchDto youtubeSearch)
+    private YoutubeDto getYoutubeDto(YoutubeSearchDto youtubeSearch)
     {
         List<YoutubeItemDto> items = new ArrayList<>();
         if(youtubeSearch.getItems() != null)
         {
             for(YoutubeItemsDto item : youtubeSearch.getItems())
             {
-                String video = callGetMethod(
-                        "videos?id={video id}&part=snippet&key={YOUR_API_KEY}", String.class,
-                        item.getId().getVideoId(), API_KEY);
-                if(video.contains(query))
-                {
-                    items.add(YoutubeItemDto.builder()
-                            .videoId(item.getId().getVideoId())
-                            .publishedAt(item.getSnippet().getPublishedAt())
-                            .channelTitle(item.getSnippet().getChannelTitle())
-                            .title(item.getSnippet().getTitle())
-                            .description(item.getSnippet().getDescription())
-                            .thumbnailUrl(item.getSnippet().getThumbnails().getHigh().getUrl())
-                            .build());
-                }
+                items.add(YoutubeItemDto.builder()
+                        .videoId(item.getId().getVideoId())
+                        .publishedAt(item.getSnippet().getPublishedAt())
+                        .channelTitle(item.getSnippet().getChannelTitle())
+                        .title(item.getSnippet().getTitle())
+                        .description(item.getSnippet().getDescription())
+                        .thumbnailUrl(item.getSnippet().getThumbnails().getHigh().getUrl())
+                        .build());
             }
         }
         return YoutubeDto.builder()

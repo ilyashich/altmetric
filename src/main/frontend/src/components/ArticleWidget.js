@@ -3,7 +3,7 @@ import axios from "axios";
 import {Container} from "react-bootstrap";
 import "./ArticleWidget.css"
 
-const ARTICLE_URL = "http://localhost:8080/api/articles/doi/";
+const ARTICLE_URL = "http://localhost:8080/api/article?doi=";
 
 export default function ArticleWidget( { doi } ){
     const [article, setArticle] = useState(null);

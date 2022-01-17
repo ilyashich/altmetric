@@ -24,20 +24,9 @@ public class CrossrefController
         return crossrefService.searchCrossrefByDoi(doi);
     }
 
-    @GetMapping("/crossref/title/**")
-    public CrossrefDto searchCrossrefByTitle(HttpServletRequest request)
+    @GetMapping("/crossref")
+    public CrossrefDto searchCrossrefByTitleAndAuthor(@RequestParam String title, @RequestParam String author)
     {
-        String requestURL;
-        if(request.getQueryString() == null)
-        {
-            requestURL = request.getRequestURL().toString();
-        }
-        else
-        {
-            requestURL = request.getRequestURL().append('?').append(request.getQueryString()).toString();
-        }
-        String encoded = requestURL.split("/crossref/title/")[1];
-        String title = URLDecoder.decode(encoded, StandardCharsets.UTF_8);
-        return crossrefService.searchCrossrefByTitle(title);
+        return crossrefService.searchCrossrefByTitleAndAuthor(title, author);
     }
 }

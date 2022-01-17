@@ -33,6 +33,19 @@ export default function ArticleInfoComponent( { doi, mendeley, crossref } ){
     const authors = mendeley.title === null ?
         crossref.authors
         :mendeley.authors;
+
+    const doiRow = doi == null ? null
+        : <tr>
+            <th>
+                DOI
+            </th>
+            <td className="text-md-start">
+                <a target="_blank" rel="noreferrer" href={"https://www.doi.org/" + doi}>
+                    <div>{doi}</div>
+                </a>
+            </td>
+        </tr>;
+
     return(
         <table id="info-table" className='table small table-striped' aria-labelledby="tabelLabel">
             <tbody>
@@ -60,17 +73,7 @@ export default function ArticleInfoComponent( { doi, mendeley, crossref } ){
                     {Moment(date).format('MMMM YYYY')}
                 </td>
             </tr>
-            <tr>
-                <th>
-                    DOI
-                </th>
-                <td className="text-md-start">
-                    <a target="_blank" rel="noreferrer" href={"https://www.doi.org/" + doi}>
-                        <div>{doi}</div>
-                    </a>
-
-                </td>
-            </tr>
+            {doiRow}
             <tr>
                 <th>
                     Authors

@@ -3,10 +3,7 @@ package com.example.api.controller;
 import com.example.api.model.scopus.ScopusDto;
 import com.example.api.service.ScopusService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RequiredArgsConstructor
@@ -22,6 +19,12 @@ public class ScopusController
         String doi = doiPrefix + "/" + doiSuffix;
 
         return scopusService.getCitationsByDoi(doi);
+    }
+
+    @GetMapping("/scopus")
+    public ScopusDto getCitationsByTitleAndAuthor(@RequestParam String title, @RequestParam String author)
+    {
+        return scopusService.getCitationsByTitleAndAuthor(title, author);
     }
 
 }

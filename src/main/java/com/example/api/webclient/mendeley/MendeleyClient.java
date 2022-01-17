@@ -12,6 +12,8 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 
 
@@ -20,10 +22,11 @@ public class MendeleyClient
 {
     public final String MENDELEY_URL = "https://api.mendeley.com/";
     public final String AUTH_URL = "https://api.mendeley.com/oauth/token";
-    public final String API_TOKEN;
+    public String API_TOKEN;
     public RestTemplate restTemplate = new RestTemplate();
     public HttpHeaders headers = new HttpHeaders();
     public HttpEntity<String> request;
+    public Instant start;
 
     public MendeleyClient()
     {
@@ -32,6 +35,7 @@ public class MendeleyClient
 
     private MendeleyAuthDto authorize()
     {
+        start = Instant.now();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         request = new HttpEntity<>("grant_type=client_credentials&scope=all&client_id=XXXXXXX&client_secret=XXXXXXX", headers);
         ResponseEntity<MendeleyTokenDto> mendeleyTokenDto = callPostMethod(AUTH_URL, request, MendeleyTokenDto.class);
@@ -43,6 +47,7 @@ public class MendeleyClient
 
     public MendeleyDto getCatalog(String doi)
     {
+        checkIfTokenExpired();
         MendeleyCatalogDto[] mendeleyCatalogDto = callGetMethod("/catalog?doi={doi}&view=all&access_token={access token}", MendeleyCatalogDto[].class, doi,  API_TOKEN);
 
         return getMendeleyDto(mendeleyCatalogDto[0]);
@@ -50,6 +55,7 @@ public class MendeleyClient
 
     public MendeleyDto searchCatalogByTitle(String title) throws JsonProcessingException
     {
+        checkIfTokenExpired();
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<String> request;
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -134,6 +140,16 @@ public class MendeleyClient
 
         List<MendeleyCatalogDto> listCatalog = Arrays.asList(mendeleyCatalogDto);
         return listCatalog.get(0).getReaderCount();
+    }
+
+    public void checkIfTokenExpired()
+    {
+        Instant now = Instant.now();
+        long timeElapsed = Duration.between(start, now).toSeconds();
+        if(timeElapsed >= 3600)
+        {
+            this.API_TOKEN = authorize().getAccessToken();
+        }
     }
 
 }

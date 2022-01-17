@@ -18,8 +18,8 @@ public class CrossrefService
         return crossrefClient.searchCrossrefByDoi(doi);
     }
 
-    public CrossrefDto searchCrossrefByTitle(String title)
+    public CrossrefDto searchCrossrefByTitleAndAuthor(String title, String author)
     {
-        return crossrefClient.searchCrossrefByTitle(title);
+        return crossrefClient.searchCrossrefByTitleAndAuthor(title, author);
     }
 }

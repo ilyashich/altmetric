@@ -14,10 +14,14 @@ export default function ArticleComponent(){
     const [title, setTitle] = useState("");
     const { search } = useLocation();
     const params = new URLSearchParams(search);
-    const doi = params.get('doi');
+    const doi = params.get("doi");
+    const articleTitle = params.get("title");
+    const getString = doi == null ?
+        "?title=" + articleTitle
+        : "?doi=" + doi;
     useEffect(() => {
         const loadArticle = async () => {
-            const response = await axios.get(ARTICLE_URL + doi);
+            const response = await axios.get(ARTICLE_URL + getString);
             setArticle(response.data);
             if(response.data.mendeley.title === null){
                 setTitle(response.data.crossref.title);
@@ -28,16 +32,24 @@ export default function ArticleComponent(){
             setLoading(false);
         }
 
-        console.log(doi);
         loadArticle();
-    }, [doi]);
+    }, [getString]);
+
+    let titleLink;
+
+    if(!loading)
+    {
+        titleLink = article.doi == null ?
+            title
+            : <a id="article-a" target="_blank" rel="noreferrer" href={"https://doi.org/" + article.doi}>{title}</a>;
+    }
 
     let content = loading
         ? <Container>Loading</Container>
         : <Container fluid>
             <div className="document-header">
                 <h3 id="article-header">
-                    <a id="article-a" target="_blank" rel="noreferrer" href={"https://doi.org/" + article.doi}>{title}</a>
+                    {titleLink}
                 </h3>
             </div>
             <Row>

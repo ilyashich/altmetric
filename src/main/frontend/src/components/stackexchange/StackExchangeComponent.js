@@ -20,16 +20,22 @@ export default function StackExchangeComponent( {stackExchange} ){
         return link.split("://")[1].split("/questions")[0];
     }
 
+    const toPlainText = (html) => {
+        let tempDivElement = document.createElement("div");
+        tempDivElement.innerHTML = html;
+        return tempDivElement.textContent || tempDivElement.innerText || "";
+    }
+
     return (
         <Row>
             <Col>
                 {firstColumn.map((result, i) =>
                     <article key={i} className="questionStackExchange">
                         <a id="article-a" target="_blank" rel="noreferrer" className="block_link" href={result.link}>
-                            <h5 className="header3">{result.title}</h5>
+                            <h5 className="header3">{toPlainText(result.title)}</h5>
 
                             <div>Posted at <strong>{siteName(result.link)}</strong>, {Moment.unix(result.creationDate).format("DD MMMM YYYY")}</div>
-                            <div>{result.excerpt}</div>
+                            <div>{toPlainText(result.excerpt)}</div>
                         </a>
                     </article>
                 )}
@@ -38,10 +44,10 @@ export default function StackExchangeComponent( {stackExchange} ){
                 {secondColumn.map((result, i) =>
                     <article key={i} className="questionStackExchange">
                         <a id="article-a" target="_blank" rel="noreferrer" className="block_link" href={result.link}>
-                            <h5 className="header3">{result.title}</h5>
+                            <h5 className="header3">{toPlainText(result.title)}</h5>
 
                             <div>Posted at <strong>{siteName(result.link)}</strong>, {Moment.unix(result.creationDate).format("DD MMMM YYYY")}</div>
-                            <div>{result.excerpt}</div>
+                            <div>{toPlainText(result.excerpt)}</div>
                         </a>
                     </article>
                 )}

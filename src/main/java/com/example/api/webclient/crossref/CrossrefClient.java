@@ -46,9 +46,9 @@ public class CrossrefClient
                 .build();
     }
 
-    public CrossrefDto searchCrossrefByTitle(String title)
+    public CrossrefDto searchCrossrefByTitleAndAuthor(String title, String authorName)
     {
-        CrossrefByTitleSearchDto response = callGetMethod("?query.title={name}&rows=1", CrossrefByTitleSearchDto.class, title);
+        CrossrefByTitleSearchDto response = callGetMethod("?query.title={name}&query.author={author}&rows=1", CrossrefByTitleSearchDto.class, title, authorName);
 
         List<CrossrefAuthorsDto> authors = new ArrayList<>();
         for(CrossrefByTitleAuthorDto author : response.message.items.get(0).author)

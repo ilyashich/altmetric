@@ -17,4 +17,9 @@ public class ScopusService
     {
         return scopusClient.getCitationsByDoi(doi);
     }
+
+    public ScopusDto getCitationsByTitleAndAuthor(String title, String author)
+    {
+        return scopusClient.getCitationsByTitleAndAuthor(title, author);
+    }
 }
