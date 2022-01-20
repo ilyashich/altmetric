@@ -1,8 +1,8 @@
 package com.example.api.service;
 
 
-import com.example.api.model.youtube.YoutubeDto;
-import com.example.api.webclient.youtube.YoutubeClient;
+import com.example.api.model.youtube.Youtube;
+import com.example.api.webclient.YoutubeClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,12 +14,12 @@ public class YoutubeService
 {
     private final YoutubeClient youtubeClient;
 
-    public YoutubeDto searchYoutubeByUrl(String url)
+    public Youtube searchYoutubeByUrl(String url)
     {
         return youtubeClient.searchYoutubeByUrl(url);
     }
 
-    public YoutubeDto searchYoutubeByTitle(String title)
+    public Youtube searchYoutubeByTitle(String title)
     {
         return youtubeClient.searchYoutubeByTitle(title);
     }

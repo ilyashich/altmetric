@@ -1,32 +1,29 @@
 package com.example.api.controller;
 
 import com.example.api.model.Article;
-import com.example.api.model.crossref.CrossrefDto;
-import com.example.api.model.eventdata.news.EventDataNewsDto;
-import com.example.api.model.eventdata.news.EventDataNewsEventsDto;
-import com.example.api.model.eventdata.twitter.EventDataTwitterDto;
-import com.example.api.model.eventdata.twitter.EventDataTwitterEventsDto;
-import com.example.api.model.facebook.FacebookDto;
-import com.example.api.model.mendeley.MendeleyDto;
-import com.example.api.model.reddit.RedditArticleDto;
-import com.example.api.model.reddit.RedditDto;
-import com.example.api.model.scopus.ScopusDto;
-import com.example.api.model.stackexchange.StackExchangeDto;
-import com.example.api.model.twitter.TwitterDto;
-import com.example.api.model.wikipedia.WikipediaDto;
-import com.example.api.model.youtube.YoutubeDto;
-import com.example.api.model.youtube.YoutubeItemDto;
+import com.example.api.model.crossref.Crossref;
+import com.example.api.model.eventdata.news.EventDataNews;
+import com.example.api.model.eventdata.news.EventDataNewsEvents;
+import com.example.api.model.eventdata.twitter.EventDataTwitter;
+import com.example.api.model.eventdata.twitter.EventDataTwitterEvents;
+import com.example.api.model.facebook.Facebook;
+import com.example.api.model.mendeley.Mendeley;
+import com.example.api.model.reddit.RedditArticle;
+import com.example.api.model.reddit.Reddit;
+import com.example.api.model.scopus.Scopus;
+import com.example.api.model.stackexchange.StackExchange;
+import com.example.api.model.twitter.Twitter;
+import com.example.api.model.wikipedia.Wikipedia;
+import com.example.api.model.youtube.Youtube;
 import com.example.api.service.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
@@ -81,8 +78,8 @@ public class ArticleController
 
     }
 
-    @PostMapping("/articles/update/mendeley")
-    public Article updateMendeley(@RequestBody String doi)
+    @GetMapping("/article/update/doi/{metric}")
+    public Article updateArticleMetricByDoi(@PathVariable String metric, @RequestParam String doi) throws IOException
     {
         Optional<Article> article = articleService.getArticleByDoi(doi);
         if(article.isEmpty())
@@ -90,186 +87,67 @@ public class ArticleController
             return null;
         }
 
-        MendeleyDto mendeley = mendeleyService.getCatalog(doi);
-        article.get().setMendeley(mendeley);
-        return articleService.addArticle(article.get());
+        return switch (metric)
+                {
+                    case "mendeley" -> updateMendeleyByDoi(article.get(), doi);
+                    case "crossref" -> updateCrossrefByDoi(article.get(), doi);
+                    case "scopus" -> updateScopusByDoi(article.get(), doi);
+                    case "wikipedia" -> updateWikipediaByDoi(article.get(), doi);
+                    case "reddit" -> updateRedditByDoi(article.get(), doi);
+                    case "stackexchange" -> updateStackExchangeByDoi(article.get(), doi);
+                    case "twitter" -> updateTwitterByDoi(article.get(), doi);
+                    case "facebook" -> updateFacebookByDoi(article.get(), doi);
+                    case "youtube" -> updateYoutubeByDoi(article.get(), doi);
+                    case "news" -> updateNewsByDoi(article.get(), doi);
+                    case "eventdatatwitter" -> updateEventDataTwitterByDoi(article.get(), doi);
+                    default -> null;
+                };
     }
 
-    @PostMapping("/articles/update/wikipedia")
-    public Article updateWikipedia(@RequestBody String doi)
+    @GetMapping("/article/update/title/{metric}")
+    public Article updateArticleMetricByTitleAndAuthor(@PathVariable String metric, @RequestParam String title, @RequestParam String author) throws IOException
     {
-        Optional<Article> article = articleService.getArticleByDoi(doi);
+        Optional<Article> article = articleService.getArticleByTitle(title);
         if(article.isEmpty())
         {
             return null;
         }
 
-        WikipediaDto wikipedia = wikipediaService.getCitations(doi);
-        article.get().setWikipedia(wikipedia);
-        return articleService.addArticle(article.get());
+        return switch (metric)
+                {
+                    case "mendeley" -> updateMendeleyByTitle(article.get(), title, author);
+                    case "crossref" -> updateCrossrefByTitle(article.get(), title, author);
+                    case "scopus" -> updateScopusByTitle(article.get(), title, author);
+                    case "wikipedia" -> updateWikipediaByTitle(article.get(), title);
+                    case "reddit" -> updateRedditByTitle(article.get(), title);
+                    case "stackexchange" -> updateStackExchangeByTitle(article.get(), title);
+                    case "twitter" -> updateTwitterByTitle(article.get(), title);
+                    case "youtube" -> updateYoutubeByTitle(article.get(), title);
+                    default -> null;
+                };
     }
 
-    @PostMapping("/articles/update/scopus")
-    public Article updateScopus(@RequestBody String doi)
-    {
-        Optional<Article> article = articleService.getArticleByDoi(doi);
-        if(article.isEmpty())
-        {
-            return null;
-        }
-
-        ScopusDto scopus = scopusService.getCitationsByDoi(doi);
-        article.get().setScopus(scopus);
-        return articleService.addArticle(article.get());
-    }
-
-    @PostMapping("/articles/update/crossref")
-    public Article updateCrossref(@RequestBody String doi)
-    {
-        Optional<Article> article = articleService.getArticleByDoi(doi);
-        if(article.isEmpty())
-        {
-            return null;
-        }
-
-        CrossrefDto crossref = crossrefService.searchCrossrefByDoi(doi);
-        article.get().setCrossref(crossref);
-        return articleService.addArticle(article.get());
-    }
-
-    @PostMapping("/articles/update/news")
-    public Article updateNews(@RequestBody String doi)
-    {
-        Optional<Article> article = articleService.getArticleByDoi(doi);
-        if(article.isEmpty())
-        {
-            return null;
-        }
-
-        EventDataNewsDto news = eventDataService.searchEventDataNews(doi);
-        news.getEvents().sort(Comparator.comparing(EventDataNewsEventsDto::getOcurredAt).reversed());
-        article.get().setNews(news);
-        return articleService.addArticle(article.get());
-    }
-
-    @PostMapping("/articles/update/eventDataTwitter")
-    public Article updateEventDataTwitter(@RequestBody String doi)
-    {
-        Optional<Article> article = articleService.getArticleByDoi(doi);
-        if(article.isEmpty())
-        {
-            return null;
-        }
-
-        EventDataTwitterDto eventDataTwitter = eventDataService.searchEventDataTwitter(doi);
-        eventDataTwitter.getEvents().sort(Comparator.comparing(EventDataTwitterEventsDto::getOccurredAt).reversed());
-        article.get().setEventDataTwitter(eventDataTwitter);
-        return articleService.addArticle(article.get());
-    }
-
-    @PostMapping("/articles/update/reddit")
-    public Article updateReddit(@RequestBody String doi) throws IOException
-    {
-        Optional<Article> article = articleService.getArticleByDoi(doi);
-        if(article.isEmpty())
-        {
-            return null;
-        }
-        String url = crawl("https://doi.org/" + doi);
-        RedditDto reddit = redditService.searchRedditByUrl(url);
-        reddit.getArticles().sort(Comparator.comparing(RedditArticleDto::getCreated).reversed());
-        article.get().setReddit(reddit);
-        return articleService.addArticle(article.get());
-    }
-
-    @PostMapping("/articles/update/stackexchange")
-    public Article updateStackExchange(@RequestBody String doi) throws IOException
-    {
-        Optional<Article> article = articleService.getArticleByDoi(doi);
-        if(article.isEmpty())
-        {
-            return null;
-        }
-        String url = crawl("https://doi.org/" + doi);
-        StackExchangeDto stackExchange = stackExchangeService.searchStackExchangeByUrl(url);
-        article.get().setStackExchange(stackExchange);
-        return articleService.addArticle(article.get());
-    }
-
-    @PostMapping("/articles/update/facebook")
-    public Article updateStackFacebook(@RequestBody String doi) throws IOException
-    {
-        Optional<Article> article = articleService.getArticleByDoi(doi);
-        if(article.isEmpty())
-        {
-            return null;
-        }
-        String url = crawl("https://doi.org/" + doi);
-        FacebookDto facebook = facebookService.searchFacebook(url);
-        article.get().setFacebook(facebook);
-        return articleService.addArticle(article.get());
-    }
-
-    @PostMapping("/articles/update/youtube")
-    public Article updateYoutube(@RequestBody String doi) throws IOException
-    {
-        Optional<Article> article = articleService.getArticleByDoi(doi);
-        if(article.isEmpty())
-        {
-            return null;
-        }
-        String url = crawl("https://doi.org/" + doi);
-        YoutubeDto youtube = youtubeService.searchYoutubeByUrl(url);
-        article.get().setYoutube(youtube);
-        return articleService.addArticle(article.get());
-    }
-
-    @PostMapping("/articles/update/twitter")
-    public Article updateTwitter(@RequestBody String doi) throws IOException
-    {
-        Optional<Article> article = articleService.getArticleByDoi(doi);
-        if(article.isEmpty())
-        {
-            return null;
-        }
-        String url = crawl("https://doi.org/" + doi);
-        TwitterDto twitter = twitterService.searchTwitterByUrl(url);
-        TwitterDto oldTwitter = article.get().getTwitter();
-        for(int i = twitter.getResults().size() - 1; i >= 0; i--)
-        {
-            if(!oldTwitter.getResults().contains(twitter.getResults().get(i)))
-            {
-                oldTwitter.getResults().add(0, twitter.getResults().get(i));
-            }
-        }
-
-        article.get().getTwitter().setResultCount(article.get().getTwitter().getResults().size());
-
-        article.get().setTwitter(oldTwitter);
-        return articleService.addArticle(article.get());
-    }
-
-    @GetMapping("/article/add/doi")
+    @GetMapping("/article/add/bydoi")
     public Article addOrUpdateArticleByDoi(@RequestParam String doi) throws IOException
     {
-        MendeleyDto mendeley = mendeleyService.getCatalog(doi);
-        WikipediaDto wikipedia = wikipediaService.getCitations(doi);
-        CrossrefDto crossref = crossrefService.searchCrossrefByDoi(doi);
-        ScopusDto scopus = scopusService.getCitationsByDoi(doi);
+        Mendeley mendeley = mendeleyService.searchCatalogByDoi(doi);
+        Wikipedia wikipedia = wikipediaService.getCitations(doi);
+        Crossref crossref = crossrefService.searchCrossrefByDoi(doi);
+        Scopus scopus = scopusService.getCitationsByDoi(doi);
 
         String url = crawl("https://doi.org/" + doi);
 
-        RedditDto reddit = redditService.searchRedditByUrl(url);
-        StackExchangeDto stackExchange = stackExchangeService.searchStackExchangeByUrl(url);
-        TwitterDto twitter = twitterService.searchTwitterByUrl(url);
-        FacebookDto facebook = facebookService.searchFacebook(url);
-        YoutubeDto youtube = youtubeService.searchYoutubeByUrl(url);
-        EventDataNewsDto news = eventDataService.searchEventDataNews(doi);
-        EventDataTwitterDto eventDataTwitter = eventDataService.searchEventDataTwitter(doi);
+        Reddit reddit = redditService.searchRedditByUrl(url);
+        StackExchange stackExchange = stackExchangeService.searchStackExchangeByUrl(url);
+        Twitter twitter = twitterService.searchTwitterByUrl(url);
+        Facebook facebook = facebookService.searchFacebook(url);
+        Youtube youtube = youtubeService.searchYoutubeByUrl(url);
+        EventDataNews news = eventDataService.searchEventDataNews(doi);
+        EventDataTwitter eventDataTwitter = eventDataService.searchEventDataTwitter(doi);
 
-        reddit.getArticles().sort(Comparator.comparing(RedditArticleDto::getCreated).reversed());
-        news.getEvents().sort(Comparator.comparing(EventDataNewsEventsDto::getOcurredAt).reversed());
-        eventDataTwitter.getEvents().sort(Comparator.comparing(EventDataTwitterEventsDto::getOccurredAt).reversed());
+        reddit.getArticles().sort(Comparator.comparing(RedditArticle::getCreated).reversed());
+        news.getEvents().sort(Comparator.comparing(EventDataNewsEvents::getOcurredAt).reversed());
+        eventDataTwitter.getEvents().sort(Comparator.comparing(EventDataTwitterEvents::getOccurredAt).reversed());
 
         Optional<Article> article = articleService.getArticleByDoi(doi);
         if(article.isPresent())
@@ -296,23 +174,23 @@ public class ArticleController
                 .build());
     }
 
-    @GetMapping("/article/add/title")
+    @GetMapping("/article/add/bytitle")
     public Article addOrUpdateArticleByTitle(@RequestParam String title, @RequestParam String author) throws IOException
     {
-        MendeleyDto mendeley = mendeleyService.searchCatalogByTitle(title);
-        WikipediaDto wikipedia = wikipediaService.getCitations(title);
-        CrossrefDto crossref = crossrefService.searchCrossrefByTitleAndAuthor(title, author);
-        ScopusDto scopus = scopusService.getCitationsByTitleAndAuthor(title, author);
+        Mendeley mendeley = mendeleyService.searchCatalogByTitleAndAuthor(title, author);
+        Wikipedia wikipedia = wikipediaService.getCitations(title);
+        Crossref crossref = crossrefService.searchCrossrefByTitleAndAuthor(title, author);
+        Scopus scopus = scopusService.getCitationsByTitleAndAuthor(title, author);
 
-        RedditDto reddit = redditService.searchRedditByTitle(title);
-        StackExchangeDto stackExchange = stackExchangeService.searchStackExchangeByTitle(title);
-        TwitterDto twitter = twitterService.searchTwitterByTitle(title);
-        FacebookDto facebook = FacebookDto.builder().build();
-        YoutubeDto youtube = youtubeService.searchYoutubeByTitle(title);
-        EventDataNewsDto news = EventDataNewsDto.builder().events(new ArrayList<>()).build();
-        EventDataTwitterDto eventDataTwitter = EventDataTwitterDto.builder().events(new ArrayList<>()).build();
+        Reddit reddit = redditService.searchRedditByTitle(title);
+        StackExchange stackExchange = stackExchangeService.searchStackExchangeByTitle(title);
+        Twitter twitter = twitterService.searchTwitterByTitle(title);
+        Facebook facebook = Facebook.builder().build();
+        Youtube youtube = youtubeService.searchYoutubeByTitle(title);
+        EventDataNews news = EventDataNews.builder().events(new ArrayList<>()).build();
+        EventDataTwitter eventDataTwitter = EventDataTwitter.builder().events(new ArrayList<>()).build();
 
-        reddit.getArticles().sort(Comparator.comparing(RedditArticleDto::getCreated).reversed());
+        reddit.getArticles().sort(Comparator.comparing(RedditArticle::getCreated).reversed());
 
         Optional<Article> article = articleService.getArticleByTitle(title);
         if(article.isPresent())
@@ -339,11 +217,11 @@ public class ArticleController
                 .build());
     }
 
-    public Article updateArticle(Article article, MendeleyDto mendeley, CrossrefDto crossref,
-                                 ScopusDto scopus, WikipediaDto wikipedia, RedditDto reddit,
-                                 StackExchangeDto stackExchange, TwitterDto twitter,
-                                 FacebookDto facebook, YoutubeDto youtube, EventDataNewsDto news,
-                                 EventDataTwitterDto eventDataTwitter)
+    private Article updateArticle(Article article, Mendeley mendeley, Crossref crossref,
+                                 Scopus scopus, Wikipedia wikipedia, Reddit reddit,
+                                 StackExchange stackExchange, Twitter twitter,
+                                 Facebook facebook, Youtube youtube, EventDataNews news,
+                                 EventDataTwitter eventDataTwitter)
     {
         article.setMendeley(mendeley);
         article.setCrossref(crossref);
@@ -356,37 +234,154 @@ public class ArticleController
         article.setNews(news);
         article.setEventDataTwitter(eventDataTwitter);
 
-        TwitterDto oldTwitter = article.getTwitter();
-        for(int i = twitter.getResults().size() - 1; i >= 0; i--)
-        {
-            if(!oldTwitter.getResults().contains(twitter.getResults().get(i)))
-            {
-                oldTwitter.getResults().add(0, twitter.getResults().get(i));
-            }
-        }
+        return sortTwitterAndSave(article, twitter);
+    }
 
-        article.getTwitter().setResultCount(article.getTwitter().getResults().size());
-
-        article.setTwitter(oldTwitter);
-
+    private Article updateMendeleyByDoi(Article article, String doi)
+    {
+        Mendeley mendeley = mendeleyService.searchCatalogByDoi(doi);
+        article.setMendeley(mendeley);
         return articleService.addArticle(article);
     }
 
-    public Article updateArticle(Article article, MendeleyDto mendeley, CrossrefDto crossref,
-                                 ScopusDto scopus,
-                                 WikipediaDto wikipedia, RedditDto reddit,
-                                 StackExchangeDto stackExchange, TwitterDto twitter,
-                                 YoutubeDto youtube)
-    {
-        article.setMendeley(mendeley);
-        article.setCrossref(crossref);
-        article.setScopus(scopus);
-        article.setWikipedia(wikipedia);
-        article.setReddit(reddit);
-        article.setStackExchange(stackExchange);
-        article.setYoutube(youtube);
 
-        TwitterDto oldTwitter = article.getTwitter();
+    private Article updateWikipediaByDoi(Article article, String doi)
+    {
+        Wikipedia wikipedia = wikipediaService.getCitations(doi);
+        article.setWikipedia(wikipedia);
+        return articleService.addArticle(article);
+    }
+
+    private Article updateScopusByDoi(Article article, String doi)
+    {
+        Scopus scopus = scopusService.getCitationsByDoi(doi);
+        article.setScopus(scopus);
+        return articleService.addArticle(article);
+    }
+
+    private Article updateCrossrefByDoi(Article article, String doi)
+    {
+        Crossref crossref = crossrefService.searchCrossrefByDoi(doi);
+        article.setCrossref(crossref);
+        return articleService.addArticle(article);
+    }
+
+    private Article updateNewsByDoi(Article article, String doi)
+    {
+        EventDataNews news = eventDataService.searchEventDataNews(doi);
+        news.getEvents().sort(Comparator.comparing(EventDataNewsEvents::getOcurredAt).reversed());
+        article.setNews(news);
+        return articleService.addArticle(article);
+    }
+
+    private Article updateEventDataTwitterByDoi(Article article, String doi)
+    {
+        EventDataTwitter eventDataTwitter = eventDataService.searchEventDataTwitter(doi);
+        eventDataTwitter.getEvents().sort(Comparator.comparing(EventDataTwitterEvents::getOccurredAt).reversed());
+        article.setEventDataTwitter(eventDataTwitter);
+        return articleService.addArticle(article);
+    }
+
+    private Article updateRedditByDoi(Article article, String doi) throws IOException
+    {
+        String url = crawl("https://doi.org/" + doi);
+        Reddit reddit = redditService.searchRedditByUrl(url);
+        reddit.getArticles().sort(Comparator.comparing(RedditArticle::getCreated).reversed());
+        article.setReddit(reddit);
+        return articleService.addArticle(article);
+    }
+
+    private Article updateStackExchangeByDoi(Article article, String doi) throws IOException
+    {
+        String url = crawl("https://doi.org/" + doi);
+        StackExchange stackExchange = stackExchangeService.searchStackExchangeByUrl(url);
+        article.setStackExchange(stackExchange);
+        return articleService.addArticle(article);
+    }
+
+    private Article updateFacebookByDoi(Article article, String doi) throws IOException
+    {
+        String url = crawl("https://doi.org/" + doi);
+        Facebook facebook = facebookService.searchFacebook(url);
+        article.setFacebook(facebook);
+        return articleService.addArticle(article);
+    }
+
+    private Article updateYoutubeByDoi(Article article, String doi) throws IOException
+    {
+        String url = crawl("https://doi.org/" + doi);
+        Youtube youtube = youtubeService.searchYoutubeByUrl(url);
+        article.setYoutube(youtube);
+        return articleService.addArticle(article);
+    }
+
+    private Article updateTwitterByDoi(Article article, String doi) throws IOException
+    {
+        String url = crawl("https://doi.org/" + doi);
+        Twitter twitter = twitterService.searchTwitterByUrl(url);
+        return sortTwitterAndSave(article, twitter);
+    }
+
+    private Article updateMendeleyByTitle(Article article, String title, String author) throws JsonProcessingException
+    {
+        Mendeley mendeley = mendeleyService.searchCatalogByTitleAndAuthor(title, author);
+        article.setMendeley(mendeley);
+        return articleService.addArticle(article);
+    }
+
+
+    private Article updateWikipediaByTitle(Article article, String title)
+    {
+        Wikipedia wikipedia = wikipediaService.getCitations(title);
+        article.setWikipedia(wikipedia);
+        return articleService.addArticle(article);
+    }
+
+    private Article updateScopusByTitle(Article article, String title, String author)
+    {
+        Scopus scopus = scopusService.getCitationsByTitleAndAuthor(title, author);
+        article.setScopus(scopus);
+        return articleService.addArticle(article);
+    }
+
+    private Article updateCrossrefByTitle(Article article, String title, String author)
+    {
+        Crossref crossref = crossrefService.searchCrossrefByTitleAndAuthor(title, author);
+        article.setCrossref(crossref);
+        return articleService.addArticle(article);
+    }
+
+    private Article updateRedditByTitle(Article article, String title) throws JsonProcessingException
+    {
+        Reddit reddit = redditService.searchRedditByTitle(title);
+        reddit.getArticles().sort(Comparator.comparing(RedditArticle::getCreated).reversed());
+        article.setReddit(reddit);
+        return articleService.addArticle(article);
+    }
+
+    private Article updateStackExchangeByTitle(Article article, String title)
+    {
+        StackExchange stackExchange = stackExchangeService.searchStackExchangeByTitle(title);
+        article.setStackExchange(stackExchange);
+        return articleService.addArticle(article);
+    }
+
+    private Article updateYoutubeByTitle(Article article, String title)
+    {
+        Youtube youtube = youtubeService.searchYoutubeByTitle(title);
+        article.setYoutube(youtube);
+        return articleService.addArticle(article);
+    }
+
+    private Article updateTwitterByTitle(Article article, String title)
+    {
+        Twitter twitter = twitterService.searchTwitterByTitle(title);
+        return sortTwitterAndSave(article, twitter);
+    }
+
+    private Article sortTwitterAndSave(Article article, Twitter twitter)
+    {
+        Twitter oldTwitter = article.getTwitter();
         for(int i = twitter.getResults().size() - 1; i >= 0; i--)
         {
             if(!oldTwitter.getResults().contains(twitter.getResults().get(i)))

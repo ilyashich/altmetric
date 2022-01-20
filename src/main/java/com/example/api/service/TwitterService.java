@@ -1,7 +1,7 @@
 package com.example.api.service;
 
-import com.example.api.model.twitter.TwitterDto;
-import com.example.api.webclient.twitter.TwitterClient;
+import com.example.api.model.twitter.Twitter;
+import com.example.api.webclient.TwitterClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,12 +13,12 @@ public class TwitterService
 {
     private final TwitterClient twitterClient;
 
-    public TwitterDto searchTwitterByUrl(String url)
+    public Twitter searchTwitterByUrl(String url)
     {
         return twitterClient.searchTwitterByUrl(url);
     }
 
-    public TwitterDto searchTwitterByTitle(String title)
+    public Twitter searchTwitterByTitle(String title)
     {
         return twitterClient.searchTwitterByTitle(title);
     }

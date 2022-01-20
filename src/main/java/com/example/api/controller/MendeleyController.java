@@ -1,16 +1,13 @@
 package com.example.api.controller;
 
 
-import com.example.api.model.mendeley.MendeleyDto;
+import com.example.api.model.mendeley.Mendeley;
 import com.example.api.service.MendeleyService;
-import com.example.api.webclient.mendeley.dto.MendeleyCatalogDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,33 +16,20 @@ public class MendeleyController
 {
     private final MendeleyService mendeleyService;
 
-    @GetMapping("/mendeley/catalog/{doiPrefix}/{doiSuffix}")
-    public MendeleyDto getCatalog(@PathVariable String doiPrefix, @PathVariable String doiSuffix) throws JsonProcessingException
+    @GetMapping("/mendeley/doisearch")
+    public Mendeley searchCatalogByDoi(@RequestParam String doi) throws JsonProcessingException
     {
-        String doi = doiPrefix + "/" + doiSuffix;
-
-        return mendeleyService.getCatalog(doi);
+        return mendeleyService.searchCatalogByDoi(doi);
     }
 
-    @GetMapping("/mendeley/title/**")
-    public MendeleyDto searchCatalogByTitle(HttpServletRequest request) throws JsonProcessingException
+    @GetMapping("/mendeley/titlesearch")
+    public Mendeley searchCatalogByTitleAndAuthor(@RequestParam String title, @RequestParam String author) throws JsonProcessingException
     {
-        String requestURL;
-        if(request.getQueryString() == null)
-        {
-            requestURL = request.getRequestURL().toString();
-        }
-        else
-        {
-            requestURL = request.getRequestURL().append('?').append(request.getQueryString()).toString();
-        }
-        String encoded = requestURL.split("/mendeley/title/")[1];
-        String title = URLDecoder.decode(encoded, StandardCharsets.UTF_8);
-        return mendeleyService.searchCatalogByTitle(title);
+        return mendeleyService.searchCatalogByTitleAndAuthor(title, author);
     }
 
     @GetMapping("/mendeley/doi/{doiPrefix}/{doiSuffix}")
-    public String getReadersByDoi(@PathVariable String doiPrefix, @PathVariable String doiSuffix)
+    public int getReadersByDoi(@PathVariable String doiPrefix, @PathVariable String doiSuffix)
     {
         String doi = doiPrefix + "/" + doiSuffix;
 
@@ -53,7 +37,7 @@ public class MendeleyController
     }
 
     @GetMapping("/mendeley/scopus_id/**")
-    public String getReadersByScopusId(HttpServletRequest request)
+    public int getReadersByScopusId(HttpServletRequest request)
     {
         String requestURL = request.getRequestURL().toString();
         String scopusId = requestURL.split("/mendeley/scopus_id/")[1];

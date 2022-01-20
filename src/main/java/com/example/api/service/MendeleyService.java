@@ -1,9 +1,8 @@
 package com.example.api.service;
 
 
-import com.example.api.model.mendeley.MendeleyDto;
-import com.example.api.webclient.mendeley.MendeleyClient;
-import com.example.api.webclient.mendeley.dto.MendeleyCatalogDto;
+import com.example.api.model.mendeley.Mendeley;
+import com.example.api.webclient.MendeleyClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,22 +15,22 @@ public class MendeleyService
 {
     private final MendeleyClient mendeleyClient;
 
-    public MendeleyDto getCatalog(String doi)
+    public Mendeley searchCatalogByDoi(String doi)
     {
         return mendeleyClient.getCatalog(doi);
     }
 
-    public MendeleyDto searchCatalogByTitle(String title) throws JsonProcessingException
+    public Mendeley searchCatalogByTitleAndAuthor(String title, String author) throws JsonProcessingException
     {
-        return mendeleyClient.searchCatalogByTitle(title);
+        return mendeleyClient.searchCatalogByTitleAndAuthor(title, author);
     }
 
-    public String getReadersByDoi(String doi)
+    public int getReadersByDoi(String doi)
     {
         return mendeleyClient.getReadersByDoi(doi);
     }
 
-    public String getReadersByScopusId(String scopusId)
+    public int getReadersByScopusId(String scopusId)
     {
         return mendeleyClient.getReadersByScopusId(scopusId);
     }

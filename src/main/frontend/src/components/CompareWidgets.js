@@ -12,7 +12,7 @@ export default function CompareWidgets(){
                 Metrics Comparison
             </h5>
             <Col>
-                <ArticleWidget doi={doi} />
+                <div className="altmetrics-widget" data-doi={doi}> </div>
             </Col>
             <Col>
                 <h5>

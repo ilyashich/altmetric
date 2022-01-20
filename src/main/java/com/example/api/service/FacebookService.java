@@ -1,7 +1,7 @@
 package com.example.api.service;
 
-import com.example.api.model.facebook.FacebookDto;
-import com.example.api.webclient.facebook.FacebookClient;
+import com.example.api.model.facebook.Facebook;
+import com.example.api.webclient.FacebookClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ public class FacebookService
 {
     private final FacebookClient facebookClient;
 
-    public FacebookDto searchFacebook(String url)
+    public Facebook searchFacebook(String url)
     {
         return facebookClient.searchFacebook(url);
     }

@@ -1,9 +1,8 @@
 package com.example.api.service;
 
-import com.example.api.model.eventdata.news.EventDataNewsDto;
-import com.example.api.model.eventdata.twitter.EventDataTwitterDto;
-import com.example.api.webclient.eventdata.EventDataClient;
-import com.example.api.webclient.eventdata.dto.news.EventDataSearchNewsDto;
+import com.example.api.model.eventdata.news.EventDataNews;
+import com.example.api.model.eventdata.twitter.EventDataTwitter;
+import com.example.api.webclient.EventDataClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,12 +14,12 @@ public class EventDataService
 {
     private final EventDataClient eventDataClient;
 
-    public EventDataNewsDto searchEventDataNews(String doi)
+    public EventDataNews searchEventDataNews(String doi)
     {
         return eventDataClient.searchEventDataNews(doi);
     }
 
-    public EventDataTwitterDto searchEventDataTwitter(String doi)
+    public EventDataTwitter searchEventDataTwitter(String doi)
     {
         return eventDataClient.searchEventDataTwitter(doi);
     }

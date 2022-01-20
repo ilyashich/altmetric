@@ -1,7 +1,7 @@
 package com.example.api.service;
 
-import com.example.api.model.crossref.CrossrefDto;
-import com.example.api.webclient.crossref.CrossrefClient;
+import com.example.api.model.crossref.Crossref;
+import com.example.api.webclient.CrossrefClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,12 +13,12 @@ public class CrossrefService
 {
     private final CrossrefClient crossrefClient;
 
-    public CrossrefDto searchCrossrefByDoi(String doi)
+    public Crossref searchCrossrefByDoi(String doi)
     {
         return crossrefClient.searchCrossrefByDoi(doi);
     }
 
-    public CrossrefDto searchCrossrefByTitleAndAuthor(String title, String author)
+    public Crossref searchCrossrefByTitleAndAuthor(String title, String author)
     {
         return crossrefClient.searchCrossrefByTitleAndAuthor(title, author);
     }

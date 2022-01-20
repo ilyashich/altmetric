@@ -1,8 +1,7 @@
 package com.example.api.service;
 
-import com.example.api.model.stackexchange.StackExchangeDto;
-import com.example.api.webclient.stackexchange.StackExchangeClient;
-import com.example.api.webclient.stackexchange.dto.StackExchangeSearchDto;
+import com.example.api.model.stackexchange.StackExchange;
+import com.example.api.webclient.StackExchangeClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,12 +13,12 @@ public class StackExchangeService
 {
     private final StackExchangeClient stackExchangeClient;
 
-    public StackExchangeDto searchStackExchangeByUrl(String url)
+    public StackExchange searchStackExchangeByUrl(String url)
     {
         return stackExchangeClient.searchStackExchangeByUrl(url);
     }
 
-    public StackExchangeDto searchStackExchangeByTitle(String title)
+    public StackExchange searchStackExchangeByTitle(String title)
     {
         return stackExchangeClient.searchStackExchangeByTitle(title);
     }

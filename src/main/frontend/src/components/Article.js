@@ -4,7 +4,7 @@ import {Row, Col, Form} from 'react-bootstrap';
 import CompareWidgets from "./CompareWidgets";
 
 export default function Article(){
-    const ARTICLES_URL = 'http://localhost:8080/api/articles';
+    const ARTICLES_URL = '/metrics/api/articles';
     const [doiGet, setDoiGet] = useState('');
     const [doiAdd, setDoiAdd] = useState('');
     const [allDois, setAllDois] = useState([]);
