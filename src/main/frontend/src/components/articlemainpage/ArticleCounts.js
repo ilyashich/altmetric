@@ -1,6 +1,8 @@
+import {Container} from "react-bootstrap";
+import "./ArticleCounts.css"
 
 export default function ArticleCounts( { article } ){
-    const mendeleyCount = article && article.mendeley.readersCount > 0 ?
+    const mendeleyCount = article && (article.mendeley.readersCount > 0 || article.mendeley.link !== null) ?
         <li> Readers
             <ul>
                 <li>
@@ -107,14 +109,16 @@ export default function ArticleCounts( { article } ){
 
 
     return(
-        <ul className="text-start" style={{ fontSize: 'medium' }}>
-            <h5>
-                <strong>Metrics</strong>
-            </h5>
-            {mendeleyCount}
-            {citations}
-            {mentions}
-            {socialMedia}
-        </ul>
+        <Container className="article-counts">
+            <ul>
+                <h4>
+                    <strong>Metrics</strong>
+                </h4>
+                {mendeleyCount}
+                {citations}
+                {mentions}
+                {socialMedia}
+            </ul>
+        </Container>
     );
 }

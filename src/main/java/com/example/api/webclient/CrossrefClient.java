@@ -54,30 +54,33 @@ public class CrossrefClient
                 title,
                 authorName
         );
-
-        List<CrossrefAuthors> authors = new ArrayList<>();
-        for(CrossrefByTitleAuthorDto author : response.message.items.get(0).author)
+        if(response.message.items.size() > 0)
         {
-            authors.add(CrossrefAuthors.builder()
-                    .name(author.given + " " + author.family)
-                    .build());
-        }
-        String published = response.message.items.get(0).published.dateParts.get(0).get(1).toString() + "-1-" +
-                response.message.items.get(0).published.dateParts.get(0).get(0).toString();
+            List<CrossrefAuthors> authors = new ArrayList<>();
+            for (CrossrefByTitleAuthorDto author : response.message.items.get(0).author)
+            {
+                authors.add(CrossrefAuthors.builder()
+                        .name(author.given + " " + author.family)
+                        .build());
+            }
+            String published = response.message.items.get(0).published.dateParts.get(0).get(1).toString() + "-1-" +
+                    response.message.items.get(0).published.dateParts.get(0).get(0).toString();
 
-        return Crossref.builder()
-                .referencedByCount(response.message.items.get(0).isReferencedByCount)
-                .issue(response.message.items.get(0).issue)
-                .volume(response.message.items.get(0).volume)
-                .page(response.message.items.get(0).page)
-                .publisher(response.message.items.get(0).publisher)
-                .authors(authors)
-                .issn(response.message.items.get(0).issn)
-                .source(response.message.items.get(0).containerTitle.get(0))
-                .title(response.message.items.get(0).title.get(0))
-                .doi(response.message.items.get(0).doi)
-                .published(published)
-                .build();
+            return Crossref.builder()
+                    .referencedByCount(response.message.items.get(0).isReferencedByCount)
+                    .issue(response.message.items.get(0).issue)
+                    .volume(response.message.items.get(0).volume)
+                    .page(response.message.items.get(0).page)
+                    .publisher(response.message.items.get(0).publisher)
+                    .authors(authors)
+                    .issn(response.message.items.get(0).issn)
+                    .source(response.message.items.get(0).containerTitle.get(0))
+                    .title(response.message.items.get(0).title.get(0))
+                    .doi(response.message.items.get(0).doi)
+                    .published(published)
+                    .build();
+        }
+        return Crossref.builder().build();
     }
 
     private <T> T callGetMethod(String url, Class<T> responseType, Object... objects)

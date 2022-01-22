@@ -2,6 +2,11 @@
     width: 25rem;
     height: 15rem;
     margin-bottom: 25px;
+    text-align: left;
+}
+
+.news-card-title{
+    text-decoration: none;
 }
 
 .news-card-subtitle{

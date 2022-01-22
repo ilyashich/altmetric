@@ -1,0 +1,12 @@
+.wikipedia-card{
+    width: 40rem;
+    height: 250px;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.wikipedia-card-subtitle{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+

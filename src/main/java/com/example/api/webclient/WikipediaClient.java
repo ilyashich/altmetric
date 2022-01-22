@@ -4,6 +4,8 @@ import com.example.api.dto.wikipedia.WikipediaPageDto;
 import com.example.api.model.wikipedia.WikipediaArticle;
 import com.example.api.model.wikipedia.Wikipedia;
 import com.example.api.dto.wikipedia.WikipediaResultDto;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,6 +26,9 @@ public class WikipediaClient
     public RestTemplate restTemplate = new RestTemplate();
 
     public static final HashMap<String, String> languages;
+    public static final HashMap<String, String> languagesTranslate;
+
+    public static final String summary = "?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&pageids={ids}";
 
     static
     {
@@ -34,6 +39,20 @@ public class WikipediaClient
         languages.put("https://pl.wikipedia.org/?curid=", "Polish");
         languages.put("https://es.wikipedia.org/?curid=", "Spanish");
         languages.put("https://ru.wikipedia.org/?curid=", "Russian");
+
+        languagesTranslate = new HashMap<>();
+        languagesTranslate.put("https://en.wikipedia.org/?curid=",
+                "https://en.wikipedia.org/w/api.php" + summary);
+        languagesTranslate.put("https://fr.wikipedia.org/?curid=",
+                "https://fr.wikipedia.org/w/api.php" + summary);
+        languagesTranslate.put("https://de.wikipedia.org/?curid=",
+                "https://de.wikipedia.org/w/api.php" + summary);
+        languagesTranslate.put("https://pl.wikipedia.org/?curid=",
+                "https://pl.wikipedia.org/w/api.php" + summary);
+        languagesTranslate.put("https://es.wikipedia.org/?curid=",
+                "https://es.wikipedia.org/w/api.php" + summary);
+        languagesTranslate.put("https://ru.wikipedia.org/?curid=",
+                "https://ru.wikipedia.org/w/api.php" + summary);
     }
 
     public Wikipedia getCitations(String query)
@@ -55,30 +74,70 @@ public class WikipediaClient
         results.put("https://en.wikipedia.org/?curid=", wikipediaEn.getPages());
 
 
-        List<WikipediaArticle> search = new ArrayList<>();
+        HashMap<Integer, WikipediaArticle> search = new HashMap<>();
 
         int totalHits = 0;
 
         for(Map.Entry<String, List<WikipediaPageDto>> result : results.entrySet())
         {
-            for(WikipediaPageDto value : result.getValue())
+            if(result.getValue().size() > 0)
             {
-                String thumbnail = value.getThumbnail() == null ? null : "https:" + value.getThumbnail().getUrl();
-                search.add(WikipediaArticle.builder()
-                        .language(languages.get(result.getKey()))
-                        .link(result.getKey() + value.getId())
-                        .title(value.getTitle())
-                        .description(value.getDescription())
-                        .thumbnail(thumbnail)
-                        .build());
-            }
+                StringBuilder builder = new StringBuilder();
 
-            totalHits += result.getValue().size();
+                for (WikipediaPageDto value : result.getValue())
+                {
+                    search.put(value.getId(), WikipediaArticle.builder()
+                            .language(languages.get(result.getKey()))
+                            .link(result.getKey() + value.getId())
+                            .title(value.getTitle())
+                            .build()
+                    );
+
+                    builder.append(value.getId());
+                    builder.append("|");
+                }
+                totalHits += result.getValue().size();
+
+
+                builder.deleteCharAt(builder.length() - 1);
+
+                String summary = callGetMethod(
+                        languagesTranslate.get(result.getKey()),
+                        String.class,
+                        builder
+                );
+
+                JsonObject parsed = new Gson().fromJson(summary, JsonObject.class);
+                HashMap<Integer, String> descr = new HashMap<>();
+
+                for (WikipediaPageDto page : result.getValue())
+                {
+                    descr.put(page.getId(), parsed.get("query").getAsJsonObject()
+                            .get("pages").getAsJsonObject()
+                            .get(page.getId().toString()).getAsJsonObject()
+                            .get("extract").getAsString()
+                    );
+                }
+
+                List<Integer> ids = new ArrayList<>(descr.keySet());
+
+                for (Integer id : ids)
+                {
+                    if(descr.get(id).length() > 255)
+                    {
+                        search.get(id).setDescription(descr.get(id).substring(0, 252) + "...");
+                    }
+                    else
+                    {
+                        search.get(id).setDescription(descr.get(id));
+                    }
+                }
+            }
         }
 
         return Wikipedia.builder()
                 .totalHits(totalHits)
-                .citationInfo(search)
+                .citationInfo(new ArrayList<>(search.values()))
                 .build();
 
     }

@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class Html5PathsController
 {
 
-    @RequestMapping( method = {RequestMethod.OPTIONS, RequestMethod.GET}, path = {"/details/**", "/add", "/widget", "/"} )
+    @RequestMapping( method = {RequestMethod.OPTIONS, RequestMethod.GET},
+            path = {"/details", "/tests", "/comparewidgets", "/comparemetrics", "/"} )
     public String forwardReactPaths() {
         return "forward:/index.html";
     }

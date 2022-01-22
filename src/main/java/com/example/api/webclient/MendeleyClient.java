@@ -73,7 +73,7 @@ public class MendeleyClient
 
         MendeleyCatalogDto response;
 
-        if(mendeleyCatalogDto.getBody() != null)
+        if(mendeleyCatalogDto.getBody() != null && !Objects.equals(mendeleyCatalogDto.getBody(), "[]"))
         {
             String toSingle = mendeleyCatalogDto.getBody().substring(1, mendeleyCatalogDto.getBody().length() - 1);
 

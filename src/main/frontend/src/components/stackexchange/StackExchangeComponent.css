@@ -1,5 +1,10 @@
 .stackexchange-card{
     width: 30rem;
-    height: 20rem;
+    height: 23rem;
     margin-bottom: 25px;
+    text-align: left;
+}
+
+.stackexchange-card-title{
+    text-decoration: none;
 }

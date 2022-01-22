@@ -1,21 +1,24 @@
 import Moment from 'moment';
 import "./ArticleInfoComponent.css"
 
-export default function ArticleInfoComponent( { doi, mendeley, crossref } ){
-    const dateString = mendeley.title === null ?
-        crossref.published
-        :mendeley.month + "-01-" + mendeley.year;
-    const date = new Date(dateString);
+export default function ArticleInfoComponent( { doi, mendeley, crossref } ) {
+    const dateString = crossref.title === null ?
+        mendeley.month + "-01-" + mendeley.year
+        : crossref.published;
+    let date = null;
+    if(dateString !== null){
+        date = new Date(dateString);
+    }
 
     const authorRow = (author, i) => {
-        if(author.scopusAuthorId !== null && author.scopusAuthorId !== undefined){
-            return(
-                <a key={i} target="_blank" rel="noreferrer" href={"https://www.scopus.com/authid/detail.uri?authorId=" + author.scopusAuthorId}>
+        if (author.scopusAuthorId !== null && author.scopusAuthorId !== undefined) {
+            return (
+                <a key={i} target="_blank" rel="noreferrer"
+                   href={"https://www.scopus.com/authid/detail.uri?authorId=" + author.scopusAuthorId}>
                     <div>{author.name}</div>
                 </a>
             );
-        }
-        else{
+        } else {
             return (
                 <div key={i}>{author.name}</div>
             );
@@ -26,9 +29,13 @@ export default function ArticleInfoComponent( { doi, mendeley, crossref } ){
         crossref.title
         : mendeley.title;
 
-    const published = mendeley.title === null ?
-        crossref.source + ", ISSN: " + crossref.issn[0] + ", Vol: " + crossref.volume + ", Issue: " + crossref.issue + ", Page: " + crossref.page
-        : mendeley.source + ", ISSN: " + mendeley.issn + ", Vol: " + mendeley.volume + ", Issue: " + mendeley.issue + ", Page: " + mendeley.pages;
+    let published = "";
+    if (mendeley.title === null && crossref.title !== null) {
+        published = crossref.source + ", ISSN: " + crossref.issn[0] + ", Vol: " + crossref.volume + ", Issue: " + crossref.issue + ", Page: " + crossref.page;
+    }
+    if (mendeley.title !== null) {
+        published = mendeley.source + ", ISSN: " + mendeley.issn + ", Vol: " + mendeley.volume + ", Issue: " + mendeley.issue + ", Page: " + mendeley.pages;
+    }
 
     const authors = mendeley.title === null ?
         crossref.authors
@@ -70,7 +77,7 @@ export default function ArticleInfoComponent( { doi, mendeley, crossref } ){
                     Publication Date
                 </th>
                 <td className="text-md-start">
-                    {Moment(date).format('MMMM YYYY')}
+                    {date && Moment(date).format('MMMM YYYY')}
                 </td>
             </tr>
             {doiRow}
@@ -79,7 +86,7 @@ export default function ArticleInfoComponent( { doi, mendeley, crossref } ){
                     Authors
                 </th>
                 <td className="text-md-start">
-                    {authors.map((author, i) =>
+                    {authors && authors.map((author, i) =>
                         authorRow(author, i)
                     )}
                 </td>

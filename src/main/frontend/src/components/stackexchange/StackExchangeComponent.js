@@ -2,7 +2,7 @@ import Moment from 'moment'
 import './StackExchangeComponent.css'
 import {useState} from "react";
 import Pagination from "../Pagination";
-import {Card, Col, Container, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Row} from "react-bootstrap";
 
 export default function StackExchangeComponent( {stackExchange} ){
     const [currentPage, setCurrentPage] = useState(1);
@@ -35,7 +35,9 @@ export default function StackExchangeComponent( {stackExchange} ){
                     <Card className="stackexchange-card">
                         <Card.Body>
                             <Card.Title>
-                                {toPlainText(result.title)}
+                                <a className="stackexchange-card-title" target="_blank" rel="noreferrer" href={result.link}>
+                                    {toPlainText(result.title)}
+                                </a>
                             </Card.Title>
                             <Card.Subtitle style={{ marginTop: '10px', marginBottom: '7px'}}>
                                 Posted at <strong>{siteName(result.link)}</strong>, {Moment.unix(result.creationDate).format("DD MMMM YYYY")}
@@ -45,9 +47,9 @@ export default function StackExchangeComponent( {stackExchange} ){
                             </Card.Text>
                         </Card.Body>
                         <Card.Footer>
-                            <Card.Link target="_blank" rel="noreferrer" href={result.link}>
+                            <Button target="_blank" rel="noreferrer" href={result.link}>
                                 Go to post
-                            </Card.Link>
+                            </Button>
                         </Card.Footer>
                     </Card>
                 </Col>
@@ -60,7 +62,9 @@ export default function StackExchangeComponent( {stackExchange} ){
                     <Card className="stackexchange-card">
                         <Card.Body>
                             <Card.Title>
-                                {toPlainText(result.title)}
+                                <a className="stackexchange-card-title" target="_blank" rel="noreferrer" href={result.link}>
+                                    {toPlainText(result.title)}
+                                </a>
                             </Card.Title>
                             <Card.Subtitle style={{ marginTop: '10px', marginBottom: '7px'}}>
                                 Posted at <strong>{siteName(result.link)}</strong>, {Moment.unix(result.creationDate).format("DD MMMM YYYY")}
@@ -70,9 +74,9 @@ export default function StackExchangeComponent( {stackExchange} ){
                             </Card.Text>
                         </Card.Body>
                         <Card.Footer>
-                            <Card.Link target="_blank" rel="noreferrer" href={result.link}>
+                            <Button target="_blank" rel="noreferrer" href={result.link}>
                                 Go to post
-                            </Card.Link>
+                            </Button>
                         </Card.Footer>
                     </Card>
                 </Col>
@@ -84,7 +88,9 @@ export default function StackExchangeComponent( {stackExchange} ){
                     <Card className="stackexchange-card">
                         <Card.Body>
                             <Card.Title>
-                                {toPlainText(result.title)}
+                                <a className="stackexchange-card-title" target="_blank" rel="noreferrer" href={result.link}>
+                                    {toPlainText(result.title)}
+                                </a>
                             </Card.Title>
                             <Card.Subtitle style={{ marginTop: '10px', marginBottom: '7px'}}>
                                 Posted at <strong>{siteName(result.link)}</strong>, {Moment.unix(result.creationDate).format("DD MMMM YYYY")}
@@ -94,9 +100,9 @@ export default function StackExchangeComponent( {stackExchange} ){
                             </Card.Text>
                         </Card.Body>
                         <Card.Footer>
-                            <Card.Link target="_blank" rel="noreferrer" href={result.link}>
+                            <Button target="_blank" rel="noreferrer" href={result.link}>
                                 Go to post
-                            </Card.Link>
+                            </Button>
                         </Card.Footer>
                     </Card>
                 </Col>

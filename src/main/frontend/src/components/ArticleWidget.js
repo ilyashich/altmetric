@@ -1,22 +1,28 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {Container} from "react-bootstrap";
-import "./ArticleWidget.css"
+const ARTICLE_DOI_URL = "http://localhost:8080/metrics/api/article?doi=";
+const ARTICLE_TITLE_URL = "http://localhost:8080/metrics/api/article?title=";
 
-const ARTICLE_URL = "http://localhost:8080/api/article?doi=";
-
-export default function ArticleWidget( { doi } ){
+export default function ArticleWidget( { doi, title } ){
     const [article, setArticle] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        let requestString = "";
+        if(doi === undefined && title !== undefined){
+            requestString = ARTICLE_TITLE_URL + title;
+        }
+        if(title === undefined && doi !== undefined){
+            requestString = ARTICLE_DOI_URL + doi;
+        }
         const loadArticle = async () => {
-            const response = await axios.get(ARTICLE_URL + doi);
+            const response = await axios.get(requestString);
             setArticle(response.data);
             setLoading(false);
         }
         loadArticle()
-    }, [doi]);
+    }, [doi, title]);
 
     let mendeleyCount = null;
     let scopusCount = null;
@@ -85,7 +91,7 @@ export default function ArticleWidget( { doi } ){
     }
 
     return(
-        <Container className="text-start-widget">
+        <Container style={{ textAlign: 'left', fontSize: 'small' }}>
             <h5>
                 <strong>Metrics</strong>
             </h5>
@@ -99,7 +105,7 @@ export default function ArticleWidget( { doi } ){
             {youtubeCount}
             {twitterCount}
             {facebookCount}
-            <a target="_blank" rel="noreferrer" href={"http://localhost:3000/metrics/details/?doi=" + doi}>
+            <a target="_blank" rel="noreferrer" href={"http://localhost:8080/metrics/details/?doi=" + doi}>
                 View Details
             </a>
         </Container>

@@ -57,7 +57,11 @@ public class ScopusClient
         if (scopusSearchDto != null)
         {
             links = scopusSearchDto.searchResults.entry.get(0).link;
-            citationsCount = scopusSearchDto.searchResults.entry.get(0).citedbyCount;
+            if(scopusSearchDto.searchResults.entry.get(0).citedbyCount != null)
+            {
+                citationsCount = scopusSearchDto.searchResults.entry.get(0).citedbyCount;
+            }
+
         }
         String selected = null;
         if(links != null)

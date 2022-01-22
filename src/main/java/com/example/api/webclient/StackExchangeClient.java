@@ -47,7 +47,7 @@ public class StackExchangeClient
                             StackExchangeSearchDto.class, field, url, API_KEY);
             checkResponse(results, field, response);
         }
-        results.setCount(results.getItems().size());
+        results.setTotalCount(results.getItems().size());
         return results;
 
     }
@@ -65,7 +65,7 @@ public class StackExchangeClient
                             StackExchangeSearchDto.class, field, title, API_KEY);
             checkResponse(results, field, response);
         }
-        results.setCount(results.getItems().size());
+        results.setTotalCount(results.getItems().size());
         return results;
 
     }

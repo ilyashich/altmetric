@@ -1,4 +1,4 @@
-import { Row, Col, Card} from 'react-bootstrap';
+import {Row, Col, Card, Button} from 'react-bootstrap';
 import Moment from 'moment';
 import {useState} from "react";
 import Pagination from "../Pagination";
@@ -25,13 +25,19 @@ export default function RedditComponent( {reddit} ){
                     <Col key={i}>
                         <Card className="reddit-card">
                             <Card.Body>
-                                <Card.Title>{result.title}</Card.Title>
-                                <Card.Subtitle>{result.author} in the {result.subreddit} subreddit, {Moment.unix(result.created).format("DD MMMM YYYY")}</Card.Subtitle>
+                                <Card.Title>
+                                    <a className="reddit-card-title" target="_blank" rel="noreferrer" href={result.permalink}>
+                                        {result.title}
+                                    </a>
+                                </Card.Title>
+                                <Card.Subtitle>
+                                    User {result.author} in the {result.subreddit} subreddit, {Moment.unix(result.created).format("DD MMMM YYYY")}
+                                </Card.Subtitle>
                             </Card.Body>
                             <Card.Footer>
-                                <Card.Link target="_blank" rel="noreferrer" href={result.permalink}>
+                                <Button target="_blank" rel="noreferrer" href={result.permalink}>
                                     Go to post
-                                </Card.Link>
+                                </Button>
                             </Card.Footer>
                         </Card>
                     </Col>
@@ -41,15 +47,19 @@ export default function RedditComponent( {reddit} ){
                     <Col key={i}>
                         <Card className="reddit-card">
                             <Card.Body>
-                                <Card.Title>{result.title}</Card.Title>
+                                <Card.Title>
+                                    <a className="reddit-card-title" target="_blank" rel="noreferrer" href={result.permalink}>
+                                        {result.title}
+                                    </a>
+                                </Card.Title>
                                 <Card.Subtitle className="reddit-card-subtitle">
-                                    {result.author} in the {result.subreddit} subreddit, {Moment.unix(result.created).format("DD MMMM YYYY")}
+                                    User {result.author} in the {result.subreddit} subreddit, {Moment.unix(result.created).format("DD MMMM YYYY")}
                                 </Card.Subtitle>
                             </Card.Body>
                             <Card.Footer>
-                                <Card.Link target="_blank" rel="noreferrer" href={result.permalink}>
+                                <Button target="_blank" rel="noreferrer" href={result.permalink}>
                                     Go to post
-                                </Card.Link>
+                                </Button>
                             </Card.Footer>
                         </Card>
                     </Col>
@@ -59,15 +69,19 @@ export default function RedditComponent( {reddit} ){
                     <Col key={i}>
                         <Card className="reddit-card">
                             <Card.Body>
-                                <Card.Title>{result.title}</Card.Title>
+                                <Card.Title>
+                                    <a className="reddit-card-title" target="_blank" rel="noreferrer" href={result.permalink}>
+                                        {result.title}
+                                    </a>
+                                </Card.Title>
                                 <Card.Subtitle className="reddit-card-subtitle">
-                                    {result.author} in the {result.subreddit} subreddit, {Moment.unix(result.created).format("DD MMMM YYYY")}
+                                    User {result.author} in the {result.subreddit} subreddit, {Moment.unix(result.created).format("DD MMMM YYYY")}
                                 </Card.Subtitle>
                             </Card.Body>
                             <Card.Footer>
-                                <Card.Link target="_blank" rel="noreferrer" href={result.permalink}>
+                                <Button target="_blank" rel="noreferrer" href={result.permalink}>
                                     Go to post
-                                </Card.Link>
+                                </Button>
                             </Card.Footer>
                         </Card>
                     </Col>
@@ -77,15 +91,19 @@ export default function RedditComponent( {reddit} ){
                     <Col key={i}>
                         <Card className="reddit-card">
                             <Card.Body>
-                                <Card.Title>{result.title}</Card.Title>
+                                <Card.Title>
+                                    <a className="reddit-card-title" target="_blank" rel="noreferrer" href={result.permalink}>
+                                        {result.title}
+                                    </a>
+                                </Card.Title>
                                 <Card.Subtitle className="reddit-card-subtitle">
-                                    {result.author} in the {result.subreddit} subreddit, {Moment.unix(result.created).format("DD MMMM YYYY")}
+                                    User {result.author} in the {result.subreddit} subreddit, {Moment.unix(result.created).format("DD MMMM YYYY")}
                                 </Card.Subtitle>
                             </Card.Body>
                             <Card.Footer>
-                                <Card.Link target="_blank" rel="noreferrer" href={result.permalink}>
+                                <Button target="_blank" rel="noreferrer" href={result.permalink}>
                                     Go to post
-                                </Card.Link>
+                                </Button>
                             </Card.Footer>
                         </Card>
                     </Col>

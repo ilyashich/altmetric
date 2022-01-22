@@ -15,7 +15,5 @@ public class WikipediaPageDto
     private String title;
     @JsonProperty("description")
     private String description;
-    @JsonProperty("thumbnail")
-    private WikipediaThumbnailDto thumbnail;
 
 }

@@ -36,31 +36,48 @@ export default function ArticleComponent(){
     }, [getString]);
 
     let titleLink;
+    let content = <h4>Loading</h4>;
 
     if(!loading)
     {
         titleLink = article.doi == null ?
             title
-            : <a id="article-a" target="_blank" rel="noreferrer" href={"https://doi.org/" + article.doi}>{title}</a>;
-    }
+            : <a className="article-title-link" target="_blank" rel="noreferrer" href={"https://doi.org/" + article.doi}>{title}</a>;
 
-    let content = loading
-        ? <Container>Loading</Container>
-        : <Container fluid>
-            <div className="document-header">
-                <h3 id="article-header">
-                    {titleLink}
-                </h3>
-            </div>
-            <Row>
-                <Col xs="2">
-                    <ArticleCounts article={article} />
-                </Col>
-                <Col>
-                    <ArticleTabs article={article} />
-                </Col>
-            </Row>
-        </Container>
+        const countAllMetrics =
+            article.mendeley.readersCount +
+            article.crossref.referencedByCount +
+            article.scopus.citationsCount +
+            article.wikipedia.totalHits +
+            article.reddit.totalResults +
+            article.stackExchange.totalCount +
+            article.twitter.resultCount +
+            article.facebook.reactionCount +
+            article.facebook.commentCount +
+            article.facebook.shareCount +
+            article.youtube.totalResults +
+            article.news.totalResults +
+            article.eventDataTwitter.totalResults;
+
+        content = countAllMetrics > 0
+            ? <Container fluid>
+                <div className="document-header">
+                    <h3 className="article-header">
+                        {titleLink}
+                    </h3>
+                </div>
+                <Row>
+                    <Col xs="2">
+                        <ArticleCounts article={article} />
+                    </Col>
+                    <Col>
+                        <ArticleTabs article={article} />
+                    </Col>
+                </Row>
+            </Container>
+            : <h4>Couldn't collect any metrics about this article</h4>;
+
+    }
 
     return (
         <div>

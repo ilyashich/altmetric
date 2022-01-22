@@ -1,7 +1,7 @@
 import Moment from 'moment'
 import {useState} from "react";
 import Pagination from "../Pagination";
-import {Card, Col, Row} from "react-bootstrap";
+import {Button, Card, Col, Row} from "react-bootstrap";
 import "./NewsComponent.css"
 
 export default function NewsComponent( {news} ){
@@ -24,15 +24,19 @@ export default function NewsComponent( {news} ){
                 {firstColumn.map((result, i) =>
                     <Card key={i} className="news-card">
                         <Card.Body>
-                            <Card.Title>{result.title}</Card.Title>
+                            <Card.Title>
+                                <a className="news-card-title" target="_blank" rel="noreferrer" href={result.link}>
+                                    {result.title}
+                                </a>
+                            </Card.Title>
                             <Card.Subtitle className="news-card-subtitle">
                                 {Moment(result.ocurredAt).format("DD MMMM YYYY")}
                             </Card.Subtitle>
                         </Card.Body>
                         <Card.Footer>
-                            <Card.Link target="_blank" rel="noreferrer" href={result.link}>
+                            <Button target="_blank" rel="noreferrer" href={result.link}>
                                 Go to article
-                            </Card.Link>
+                            </Button>
                         </Card.Footer>
                     </Card>
                 )}
@@ -41,15 +45,19 @@ export default function NewsComponent( {news} ){
                 {secondColumn.map((result, i) =>
                     <Card key={i} className="news-card">
                         <Card.Body>
-                            <Card.Title>{result.title}</Card.Title>
+                            <Card.Title>
+                                <a className="news-card-title" target="_blank" rel="noreferrer" href={result.link}>
+                                    {result.title}
+                                </a>
+                            </Card.Title>
                             <Card.Subtitle className="news-card-subtitle">
                                 {Moment(result.ocurredAt).format("DD MMMM YYYY")}
                             </Card.Subtitle>
                         </Card.Body>
                         <Card.Footer>
-                            <Card.Link target="_blank" rel="noreferrer" href={result.link}>
+                            <Button target="_blank" rel="noreferrer" href={result.link}>
                                 Go to article
-                            </Card.Link>
+                            </Button>
                         </Card.Footer>
                     </Card>
                 )}
@@ -58,15 +66,19 @@ export default function NewsComponent( {news} ){
                 {thirdColumn.map((result, i) =>
                     <Card key={i} className="news-card">
                         <Card.Body>
-                            <Card.Title>{result.title}</Card.Title>
+                            <Card.Title>
+                                <a className="news-card-title" target="_blank" rel="noreferrer" href={result.link}>
+                                    {result.title}
+                                </a>
+                            </Card.Title>
                             <Card.Subtitle className="news-card-subtitle">
                                 {Moment(result.ocurredAt).format("DD MMMM YYYY")}
                             </Card.Subtitle>
                         </Card.Body>
                         <Card.Footer>
-                            <Card.Link target="_blank" rel="noreferrer" href={result.link}>
+                            <Button target="_blank" rel="noreferrer" href={result.link}>
                                 Go to article
-                            </Card.Link>
+                            </Button>
                         </Card.Footer>
                     </Card>
                 )}
@@ -75,15 +87,19 @@ export default function NewsComponent( {news} ){
                 {fourthColumn.map((result, i) =>
                     <Card key={i} className="news-card">
                         <Card.Body>
-                            <Card.Title>{result.title}</Card.Title>
+                            <Card.Title>
+                                <a className="news-card-title" target="_blank" rel="noreferrer" href={result.link}>
+                                    {result.title}
+                                </a>
+                            </Card.Title>
                             <Card.Subtitle className="news-card-subtitle">
                                 {Moment(result.ocurredAt).format("DD MMMM YYYY")}
                             </Card.Subtitle>
                         </Card.Body>
                         <Card.Footer>
-                            <Card.Link target="_blank" rel="noreferrer" href={result.link}>
+                            <Button target="_blank" rel="noreferrer" href={result.link}>
                                 Go to article
-                            </Card.Link>
+                            </Button>
                         </Card.Footer>
                     </Card>
                 )}

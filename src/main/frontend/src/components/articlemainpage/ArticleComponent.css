@@ -1,39 +1,12 @@
-.article-a{
-    -webkit-text-size-adjust: 100%;
-    color: #383844;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font: inherit;
-    vertical-align: baseline;
-    float: left;
-    width: 200px;
-    height: auto;
-    margin-top: 5px;
+.article-title-link{
+    text-decoration: none;
 }
 
 .article-header{
-    color: #383844;
-    -webkit-text-size-adjust: 100%;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font: inherit;
-    vertical-align: baseline;
     font-weight: lighter;
-    font-size: 2.57143em;
-    line-height: 1.33333em;
+    font-size: 2.5em;
 }
 
 .document-header{
-    color: #383844;
-    -webkit-text-size-adjust: 100%;
-    box-sizing: border-box;
-    margin: 0;
-    border: 0;
-    font: inherit;
-    vertical-align: baseline;
     padding: 0 24px 1.71429em 24px;
 }

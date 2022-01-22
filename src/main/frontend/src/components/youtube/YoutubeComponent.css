@@ -1,6 +1,6 @@
 .youtube-card{
     width: 30rem;
-    height: 26rem;
+    height: 28rem;
     margin-bottom: 25px;
 }
 
@@ -8,6 +8,10 @@
     width: 280px;
     height: auto;
     align-self: center;
+}
+
+.youtube-card-title{
+    text-decoration: none;
 }
 
 .youtube-card-subtitle{

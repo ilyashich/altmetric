@@ -9,6 +9,6 @@ import java.util.List;
 @Data
 public class StackExchange
 {
-    private int count;
+    private int totalCount;
     private List<StackExchangeItems> items;
 }
