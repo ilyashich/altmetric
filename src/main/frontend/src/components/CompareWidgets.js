@@ -1,6 +1,5 @@
 import {Col, Container, Row} from "react-bootstrap";
 import React from "react";
-import ArticleWidget from "./ArticleWidget";
 
 
 export default function CompareWidgets(){

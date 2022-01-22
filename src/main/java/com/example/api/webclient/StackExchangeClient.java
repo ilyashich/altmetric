@@ -4,6 +4,8 @@ import com.example.api.model.stackexchange.StackExchange;
 import com.example.api.model.stackexchange.StackExchangeItems;
 import com.example.api.dto.stackexchange.StackExchangeSearchDto;
 import com.example.api.dto.stackexchange.StackExchangeSearchItemsDto;
+import org.apache.http.client.config.CookieSpecs;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
@@ -19,11 +21,24 @@ public class StackExchangeClient
     private static final String API_URL = "https://api.stackexchange.com/2.3/search/excerpts";
     private static final String API_KEY = "XXXXXXX";
 
-    public RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory(HttpClientBuilder.create().build()));
+    public HttpComponentsClientHttpRequestFactory clientHttpRequestFactory =
+            new HttpComponentsClientHttpRequestFactory
+                    (
+                            HttpClientBuilder.create()
+                                    .setDefaultRequestConfig(
+                                            RequestConfig.custom()
+                                            .setCookieSpec(CookieSpecs.STANDARD)
+                                            .build())
+                                    .build()
+                    );
+
+    public RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory);
 
     public StackExchange searchStackExchangeByUrl(String url)
     {
-        List<String> fields = Arrays.asList("stackoverflow", "biology", "math", "physics", "chemistry", "cs", "astronomy", "ai", "bioinformatics", "medicalsciences", "skeptics");
+        List<String> fields = Arrays.asList("stackoverflow", "biology", "math", "stats", "physics", "chemistry", "cs",
+                "cstheory", "astronomy", "ai", "bioinformatics", "earthscience", "medicalsciences", "skeptics");
+
         StackExchange results = StackExchange.builder().items(new ArrayList<>()).build();
         for(String field : fields)
         {
@@ -39,7 +54,9 @@ public class StackExchangeClient
 
     public StackExchange searchStackExchangeByTitle(String title)
     {
-        List<String> fields = Arrays.asList("stackoverflow", "biology", "math", "physics", "chemistry", "cs", "astronomy", "ai", "bioinformatics", "medicalsciences", "skeptics");
+        List<String> fields = Arrays.asList("stackoverflow", "biology", "math", "stats", "physics", "chemistry", "cs",
+                "cstheory", "astronomy", "ai", "bioinformatics", "earthscience", "medicalsciences", "skeptics");
+
         StackExchange results = StackExchange.builder().items(new ArrayList<>()).build();
         for(String field : fields)
         {

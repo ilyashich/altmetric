@@ -20,7 +20,11 @@ public class EventDataClient
 
     public EventDataNews searchEventDataNews(String doi)
     {
-        EventDataSearchNewsDto news = callGetMethod("?mailto=wigger1918@gmail.com&rows=100&obj-id={doi}&source=newsfeed", EventDataSearchNewsDto.class, doi);
+        EventDataSearchNewsDto news = callGetMethod(
+                "?mailto=example@example.com&rows=100&obj-id={doi}&source=newsfeed",
+                EventDataSearchNewsDto.class,
+                doi
+        );
         List<EventDataNewsEvents> events = new ArrayList<>();
         for(var event : news.message.events)
         {
@@ -39,7 +43,11 @@ public class EventDataClient
 
     public EventDataTwitter searchEventDataTwitter(String doi)
     {
-        EventDataSearchTwitterDto twitter = callGetMethod("?mailto=wigger1918@gmail.com&rows=100&obj-id={doi}&source=twitter", EventDataSearchTwitterDto.class, doi);
+        EventDataSearchTwitterDto twitter = callGetMethod(
+                "?mailto=example@example.com&rows=100&obj-id={doi}&source=twitter",
+                EventDataSearchTwitterDto.class,
+                doi
+        );
         List<EventDataTwitterEvents> events = new ArrayList<>();
         for(var event : twitter.message.events)
         {

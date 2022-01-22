@@ -40,19 +40,4 @@ public class ArticleService
     {
         return this.repository.findArticleByTitle(title);
     }
-
-    public void deleteArticle(Article oldArticle)
-    {
-        this.repository.delete(oldArticle);
-    }
-
-    public void deleteArticleById(String id)
-    {
-        this.repository.deleteById(id);
-    }
-
-    public boolean articleExists(String id)
-    {
-        return this.repository.existsById(id);
-    }
 }

@@ -46,7 +46,7 @@ export default function MendeleyComponent( {mendeley} ){
     subjectArea.sort((a, b) =>  b[1] - a[1]);
 
     return(
-        <Row>
+        <Row style={{ marginTop: '20px'}}>
             <Col>
                 <table className='table table-striped' aria-labelledby="tabelLabel">
                     <thead>

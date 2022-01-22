@@ -107,7 +107,7 @@ export default function ArticleCounts( { article } ){
 
 
     return(
-        <ul className="text-start">
+        <ul className="text-start" style={{ fontSize: 'medium' }}>
             <h5>
                 <strong>Metrics</strong>
             </h5>

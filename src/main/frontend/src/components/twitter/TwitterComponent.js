@@ -32,7 +32,7 @@ export default function TwitterComponent( {twitter, eventDataTwitter} ){
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
-        <Container>
+        <Container style={{ marginTop: '20px'}}>
 
                 <Row>
                     {firstColumn.map((result, i) =>

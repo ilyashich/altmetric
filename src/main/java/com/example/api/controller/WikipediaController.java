@@ -13,13 +13,13 @@ public class WikipediaController
 {
     private final WikipediaService wikipediaService;
 
-    @GetMapping("/wiki/doisearch")
+    @GetMapping("/wikipedia/doisearch")
     public Wikipedia getCitationsByDoi(@RequestParam String doi)
     {
         return wikipediaService.getCitations(doi);
     }
 
-    @GetMapping("/wiki/titlesearch")
+    @GetMapping("/wikipedia/titlesearch")
     public Wikipedia getCitationsByTitle(@RequestParam String title)
     {
         return wikipediaService.getCitations(title);

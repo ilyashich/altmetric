@@ -85,7 +85,7 @@ export default function ArticleWidget( { doi } ){
     }
 
     return(
-        <Container className="text-start">
+        <Container className="text-start-widget">
             <h5>
                 <strong>Metrics</strong>
             </h5>

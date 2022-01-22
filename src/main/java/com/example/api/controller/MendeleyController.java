@@ -7,8 +7,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
@@ -27,23 +25,6 @@ public class MendeleyController
     {
         return mendeleyService.searchCatalogByTitleAndAuthor(title, author);
     }
-
-    @GetMapping("/mendeley/doi/{doiPrefix}/{doiSuffix}")
-    public int getReadersByDoi(@PathVariable String doiPrefix, @PathVariable String doiSuffix)
-    {
-        String doi = doiPrefix + "/" + doiSuffix;
-
-        return mendeleyService.getReadersByDoi(doi);
-    }
-
-    @GetMapping("/mendeley/scopus_id/**")
-    public int getReadersByScopusId(HttpServletRequest request)
-    {
-        String requestURL = request.getRequestURL().toString();
-        String scopusId = requestURL.split("/mendeley/scopus_id/")[1];
-        return mendeleyService.getReadersByScopusId(scopusId);
-    }
-
 }
 
 //doi: 10.1007/s10844-015-0393-0

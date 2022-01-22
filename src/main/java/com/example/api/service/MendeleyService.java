@@ -24,14 +24,4 @@ public class MendeleyService
     {
         return mendeleyClient.searchCatalogByTitleAndAuthor(title, author);
     }
-
-    public int getReadersByDoi(String doi)
-    {
-        return mendeleyClient.getReadersByDoi(doi);
-    }
-
-    public int getReadersByScopusId(String scopusId)
-    {
-        return mendeleyClient.getReadersByScopusId(scopusId);
-    }
 }

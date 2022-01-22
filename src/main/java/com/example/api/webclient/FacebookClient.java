@@ -15,7 +15,12 @@ public class FacebookClient
 
     public Facebook searchFacebook(String url)
     {
-        FacebookSearchDto twitterSearchDto = callGetMethod("?id={url}&fields=engagement&access_token={token}", FacebookSearchDto.class, url, FACEBOOK_API_TOKEN);
+        FacebookSearchDto twitterSearchDto = callGetMethod(
+                "?id={url}&fields=engagement&access_token={token}",
+                FacebookSearchDto.class,
+                url,
+                FACEBOOK_API_TOKEN
+        );
 
         return Facebook.builder()
                 .shareCount(twitterSearchDto.getEngagement().getShare_count())

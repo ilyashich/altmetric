@@ -71,10 +71,19 @@ public class MendeleyClient
                 author
         );
 
-        String toSingle = mendeleyCatalogDto.getBody().substring(1, mendeleyCatalogDto.getBody().length() - 1);
+        MendeleyCatalogDto response;
 
-        ObjectMapper mapper = new ObjectMapper();
-        MendeleyCatalogDto response = mapper.readValue(toSingle, MendeleyCatalogDto.class);
+        if(mendeleyCatalogDto.getBody() != null)
+        {
+            String toSingle = mendeleyCatalogDto.getBody().substring(1, mendeleyCatalogDto.getBody().length() - 1);
+
+            ObjectMapper mapper = new ObjectMapper();
+            response = mapper.readValue(toSingle, MendeleyCatalogDto.class);
+        }
+        else
+        {
+            response = null;
+        }
 
         return getMendeleyDto(response);
     }
@@ -125,22 +134,6 @@ public class MendeleyClient
     private <T> ResponseEntity<T> callPostMethod(String url, HttpEntity<String> request, Class<T> responseType, Object...objects)
     {
         return restTemplate.postForEntity(url, request, responseType, objects);
-    }
-
-    public int getReadersByDoi(String doi)
-    {
-        MendeleyCatalogDto[] mendeleyCatalogDto = callGetMethod("/catalog?doi={doi}&view=stats&access_token={access token}", MendeleyCatalogDto[].class, doi,  API_TOKEN);
-
-        List<MendeleyCatalogDto> listCatalog = Arrays.asList(mendeleyCatalogDto);
-        return listCatalog.get(0).getReaderCount();
-    }
-
-    public int getReadersByScopusId(String scopus)
-    {
-        MendeleyCatalogDto[] mendeleyCatalogDto = callGetMethod("/catalog?scopus={scopus}&view=stats&access_token={access token}", MendeleyCatalogDto[].class, scopus,  API_TOKEN);
-
-        List<MendeleyCatalogDto> listCatalog = Arrays.asList(mendeleyCatalogDto);
-        return listCatalog.get(0).getReaderCount();
     }
 
     public void checkIfTokenExpired()

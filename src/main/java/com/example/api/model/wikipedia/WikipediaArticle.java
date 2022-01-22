@@ -7,6 +7,9 @@ import lombok.Data;
 @Data
 public class WikipediaArticle
 {
+    private String language;
     private String title;
-    private String pageId;
+    private String link;
+    private String description;
+    private String thumbnail;
 }

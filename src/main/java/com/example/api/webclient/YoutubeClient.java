@@ -23,6 +23,16 @@ public class YoutubeClient
                 "search?part=snippet&maxResults=500&q={search query}&type=video&key={YOUR_API_KEY}", YoutubeSearchDto.class,
                 url, API_KEY);
 
+        String nextPageToken = youtubeSearch.getNextPageToken();
+
+        if(nextPageToken != null)
+        {
+            YoutubeSearchDto search = callGetMethod(
+                    "search?part=snippet&pageToken={token}&maxResults=500&q={search query}&type=video&key={YOUR_API_KEY}", YoutubeSearchDto.class,
+                    nextPageToken, url, API_KEY);
+            youtubeSearch.getItems().addAll(search.getItems());
+        }
+
         return getYoutube(url, youtubeSearch);
 
     }
@@ -33,33 +43,21 @@ public class YoutubeClient
                 "search?part=snippet&maxResults=500&q=\"{search query}\"&type=video&key={YOUR_API_KEY}", YoutubeSearchDto.class,
                 title, API_KEY);
 
-        return getYoutube(youtubeSearch);
+        String nextPageToken = youtubeSearch.getNextPageToken();
 
-    }
-
-    private Youtube getYoutube(YoutubeSearchDto youtubeSearch)
-    {
-        List<YoutubeItem> items = new ArrayList<>();
-        if(youtubeSearch.getItems() != null)
+        if(nextPageToken != null)
         {
-            for(YoutubeItemsDto item : youtubeSearch.getItems())
-            {
-                items.add(YoutubeItem.builder()
-                        .videoId(item.getId().getVideoId())
-                        .publishedAt(item.getSnippet().getPublishedAt())
-                        .channelTitle(item.getSnippet().getChannelTitle())
-                        .title(item.getSnippet().getTitle())
-                        .description(item.getSnippet().getDescription())
-                        .thumbnailUrl(item.getSnippet().getThumbnails().getHigh().getUrl())
-                        .build());
-            }
+            YoutubeSearchDto search = callGetMethod(
+                    "search?part=snippet&pageToken={token}&maxResults=500&q=\"{search query}\"&type=video&key={YOUR_API_KEY}", YoutubeSearchDto.class,
+                    nextPageToken, title, API_KEY);
+            youtubeSearch.getItems().addAll(search.getItems());
         }
-        return Youtube.builder()
-                .nextPageToken(youtubeSearch.getNextPageToken())
-                .totalResults(items.size())
-                .items(items)
-                .build();
+
+        return getYoutube(title, youtubeSearch);
+
     }
+
+
 
     private Youtube getYoutube(String query, YoutubeSearchDto youtubeSearch)
     {
@@ -79,7 +77,7 @@ public class YoutubeClient
                             .channelTitle(item.getSnippet().getChannelTitle())
                             .title(item.getSnippet().getTitle())
                             .description(item.getSnippet().getDescription())
-                            .thumbnailUrl(item.getSnippet().getThumbnails().getHigh().getUrl())
+                            .thumbnailUrl(item.getSnippet().getThumbnails().getMedium().getUrl())
                             .build());
                 }
             }

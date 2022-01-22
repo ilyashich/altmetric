@@ -5,5 +5,5 @@ import lombok.Getter;
 @Getter
 public class YoutubeThumbnailsDto
 {
-    private YoutubeHighDto high;
+    private YoutubeHighDto medium;
 }

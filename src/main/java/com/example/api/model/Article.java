@@ -27,7 +27,8 @@ import java.util.List;
 @Data
 @Document
 @AllArgsConstructor
-public class Article{
+public class Article
+{
     @Id
     private String id;
     @Indexed(unique = true, sparse = true)

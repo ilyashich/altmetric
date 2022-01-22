@@ -14,23 +14,28 @@ import java.util.List;
 @Component
 public class TwitterClient
 {
-        private final RestTemplate restTemplate = new RestTemplate();
-        private static final String TWITTER_API_URL = "https://api.twitter.com/2/tweets/";
-        private static final String TWITTER_API_TOKEN = "XXXXXXX";
+    private final RestTemplate restTemplate = new RestTemplate();
+    private static final String TWITTER_API_URL = "https://api.twitter.com/2/tweets/";
+    private static final String TWITTER_API_TOKEN = "XXXXXXX";
 
 
 
-        public Twitter searchTwitterByUrl(String url)
-        {
-            HttpHeaders headers = new HttpHeaders();
-            HttpEntity<String> request;
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.add("Authorization", "Bearer " + TWITTER_API_TOKEN);
-            request = new HttpEntity<>("parameters", headers);
-            TwitterSearchDto twitterSearchDto = callExchangeMethod("search/recent?query=url:\"{url}\"&tweet.fields=created_at,author_id&max_results=100", request, TwitterSearchDto.class, url);
+    public Twitter searchTwitterByUrl(String url)
+    {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<String> request;
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Authorization", "Bearer " + TWITTER_API_TOKEN);
+        request = new HttpEntity<>("parameters", headers);
+        TwitterSearchDto twitterSearchDto = callExchangeMethod(
+                "search/recent?query=url:\"{url}\"&tweet.fields=created_at,author_id&max_results=100",
+                request,
+                TwitterSearchDto.class,
+                url
+        );
 
-            return getTwitterDto(twitterSearchDto);
-        }
+        return getTwitterDto(twitterSearchDto);
+    }
 
     public Twitter searchTwitterByTitle(String title)
     {
@@ -39,7 +44,12 @@ public class TwitterClient
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("Authorization", "Bearer " + TWITTER_API_TOKEN);
         request = new HttpEntity<>("parameters", headers);
-        TwitterSearchDto twitterSearchDto = callExchangeMethod("search/recent?query=\"{title}\"&tweet.fields=created_at,author_id&max_results=100", request, TwitterSearchDto.class, title);
+        TwitterSearchDto twitterSearchDto = callExchangeMethod(
+                "search/recent?query=\"{title}\"&tweet.fields=created_at,author_id&max_results=100",
+                request,
+                TwitterSearchDto.class,
+                title
+        );
 
         return getTwitterDto(twitterSearchDto);
     }

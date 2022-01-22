@@ -1,43 +1,91 @@
 import Moment from 'moment'
 import {useState} from "react";
 import Pagination from "../Pagination";
-import {Col, Row} from "react-bootstrap";
+import {Card, Col, Row} from "react-bootstrap";
 import "./NewsComponent.css"
 
 export default function NewsComponent( {news} ){
     const [currentPage, setCurrentPage] = useState(1);
-    const [newsPerPage] = useState(10);
+    const [newsPerPage] = useState(12);
 
     const indexOfLastNews = currentPage * newsPerPage;
     const indexOfFirstNews= indexOfLastNews - newsPerPage;
     const currentNews = news.events.slice(indexOfFirstNews, indexOfLastNews);
-    const firstColumn = currentNews.slice(0, 5);
-    const secondColumn = currentNews.slice(5, currentNews.length);
+    const firstColumn = currentNews.slice(0, 3);
+    const secondColumn = currentNews.slice(3, 6);
+    const thirdColumn = currentNews.slice(6, 9);
+    const fourthColumn = currentNews.slice(9, currentNews.length);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
-        <Row>
+        <Row style={{ marginTop: '20px'}}>
             <Col>
                 {firstColumn.map((result, i) =>
-                    <article key={i} className="newsPost">
-                        <a id="article-a" target="_blank" rel="noreferrer" className="block_link" href={result.link}>
-                            <h5 className="header3">{result.title}</h5>
-
-                            <div>{Moment(result.ocurredAt).format("DD MMMM YYYY")}</div>
-                        </a>
-                    </article>
+                    <Card key={i} className="news-card">
+                        <Card.Body>
+                            <Card.Title>{result.title}</Card.Title>
+                            <Card.Subtitle className="news-card-subtitle">
+                                {Moment(result.ocurredAt).format("DD MMMM YYYY")}
+                            </Card.Subtitle>
+                        </Card.Body>
+                        <Card.Footer>
+                            <Card.Link target="_blank" rel="noreferrer" href={result.link}>
+                                Go to article
+                            </Card.Link>
+                        </Card.Footer>
+                    </Card>
                 )}
             </Col>
             <Col>
                 {secondColumn.map((result, i) =>
-                    <article key={i} className="newsPost">
-                        <a id="article-a" target="_blank" rel="noreferrer" className="block_link" href={result.link}>
-                            <h5 className="header3">{result.title}</h5>
-
-                            <div>{Moment(result.ocurredAt).format("DD MMMM YYYY")}</div>
-                        </a>
-                    </article>
+                    <Card key={i} className="news-card">
+                        <Card.Body>
+                            <Card.Title>{result.title}</Card.Title>
+                            <Card.Subtitle className="news-card-subtitle">
+                                {Moment(result.ocurredAt).format("DD MMMM YYYY")}
+                            </Card.Subtitle>
+                        </Card.Body>
+                        <Card.Footer>
+                            <Card.Link target="_blank" rel="noreferrer" href={result.link}>
+                                Go to article
+                            </Card.Link>
+                        </Card.Footer>
+                    </Card>
+                )}
+            </Col>
+            <Col>
+                {thirdColumn.map((result, i) =>
+                    <Card key={i} className="news-card">
+                        <Card.Body>
+                            <Card.Title>{result.title}</Card.Title>
+                            <Card.Subtitle className="news-card-subtitle">
+                                {Moment(result.ocurredAt).format("DD MMMM YYYY")}
+                            </Card.Subtitle>
+                        </Card.Body>
+                        <Card.Footer>
+                            <Card.Link target="_blank" rel="noreferrer" href={result.link}>
+                                Go to article
+                            </Card.Link>
+                        </Card.Footer>
+                    </Card>
+                )}
+            </Col>
+            <Col>
+                {fourthColumn.map((result, i) =>
+                    <Card key={i} className="news-card">
+                        <Card.Body>
+                            <Card.Title>{result.title}</Card.Title>
+                            <Card.Subtitle className="news-card-subtitle">
+                                {Moment(result.ocurredAt).format("DD MMMM YYYY")}
+                            </Card.Subtitle>
+                        </Card.Body>
+                        <Card.Footer>
+                            <Card.Link target="_blank" rel="noreferrer" href={result.link}>
+                                Go to article
+                            </Card.Link>
+                        </Card.Footer>
+                    </Card>
                 )}
             </Col>
 
