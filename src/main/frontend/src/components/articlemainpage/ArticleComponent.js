@@ -59,7 +59,7 @@ export default function ArticleComponent(){
             article.news.totalResults +
             article.eventDataTwitter.totalResults;
 
-        content = countAllMetrics > 0
+        content = countAllMetrics > 0 || article.mendeley.title !== null || article.crossref.title !== null
             ? <Container fluid>
                 <div className="document-header">
                     <h3 className="article-header">

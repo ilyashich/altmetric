@@ -29,8 +29,16 @@ public class CrossrefClient
                     .name(author.given + " " + author.family)
                     .build());
         }
-        String published = response.message.published.dateParts.get(0).get(1).toString() + "-1-" +
-                response.message.published.dateParts.get(0).get(0).toString();
+        String published;
+        if(response.message.published.dateParts.get(0).size() > 2)
+        {
+            published = response.message.published.dateParts.get(0).get(1).toString() + "-1-" +
+                    response.message.published.dateParts.get(0).get(0).toString();
+        }
+        else
+        {
+            published = "1-1-" + response.message.published.dateParts.get(0).get(0).toString();
+        }
 
         return Crossref.builder()
                 .referencedByCount(response.message.isReferencedByCount)
@@ -63,8 +71,16 @@ public class CrossrefClient
                         .name(author.given + " " + author.family)
                         .build());
             }
-            String published = response.message.items.get(0).published.dateParts.get(0).get(1).toString() + "-1-" +
+            String published;
+            if(response.message.items.get(0).published.dateParts.get(0).size() > 2)
+            {
+                published = response.message.items.get(0).published.dateParts.get(0).get(1).toString() + "-1-" +
                     response.message.items.get(0).published.dateParts.get(0).get(0).toString();
+            }
+            else
+            {
+                published = "1-1-" +  response.message.items.get(0).published.dateParts.get(0).get(0).toString();
+            }
 
             return Crossref.builder()
                     .referencedByCount(response.message.items.get(0).isReferencedByCount)

@@ -1,11 +1,9 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import {BrowserRouter, Route, Link, Switch} from "react-router-dom";
+import {BrowserRouter, Route, Switch} from "react-router-dom";
 import ArticleComponent from "./components/articlemainpage/ArticleComponent";
-import Article from "./components/tests/Article";
-import CompareWidgets from "./components/tests/CompareWidgets";
-import {Container, Navbar} from "react-bootstrap";
-import CompareMetrics from "./components/tests/CompareMetrics";
+import {Container, Nav, Navbar} from "react-bootstrap";
+import Tests from "./components/tests/Tests";
 
 function App() {
 
@@ -17,6 +15,11 @@ function App() {
                         <Navbar.Brand className="app-navbar-brand">
                             Altmertic System
                         </Navbar.Brand>
+                        <Navbar.Collapse id="responsive-navbar-nav">
+                            <Nav className="me-auto">
+                                <Nav.Link href="/metrics/tests">Tests</Nav.Link>
+                            </Nav>
+                        </Navbar.Collapse>
                     </Container>
                 </Navbar>
                 <Switch>
@@ -24,16 +27,7 @@ function App() {
                         <ArticleComponent />
                     </Route>
                     <Route path="/metrics/tests">
-                        <Article />
-                    </Route>
-                    <Route path="/metrics/comparewidgets">
-                        <CompareWidgets />
-                    </Route>
-                    <Route path="/metrics/comparemetrics">
-                        <CompareMetrics />
-                    </Route>
-                    <Route path="/metrics">
-                        <Link to="/metrics/tests">Tests</Link>
+                        <Tests />
                     </Route>
                 </Switch>
             </BrowserRouter>

@@ -1,5 +1,7 @@
 package com.example.api.webclient;
 
+import com.example.api.dto.eventdata.news.EventDataEventNewsDto;
+import com.example.api.dto.eventdata.twitter.EventDataEventTwitterDto;
 import com.example.api.model.eventdata.news.EventDataNews;
 import com.example.api.model.eventdata.news.EventDataNewsEvents;
 import com.example.api.model.eventdata.twitter.EventDataTwitter;
@@ -26,7 +28,7 @@ public class EventDataClient
                 doi
         );
         List<EventDataNewsEvents> events = new ArrayList<>();
-        for(var event : news.message.events)
+        for(EventDataEventNewsDto event : news.message.events)
         {
             events.add(EventDataNewsEvents.builder()
                     .ocurredAt(event.occurredAt)
@@ -49,7 +51,7 @@ public class EventDataClient
                 doi
         );
         List<EventDataTwitterEvents> events = new ArrayList<>();
-        for(var event : twitter.message.events)
+        for(EventDataEventTwitterDto event : twitter.message.events)
         {
             String author;
             String tweet;

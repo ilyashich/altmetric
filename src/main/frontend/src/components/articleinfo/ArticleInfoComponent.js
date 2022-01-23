@@ -30,11 +30,26 @@ export default function ArticleInfoComponent( { doi, mendeley, crossref } ) {
         : mendeley.title;
 
     let published = "";
+    let source = '';
+    let issn = '';
+    let vol = '';
+    let issue = '';
+    let page = '';
     if (mendeley.title === null && crossref.title !== null) {
-        published = crossref.source + ", ISSN: " + crossref.issn[0] + ", Vol: " + crossref.volume + ", Issue: " + crossref.issue + ", Page: " + crossref.page;
+        source = crossref.source ? crossref.source + ", " : '';
+        issn = crossref.issn ? "ISSN: " + crossref.issn[0] + ", " : '';
+        vol = crossref.volume ? "Vol: " + crossref.volume + ", " : '';
+        issue = crossref.issue ? "Issue: " + crossref.issue + ", " : '';
+        page = crossref.page ? "Page: " + crossref.page : '';
+        published = source + issn + vol + issue + page;
     }
-    if (mendeley.title !== null) {
-        published = mendeley.source + ", ISSN: " + mendeley.issn + ", Vol: " + mendeley.volume + ", Issue: " + mendeley.issue + ", Page: " + mendeley.pages;
+    else if (mendeley.title !== null) {
+        source = mendeley.source ? mendeley.source + ", " : '';
+        issn = mendeley.issn ? "ISSN: " + mendeley.issn + ", " : '';
+        vol = mendeley.volume ? "Vol: " + mendeley.volume + ", " : '';
+        issue = mendeley.issue ? "Issue: " + mendeley.issue + ", " : '';
+        page = mendeley.pages ? "Page: " + mendeley.pages : '';
+        published = source + issn + vol + issue + page;
     }
 
     const authors = mendeley.title === null ?

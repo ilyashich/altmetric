@@ -58,6 +58,7 @@ public class ArticleController
     @GetMapping("/article")
     public Article getArticleByDoiOrTitle(@RequestParam(required = false) String doi, @RequestParam(required = false) String title)
     {
+        System.out.println(title);
         if(doi == null && title == null)
         {
             return null;
@@ -87,21 +88,49 @@ public class ArticleController
             return null;
         }
 
-        return switch (metric)
-                {
-                    case "mendeley" -> updateMendeleyByDoi(article.get(), doi);
-                    case "crossref" -> updateCrossrefByDoi(article.get(), doi);
-                    case "scopus" -> updateScopusByDoi(article.get(), doi);
-                    case "wikipedia" -> updateWikipediaByDoi(article.get(), doi);
-                    case "reddit" -> updateRedditByDoi(article.get(), doi);
-                    case "stackexchange" -> updateStackExchangeByDoi(article.get(), doi);
-                    case "twitter" -> updateTwitterByDoi(article.get(), doi);
-                    case "facebook" -> updateFacebookByDoi(article.get(), doi);
-                    case "youtube" -> updateYoutubeByDoi(article.get(), doi);
-                    case "news" -> updateNewsByDoi(article.get(), doi);
-                    case "eventdatatwitter" -> updateEventDataTwitterByDoi(article.get(), doi);
-                    default -> null;
-                };
+        Article updated;
+
+        switch (metric)
+        {
+            case "mendeley":
+                updated = updateMendeleyByDoi(article.get(), doi);
+                break;
+            case "crossref":
+                updated = updateCrossrefByDoi(article.get(), doi);
+                break;
+            case "scopus":
+                updated = updateScopusByDoi(article.get(), doi);
+                break;
+            case "wikipedia":
+                updated = updateWikipediaByDoi(article.get(), doi);
+                break;
+            case "reddit":
+                updated = updateRedditByDoi(article.get(), doi);
+                break;
+            case "stackexchange":
+                updated = updateStackExchangeByDoi(article.get(), doi);
+                break;
+            case "twitter":
+                updated = updateTwitterByDoi(article.get(), doi);
+                break;
+            case "facebook":
+                updated = updateFacebookByDoi(article.get(), doi);
+                break;
+            case "youtube":
+                updated = updateYoutubeByDoi(article.get(), doi);
+                break;
+            case "news":
+                updated = updateNewsByDoi(article.get(), doi);
+                break;
+            case "eventdatatwitter":
+                updated = updateEventDataTwitterByDoi(article.get(), doi);
+                break;
+            default:
+                updated = null;
+                break;
+        }
+
+        return updated;
     }
 
     @GetMapping("/article/update/title/{metric}")
@@ -113,18 +142,40 @@ public class ArticleController
             return null;
         }
 
-        return switch (metric)
-                {
-                    case "mendeley" -> updateMendeleyByTitle(article.get(), title, author);
-                    case "crossref" -> updateCrossrefByTitle(article.get(), title, author);
-                    case "scopus" -> updateScopusByTitle(article.get(), title, author);
-                    case "wikipedia" -> updateWikipediaByTitle(article.get(), title);
-                    case "reddit" -> updateRedditByTitle(article.get(), title);
-                    case "stackexchange" -> updateStackExchangeByTitle(article.get(), title);
-                    case "twitter" -> updateTwitterByTitle(article.get(), title);
-                    case "youtube" -> updateYoutubeByTitle(article.get(), title);
-                    default -> null;
-                };
+        Article updated;
+
+        switch (metric)
+        {
+            case "mendeley":
+                updated = updateMendeleyByTitle(article.get(), title, author);
+                break;
+            case "crossref":
+                updated = updateCrossrefByTitle(article.get(), title, author);
+                break;
+            case "scopus":
+                updated = updateScopusByTitle(article.get(), title, author);
+                break;
+            case "wikipedia":
+                updated = updateWikipediaByTitle(article.get(), title);
+                break;
+            case "reddit":
+                updated = updateRedditByTitle(article.get(), title);
+                break;
+            case "stackexchange":
+                updated = updateStackExchangeByTitle(article.get(), title);
+                break;
+            case "twitter":
+                updated = updateTwitterByTitle(article.get(), title);
+                break;
+            case "youtube":
+                updated = updateYoutubeByTitle(article.get(), title);
+                break;
+            default:
+                updated = null;
+                break;
+        }
+
+        return updated;
     }
 
     @GetMapping("/article/add/bydoi")
