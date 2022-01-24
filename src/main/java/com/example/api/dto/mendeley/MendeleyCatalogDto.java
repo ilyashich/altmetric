@@ -8,23 +8,6 @@ import lombok.Getter;
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-        "title",
-        "authors",
-        "year",
-        "source",
-        "identifiers",
-        "pages",
-        "volume",
-        "issue",
-        "month",
-        "publisher",
-        "link",
-        "reader_count",
-        "reader_count_by_academic_status",
-        "reader_count_by_subject_area"
-})
-@Generated("jsonschema2pojo")
 public class MendeleyCatalogDto
 {
 

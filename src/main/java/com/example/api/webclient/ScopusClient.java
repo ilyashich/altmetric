@@ -1,7 +1,7 @@
 package com.example.api.webclient;
 
 import com.example.api.model.scopus.Scopus;
-import com.example.api.dto.scopus.Link;
+import com.example.api.dto.scopus.ScopusLinkDto;
 import com.example.api.dto.scopus.ScopusSearchDto;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -52,7 +52,7 @@ public class ScopusClient
     private Scopus getScopusDto(ResponseEntity<ScopusSearchDto> response)
     {
         ScopusSearchDto scopusSearchDto = response.getBody();
-        List<Link> links = new ArrayList<>();
+        List<ScopusLinkDto> links = new ArrayList<>();
         String citationsCount = "0";
         if (scopusSearchDto != null)
         {
@@ -66,7 +66,7 @@ public class ScopusClient
         String selected = null;
         if(links != null)
         {
-            for (Link link : links)
+            for (ScopusLinkDto link : links)
             {
                 if (link.ref.equals("scopus-citedby"))
                 {

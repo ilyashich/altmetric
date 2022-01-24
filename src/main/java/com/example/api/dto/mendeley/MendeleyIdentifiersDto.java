@@ -11,13 +11,6 @@ import lombok.Getter;
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-        "issn",
-        "scopus",
-        "doi",
-        "pmid"
-})
-@Generated("jsonschema2pojo")
 public class MendeleyIdentifiersDto
 {
 

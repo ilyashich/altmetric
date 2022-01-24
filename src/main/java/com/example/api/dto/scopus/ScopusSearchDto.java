@@ -1,18 +1,14 @@
 package com.example.api.dto.scopus;
 
-import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-        "search-results"
-})
-@Generated("jsonschema2pojo")
 public class ScopusSearchDto {
 
     @JsonProperty("search-results")
-    public SearchResults searchResults;
+    public ScopusSearchResultsDto searchResults;
 
 }

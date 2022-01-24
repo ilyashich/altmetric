@@ -3,14 +3,14 @@ import React, {useEffect, useState} from "react";
 import {useLocation} from "react-router-dom";
 import axios from "axios";
 
-const ARTICLE_DOI_URL = "/metrics/api/article?doi=";
-const ARTICLE_TITLE_URL = "/metrics/api/article?title=";
+const ARTICLE_URL = "/metrics/api/article";
 
 export default function CompareMetrics(){
     const { search } = useLocation();
     const params = new URLSearchParams(search);
     const doi = params.get("doi");
     const title = params.get("title");
+    const author = params.get("author");
 
     const [articleByTitle, setArticleByTitle] = useState(null);
     const [articleByDoi, setArticleByDoi] = useState(null);
@@ -18,14 +18,14 @@ export default function CompareMetrics(){
 
     useEffect(() => {
         const loadArticle = async () => {
-            const responseDoi = await axios.get(ARTICLE_DOI_URL + doi);
+            const responseDoi = await axios.get(ARTICLE_URL + "?doi=" + doi);
             setArticleByDoi(responseDoi.data);
-            const responseTitle = await axios.get(ARTICLE_TITLE_URL + title);
+            const responseTitle = await axios.get(ARTICLE_URL + "?title=" + title + "&author=" + author);
             setArticleByTitle(responseTitle.data);
             setLoading(false);
         }
         loadArticle()
-    }, [doi, title]);
+    }, [doi, title, author]);
 
     console.log(doi);
     console.log(title);

@@ -29,19 +29,21 @@ export default  function ArticlesTable( {articles} ){
                     </td>
                     <td>doi</td>
                     <td>{article.doi}</td>
+                    <td> </td>
                     <td><Link to={"/metrics/details/?doi=" + article.doi}>Open</Link></td>
                 </tr>
             );
         }
-        if(article.doi === null && article.title !== null){
+        if(article.doi === null && article.title !== null && article.authorSurname !== null){
             return(
                 <tr key={i}>
                     <td>{i + 1 + 10*(currentPage-1)}</td>
                     <td>{article.title}</td>
-                    <td>title</td>
+                    <td>title and author</td>
                     <td> </td>
+                    <td>{article.authorSurname}</td>
                     <td>
-                        <Link to={"/metrics/details/?title=" + article.title}>Open</Link>
+                        <Link to={"/metrics/details/?title=" + article.title + "&author=" + article.authorSurname}>Open</Link>
                     </td>
                 </tr>
             );
@@ -58,6 +60,7 @@ export default  function ArticlesTable( {articles} ){
                     <th>Article Title</th>
                     <th>Added by</th>
                     <th>DOI</th>
+                    <th>Author</th>
                     <th>Link</th>
                 </tr>
                 </thead>

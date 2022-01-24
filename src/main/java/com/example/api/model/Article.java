@@ -17,6 +17,7 @@ import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -26,6 +27,7 @@ import java.util.List;
 @Builder
 @Data
 @Document
+@CompoundIndex(def = "{ 'title': 1, 'authorSurname': 1 }", sparse = true, unique = true)
 @AllArgsConstructor
 public class Article
 {
@@ -33,8 +35,8 @@ public class Article
     private String id;
     @Indexed(unique = true, sparse = true)
     private String doi;
-    @Indexed(unique = true, sparse = true)
     private String title;
+    private String authorSurname;
     @CreatedDate
     private Instant createdDate;
     @LastModifiedDate

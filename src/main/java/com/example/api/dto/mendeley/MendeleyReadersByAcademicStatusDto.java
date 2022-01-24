@@ -10,21 +10,6 @@ import lombok.Getter;
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-        "Student  > Postgraduate",
-        "Professor  > Associate Professor",
-        "Researcher",
-        "Student  > Master",
-        "Student  > Ph. D. Student",
-        "Professor",
-        "Student  > Bachelor",
-        "Student  > Doctoral Student",
-        "Lecturer",
-        "Other",
-        "Librarian",
-        "Lecturer  > Senior Lecturer"
-})
-@Generated("jsonschema2pojo")
 public class MendeleyReadersByAcademicStatusDto
 {
 

@@ -15,6 +15,7 @@ export default function Article(){
     const [authorAdd, setAuthorAdd] = useState('');
     const [doiCompare, setDoiCompare] = useState('');
     const [titleCompare, setTitleCompare] = useState('');
+    const [authorCompare, setAuthorCompare] = useState('');
     const [allArticles, setAllArticles] = useState([]);
     const [loaded, setLoaded] = useState(false);
     const [reload, setReload] = useState(false);
@@ -53,7 +54,9 @@ export default function Article(){
     }
 
     const handleCompareSubmit = (e) => {
-        history.replace("/metrics/tests/comparemetrics?doi=" + doiCompare + "&title=" + titleCompare);
+        history.replace("/metrics/tests/comparemetrics?doi=" + doiCompare +
+            "&title=" + titleCompare +
+            "&author=" + authorCompare);
     }
 
     const handleGetSubmit = (e) => {
@@ -111,6 +114,14 @@ export default function Article(){
                                     placeholder="Title"
                                     value={titleCompare}
                                     onChange={event => onInputChange(event, setTitleCompare)}
+                                />
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Author"
+                                    value={authorCompare}
+                                    onChange={event => onInputChange(event, setAuthorCompare)}
                                 />
                             </Form.Group>
                             <Button variant="primary" onClick={handleCompareSubmit}>

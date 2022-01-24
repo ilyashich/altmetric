@@ -16,9 +16,10 @@ export default function ArticleComponent(){
     const params = new URLSearchParams(search);
     const doi = params.get("doi");
     const articleTitle = params.get("title");
-    const getString = doi == null ?
-        "?title=" + articleTitle
-        : "?doi=" + doi;
+    const articleAuthor = params.get("author");
+    const getString = doi !== null ?
+        "?doi=" + doi
+        : "?title=" + articleTitle + "&author=" + articleAuthor;
     useEffect(() => {
         const loadArticle = async () => {
             const response = await axios.get(ARTICLE_URL + getString);

@@ -8,6 +8,9 @@ import com.example.api.model.eventdata.twitter.EventDataTwitter;
 import com.example.api.model.eventdata.twitter.EventDataTwitterEvents;
 import com.example.api.dto.eventdata.news.EventDataSearchNewsDto;
 import com.example.api.dto.eventdata.twitter.EventDataSearchTwitterDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,13 +23,21 @@ public class EventDataClient
     private final RestTemplate restTemplate = new RestTemplate();
     private static final String EVENTDATA_API_URL = "https://api.eventdata.crossref.org/v1/events";
 
-    public EventDataNews searchEventDataNews(String doi)
+    public EventDataNews searchEventDataNews(String doi) throws JsonProcessingException
     {
-        EventDataSearchNewsDto news = callGetMethod(
+        String newsString = callGetMethod(
                 "?mailto=example@example.com&rows=100&obj-id={doi}&source=newsfeed",
-                EventDataSearchNewsDto.class,
+                String.class,
                 doi
         );
+        if(!newsString.contains("\"status\":\"ok\""))
+        {
+            return EventDataNews.builder()
+                    .events(new ArrayList<>())
+                    .totalResults(0)
+                    .build();
+        }
+        EventDataSearchNewsDto news = new ObjectMapper().readValue(newsString, EventDataSearchNewsDto.class);
         List<EventDataNewsEvents> events = new ArrayList<>();
         for(EventDataEventNewsDto event : news.message.events)
         {
@@ -43,13 +54,21 @@ public class EventDataClient
                 .build();
     }
 
-    public EventDataTwitter searchEventDataTwitter(String doi)
+    public EventDataTwitter searchEventDataTwitter(String doi) throws JsonProcessingException
     {
-        EventDataSearchTwitterDto twitter = callGetMethod(
+        String twitterString = callGetMethod(
                 "?mailto=example@example.com&rows=100&obj-id={doi}&source=twitter",
-                EventDataSearchTwitterDto.class,
+                String.class,
                 doi
         );
+        if(!twitterString.contains("\"status\":\"ok\""))
+        {
+            return EventDataTwitter.builder()
+                    .events(new ArrayList<>())
+                    .totalResults(0)
+                    .build();
+        }
+        EventDataSearchTwitterDto twitter = new ObjectMapper().readValue(twitterString, EventDataSearchTwitterDto.class);
         List<EventDataTwitterEvents> events = new ArrayList<>();
         for(EventDataEventTwitterDto event : twitter.message.events)
         {

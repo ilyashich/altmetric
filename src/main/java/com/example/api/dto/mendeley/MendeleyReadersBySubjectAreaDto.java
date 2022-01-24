@@ -11,37 +11,6 @@ import lombok.Getter;
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-        "Philosophy",
-        "Decision Sciences",
-        "Chemical Engineering",
-        "Design",
-        "Materials Science",
-        "Pharmacology, Toxicology and Pharmaceutical Science",
-        "Energy",
-        "Computer Science",
-        "Chemistry",
-        "Nursing and Health Professions",
-        "Neuroscience",
-        "Social Sciences",
-        "Sports and Recreations",
-        "Earth and Planetary Sciences",
-        "Physics and Astronomy",
-        "Engineering",
-        "Agricultural and Biological Sciences",
-        "Medicine and Dentistry",
-        "Veterinary Science and Veterinary Medicine",
-        "Arts and Humanities",
-        "Environmental Science",
-        "Psychology",
-        "Economics, Econometrics and Finance",
-        "Mathematics",
-        "Linguistics",
-        "Biochemistry, Genetics and Molecular Biology",
-        "Immunology and Microbiology",
-        "Business, Management and Accounting"
-})
-@Generated("jsonschema2pojo")
 public class MendeleyReadersBySubjectAreaDto
 {
 

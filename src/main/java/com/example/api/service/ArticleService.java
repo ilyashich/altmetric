@@ -36,8 +36,8 @@ public class ArticleService
         return this.repository.findArticleByDoi(doi);
     }
 
-    public Optional<Article> getArticleByTitle(String title)
+    public Optional<Article> getArticleByTitleAndAuthorSurname(String title, String authorSurname)
     {
-        return this.repository.findArticleByTitle(title);
+        return this.repository.findArticleByTitleAndAuthorSurname(title, authorSurname);
     }
 }

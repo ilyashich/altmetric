@@ -56,26 +56,22 @@ public class ArticleController
     }
 
     @GetMapping("/article")
-    public Article getArticleByDoiOrTitle(@RequestParam(required = false) String doi, @RequestParam(required = false) String title)
+    public Article getArticleByDoiOrTitle(@RequestParam(required = false) String doi,
+                                          @RequestParam(required = false) String title,
+                                          @RequestParam(required = false) String author)
     {
-        System.out.println(title);
-        if(doi == null && title == null)
-        {
-            return null;
-        }
 
-        if(doi != null && title == null)
+        if(doi != null)
         {
             return articleService.getArticleByDoi(doi).orElse(null);
         }
-        if (doi == null)
+
+        if(title != null && author != null)
         {
-            return articleService.getArticleByTitle(title).orElse(null);
+            return articleService.getArticleByTitleAndAuthorSurname(title, author).orElse(null);
         }
 
-        Optional<Article> articleByDoi = articleService.getArticleByDoi(doi);
-        Optional<Article> articleByTitle = articleService.getArticleByTitle(title);
-        return articleByDoi.orElse(articleByTitle.orElse(null));
+        return null;
 
     }
 
@@ -136,7 +132,7 @@ public class ArticleController
     @GetMapping("/article/update/title/{metric}")
     public Article updateArticleMetricByTitleAndAuthor(@PathVariable String metric, @RequestParam String title, @RequestParam String author) throws IOException
     {
-        Optional<Article> article = articleService.getArticleByTitle(title);
+        Optional<Article> article = articleService.getArticleByTitleAndAuthorSurname(title, author);
         if(article.isEmpty())
         {
             return null;
@@ -243,7 +239,7 @@ public class ArticleController
 
         reddit.getArticles().sort(Comparator.comparing(RedditArticle::getCreated).reversed());
 
-        Optional<Article> article = articleService.getArticleByTitle(title);
+        Optional<Article> article = articleService.getArticleByTitleAndAuthorSurname(title, author);
         if(article.isPresent())
         {
             return updateArticle(article.get(), mendeley, crossref,
@@ -254,6 +250,7 @@ public class ArticleController
 
         return articleService.addArticle(Article.builder()
                 .title(title)
+                .authorSurname(author)
                 .mendeley(mendeley)
                 .crossref(crossref)
                 .scopus(scopus)
@@ -317,7 +314,7 @@ public class ArticleController
         return articleService.addArticle(article);
     }
 
-    private Article updateNewsByDoi(Article article, String doi)
+    private Article updateNewsByDoi(Article article, String doi) throws JsonProcessingException
     {
         EventDataNews news = eventDataService.searchEventDataNews(doi);
         news.getEvents().sort(Comparator.comparing(EventDataNewsEvents::getOcurredAt).reversed());
@@ -325,7 +322,7 @@ public class ArticleController
         return articleService.addArticle(article);
     }
 
-    private Article updateEventDataTwitterByDoi(Article article, String doi)
+    private Article updateEventDataTwitterByDoi(Article article, String doi) throws JsonProcessingException
     {
         EventDataTwitter eventDataTwitter = eventDataService.searchEventDataTwitter(doi);
         eventDataTwitter.getEvents().sort(Comparator.comparing(EventDataTwitterEvents::getOccurredAt).reversed());
