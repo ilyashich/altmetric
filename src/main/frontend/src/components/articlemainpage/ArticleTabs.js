@@ -49,7 +49,7 @@ export default function ArticleTabs( { article } ){
     return(
         <Tabs variant="pills" mountOnEnter="true" fill justify defaultActiveKey="info">
             <Tab eventKey="info" title="Article Info">
-                <ArticleInfoComponent doi={article.doi} mendeley={article.mendeley} crossref={article.crossref}/>
+                <ArticleInfoComponent doi={article.doi} mendeley={article.mendeley} crossref={article.crossref} articleTitle={article.title}/>
             </Tab>
             {mendeleyTab}
             {wikipediaTab}

@@ -16,34 +16,42 @@ export default  function ArticlesTable( {articles} ){
 
 
     const getArticleLink = (article, i) => {
-        if(article.doi !== null && article.title === null){
+        if(article.doi !== null){
             return(
                 <tr key={i}>
                     <td>{i + 1 + 10*(currentPage-1)}</td>
-                    <td>
-                        {
-                            article.mendeley.title === null ?
-                                article.crossref.title
-                                : article.mendeley.title
-                        }
-                    </td>
+                    <td style={{ width: '40rem', textAlign: 'left' }}>{article.title}</td>
                     <td>doi</td>
-                    <td>{article.doi}</td>
-                    <td> </td>
+                    <td style={{ textAlign: 'left' }} >{article.doi}</td>
+                    <td style={{ textAlign: 'left' }}>{article.authorSurname + ", " + article.authorName}</td>
                     <td><Link to={"/metrics/details/?doi=" + article.doi}>Open</Link></td>
+                    <td>
+                        <Link to={"/metrics/author?authorName=" + article.authorName + "&authorSurname=" + article.authorSurname}>
+                            Open
+                        </Link>
+                    </td>
                 </tr>
             );
         }
-        if(article.doi === null && article.title !== null && article.authorSurname !== null){
+        if(article.title !== null && article.authorName !== null && article.authorSurname !== null){
             return(
                 <tr key={i}>
                     <td>{i + 1 + 10*(currentPage-1)}</td>
-                    <td>{article.title}</td>
+                    <td style={{ width: '40rem', textAlign: 'left' }}>{article.title}</td>
                     <td>title and author</td>
                     <td> </td>
-                    <td>{article.authorSurname}</td>
+                    <td style={{ textAlign: 'left' }}>{article.authorSurname + ", " + article.authorName}</td>
                     <td>
-                        <Link to={"/metrics/details/?title=" + article.title + "&author=" + article.authorSurname}>Open</Link>
+                        <Link to={"/metrics/details/?title=" + article.title +
+                            "&authorName=" + article.authorName +
+                            "&authorSurname=" + article.authorSurname}>
+                            Open
+                        </Link>
+                    </td>
+                    <td>
+                        <Link to={"/metrics/author?authorName=" + article.authorName + "&authorSurname=" + article.authorSurname}>
+                            Open
+                        </Link>
                     </td>
                 </tr>
             );
@@ -61,7 +69,8 @@ export default  function ArticlesTable( {articles} ){
                     <th>Added by</th>
                     <th>DOI</th>
                     <th>Author</th>
-                    <th>Link</th>
+                    <th>Article Page</th>
+                    <th>Author Page</th>
                 </tr>
                 </thead>
                 <tbody>

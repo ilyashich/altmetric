@@ -1,28 +1,35 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {Container} from "react-bootstrap";
-const ARTICLE_DOI_URL = "http://localhost:8080/metrics/api/article?doi=";
-const ARTICLE_TITLE_URL = "http://localhost:8080/metrics/api/article?title=";
 
-export default function ArticleWidget( { doi, title } ){
+const ARTICLE_URL = "/metrics/api/article";
+
+export default function ArticleWidget( { doi, title, authorName, authorSurname } ){
     const [article, setArticle] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isDoi, setIsDoi] = useState(null);
 
     useEffect(() => {
         let requestString = "";
-        if(doi === undefined && title !== undefined){
-            requestString = ARTICLE_TITLE_URL + title;
+        if(doi !== undefined){
+            requestString = ARTICLE_URL + "?doi=" + doi;
+            setIsDoi(1);
         }
-        if(title === undefined && doi !== undefined){
-            requestString = ARTICLE_DOI_URL + doi;
+        else if(title !== undefined && authorName !== undefined && authorSurname !== undefined){
+            requestString = ARTICLE_URL +
+                "?title=" + title +
+                "&authorName=" + authorName +
+                "&authorSurname=" + authorSurname;
+            setIsDoi(-1);
         }
         const loadArticle = async () => {
             const response = await axios.get(requestString);
             setArticle(response.data);
             setLoading(false);
         }
-        loadArticle()
-    }, [doi, title]);
+
+        loadArticle();
+    }, [doi, title, authorName, authorSurname]);
 
     let mendeleyCount = null;
     let scopusCount = null;
@@ -90,11 +97,16 @@ export default function ArticleWidget( { doi, title } ){
 
     }
 
+    let summaryLink = "";
+    if(isDoi === 1){
+        summaryLink= "/metrics/details/?doi=" + doi;
+    }
+    if(isDoi === -1){
+        summaryLink = "/metrics/details/?title=" + title + "&authorName=" + authorName + "&authorSurname=" + authorSurname;
+    }
+
     return(
         <Container style={{ textAlign: 'left', fontSize: 'small' }}>
-            <h5>
-                <strong>Metrics</strong>
-            </h5>
             {mendeleyCount}
             {scopusCount}
             {crossrefCount}
@@ -105,7 +117,7 @@ export default function ArticleWidget( { doi, title } ){
             {youtubeCount}
             {twitterCount}
             {facebookCount}
-            <a target="_blank" rel="noreferrer" href={"http://localhost:8080/metrics/details/?doi=" + doi}>
+            <a target="_blank" rel="noreferrer" href={summaryLink}>
                 View Details
             </a>
         </Container>

@@ -9,7 +9,7 @@ public class Html5PathsController
 {
 
     @RequestMapping( method = {RequestMethod.OPTIONS, RequestMethod.GET},
-            path = {"/details", "/tests/**", "/"} )
+            path = {"/details", "/author", "/tests/**", "/"} )
     public String forwardReactPaths() {
         return "forward:/index.html";
     }

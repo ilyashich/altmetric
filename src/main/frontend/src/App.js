@@ -4,6 +4,7 @@ import {BrowserRouter, Route, Switch} from "react-router-dom";
 import ArticleComponent from "./components/articlemainpage/ArticleComponent";
 import {Container, Nav, Navbar} from "react-bootstrap";
 import Tests from "./components/tests/Tests";
+import AuthorPage from "./components/authorpage/AuthorPage";
 
 function App() {
 
@@ -25,6 +26,9 @@ function App() {
                 <Switch>
                     <Route path={"/metrics/details/"}>
                         <ArticleComponent />
+                    </Route>
+                    <Route path={"/metrics/author"}>
+                        <AuthorPage />
                     </Route>
                     <Route path="/metrics/tests">
                         <Tests />

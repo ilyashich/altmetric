@@ -8,4 +8,5 @@ import lombok.Data;
 public class CrossrefAuthors
 {
     private String name;
+    private String surname;
 }

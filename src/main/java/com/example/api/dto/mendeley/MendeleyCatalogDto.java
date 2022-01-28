@@ -1,6 +1,5 @@
 package com.example.api.dto.mendeley;
 import java.util.List;
-import javax.annotation.Generated;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;

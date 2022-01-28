@@ -12,10 +12,12 @@ export default function Article(){
     const [doiGet, setDoiGet] = useState('');
     const [doiAdd, setDoiAdd] = useState('');
     const [titleAdd, setTitleAdd] = useState('');
-    const [authorAdd, setAuthorAdd] = useState('');
+    const [authorNameAdd, setAuthorNameAdd] = useState('');
+    const [authorSurnameAdd, setAuthorSurnameAdd] = useState('');
     const [doiCompare, setDoiCompare] = useState('');
     const [titleCompare, setTitleCompare] = useState('');
-    const [authorCompare, setAuthorCompare] = useState('');
+    const [authorNameCompare, setAuthorNameCompare] = useState('');
+    const [authorSurnameCompare, setAuthorSurnameCompare] = useState('');
     const [allArticles, setAllArticles] = useState([]);
     const [loaded, setLoaded] = useState(false);
     const [reload, setReload] = useState(false);
@@ -43,8 +45,9 @@ export default function Article(){
     }
 
     const addItemByTitle = () => {
-        console.log('You want to add article: ' + titleAdd + ", author: " + authorAdd);
-        axios.get(ARTICLES_ADD_URL + "/bytitle?title=" + titleAdd + "&author=" + authorAdd)
+        console.log('You want to add article: ' + titleAdd + ", author: " + authorSurnameAdd + " " + authorNameAdd);
+        axios.get(ARTICLES_ADD_URL + "/bytitle?title=" + titleAdd + "&authorName=" + authorNameAdd +
+                                                                        "&authorSurname=" + authorSurnameAdd)
             .then((response) => {
                 console.log(response);
                 alert('Article successfully added');
@@ -56,7 +59,8 @@ export default function Article(){
     const handleCompareSubmit = (e) => {
         history.replace("/metrics/tests/comparemetrics?doi=" + doiCompare +
             "&title=" + titleCompare +
-            "&author=" + authorCompare);
+            "&authorName=" + authorNameCompare +
+            "&authorSurname=" + authorSurnameCompare);
     }
 
     const handleGetSubmit = (e) => {
@@ -119,9 +123,17 @@ export default function Article(){
                             <Form.Group>
                                 <Form.Control
                                     type="text"
-                                    placeholder="Author"
-                                    value={authorCompare}
-                                    onChange={event => onInputChange(event, setAuthorCompare)}
+                                    placeholder="Author Name"
+                                    value={authorNameCompare}
+                                    onChange={event => onInputChange(event, setAuthorNameCompare)}
+                                />
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Author Surname"
+                                    value={authorSurnameCompare}
+                                    onChange={event => onInputChange(event, setAuthorSurnameCompare)}
                                 />
                             </Form.Group>
                             <Button variant="primary" onClick={handleCompareSubmit}>
@@ -146,8 +158,8 @@ export default function Article(){
                 </Col>
                 <Col>
                     <Form onSubmit={handleAddByTitleSubmit}>
+                        <Form.Label>Add article by title and author</Form.Label>
                         <Form.Group>
-                            <Form.Label>Enter title</Form.Label>
                             <Form.Control
                                 as="textarea"
                                 rows={2}
@@ -158,12 +170,19 @@ export default function Article(){
                             />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Enter author surname</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Author"
-                                value={authorAdd}
-                                onChange={event => onInputChange(event, setAuthorAdd)}
+                                placeholder="Author Name"
+                                value={authorNameAdd}
+                                onChange={event => onInputChange(event, setAuthorNameAdd)}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Control
+                                type="text"
+                                placeholder="Author Surname"
+                                value={authorSurnameAdd}
+                                onChange={event => onInputChange(event, setAuthorSurnameAdd)}
                             />
                         </Form.Group>
                         <Button variant="primary" type="submit">

@@ -1,0 +1,17 @@
+.author-article-title-link{
+    text-decoration: none;
+}
+
+.author-article-header{
+    font-weight: lighter;
+    font-size: 2em;
+}
+
+.author-table{
+    vertical-align: middle;
+    text-align: left;
+}
+
+.metrics-column{
+    width: 17rem;
+}

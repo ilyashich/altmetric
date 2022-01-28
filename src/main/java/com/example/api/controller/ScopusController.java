@@ -20,9 +20,9 @@ public class ScopusController
     }
 
     @GetMapping("/scopus/titlesearch")
-    public Scopus getCitationsByTitleAndAuthor(@RequestParam String title, @RequestParam String author)
+    public Scopus getCitationsByTitleAndAuthor(@RequestParam String title, @RequestParam String authorSurname)
     {
-        return scopusService.getCitationsByTitleAndAuthor(title, author);
+        return scopusService.getCitationsByTitleAndAuthor(title, authorSurname);
     }
 
 }

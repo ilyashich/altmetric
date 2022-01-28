@@ -21,9 +21,9 @@ public class MendeleyController
     }
 
     @GetMapping("/mendeley/titlesearch")
-    public Mendeley searchCatalogByTitleAndAuthor(@RequestParam String title, @RequestParam String author) throws JsonProcessingException
+    public Mendeley searchCatalogByTitleAndAuthor(@RequestParam String title, @RequestParam String authorSurname) throws JsonProcessingException
     {
-        return mendeleyService.searchCatalogByTitleAndAuthor(title, author);
+        return mendeleyService.searchCatalogByTitleAndAuthor(title, authorSurname);
     }
 }
 

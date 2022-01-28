@@ -10,7 +10,6 @@ import com.example.api.dto.eventdata.news.EventDataSearchNewsDto;
 import com.example.api.dto.eventdata.twitter.EventDataSearchTwitterDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 

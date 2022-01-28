@@ -55,10 +55,17 @@ public class ArticleController
         return articleService.getAllArticles();
     }
 
+    @GetMapping("/articles/author")
+    public List<Article> getAuthorArticles(@RequestParam String authorName, @RequestParam String authorSurname)
+    {
+        return articleService.findByNameAndSurname(authorSurname, authorName);
+    }
+
     @GetMapping("/article")
     public Article getArticleByDoiOrTitle(@RequestParam(required = false) String doi,
                                           @RequestParam(required = false) String title,
-                                          @RequestParam(required = false) String author)
+                                          @RequestParam(required = false) String authorName,
+                                          @RequestParam(required = false) String authorSurname)
     {
 
         if(doi != null)
@@ -66,9 +73,9 @@ public class ArticleController
             return articleService.getArticleByDoi(doi).orElse(null);
         }
 
-        if(title != null && author != null)
+        if(title != null && authorName != null && authorSurname != null)
         {
-            return articleService.getArticleByTitleAndAuthorSurname(title, author).orElse(null);
+            return articleService.getArticleByTitleAndAuthorName(title, authorName, authorSurname).orElse(null);
         }
 
         return null;
@@ -130,9 +137,12 @@ public class ArticleController
     }
 
     @GetMapping("/article/update/title/{metric}")
-    public Article updateArticleMetricByTitleAndAuthor(@PathVariable String metric, @RequestParam String title, @RequestParam String author) throws IOException
+    public Article updateArticleMetricByTitleAndAuthor(@PathVariable String metric,
+                                                       @RequestParam String title,
+                                                       @RequestParam String authorName,
+                                                       @RequestParam String authorSurname) throws IOException
     {
-        Optional<Article> article = articleService.getArticleByTitleAndAuthorSurname(title, author);
+        Optional<Article> article = articleService.getArticleByTitleAndAuthorName(title, authorName, authorSurname);
         if(article.isEmpty())
         {
             return null;
@@ -143,13 +153,13 @@ public class ArticleController
         switch (metric)
         {
             case "mendeley":
-                updated = updateMendeleyByTitle(article.get(), title, author);
+                updated = updateMendeleyByTitle(article.get(), title, authorSurname);
                 break;
             case "crossref":
-                updated = updateCrossrefByTitle(article.get(), title, author);
+                updated = updateCrossrefByTitle(article.get(), title, authorSurname);
                 break;
             case "scopus":
-                updated = updateScopusByTitle(article.get(), title, author);
+                updated = updateScopusByTitle(article.get(), title, authorSurname);
                 break;
             case "wikipedia":
                 updated = updateWikipediaByTitle(article.get(), title);
@@ -205,8 +215,35 @@ public class ArticleController
                             youtube, news, eventDataTwitter);
         }
 
+        String title = null;
+        String authorName = null;
+        String authorSurname = null;
+
+        if(mendeley.getTitle() != null)
+        {
+            title = mendeley.getTitle();
+        }
+        else if(crossref.getTitle() != null)
+        {
+            title = crossref.getTitle();
+        }
+
+        if(mendeley.getAuthors().get(0).getName() != null && mendeley.getAuthors().get(0).getSurname() != null)
+        {
+            authorName = mendeley.getAuthors().get(0).getName();
+            authorSurname = mendeley.getAuthors().get(0).getSurname();
+        }
+        else if(crossref.getAuthors().get(0).getName() != null && crossref.getAuthors().get(0).getSurname() != null)
+        {
+            authorName = crossref.getAuthors().get(0).getName();
+            authorSurname = crossref.getAuthors().get(0).getSurname();
+        }
+
         return articleService.addArticle(Article.builder()
                 .doi(doi)
+                .title(title)
+                .authorName(authorName)
+                .authorSurname(authorSurname)
                 .mendeley(mendeley)
                 .crossref(crossref)
                 .scopus(scopus)
@@ -222,12 +259,14 @@ public class ArticleController
     }
 
     @GetMapping("/article/add/bytitle")
-    public Article addOrUpdateArticleByTitle(@RequestParam String title, @RequestParam String author) throws IOException
+    public Article addOrUpdateArticleByTitle(@RequestParam String title,
+                                             @RequestParam String authorName,
+                                             @RequestParam String authorSurname) throws IOException
     {
-        Mendeley mendeley = mendeleyService.searchCatalogByTitleAndAuthor(title, author);
+        Mendeley mendeley = mendeleyService.searchCatalogByTitleAndAuthor(title, authorSurname);
         Wikipedia wikipedia = wikipediaService.getCitations(title);
-        Crossref crossref = crossrefService.searchCrossrefByTitleAndAuthor(title, author);
-        Scopus scopus = scopusService.getCitationsByTitleAndAuthor(title, author);
+        Crossref crossref = crossrefService.searchCrossrefByTitleAndAuthor(title, authorSurname);
+        Scopus scopus = scopusService.getCitationsByTitleAndAuthor(title, authorSurname);
 
         Reddit reddit = redditService.searchRedditByTitle(title);
         StackExchange stackExchange = stackExchangeService.searchStackExchangeByTitle(title);
@@ -239,7 +278,7 @@ public class ArticleController
 
         reddit.getArticles().sort(Comparator.comparing(RedditArticle::getCreated).reversed());
 
-        Optional<Article> article = articleService.getArticleByTitleAndAuthorSurname(title, author);
+        Optional<Article> article = articleService.getArticleByTitleAndAuthorName(title, authorName, authorSurname);
         if(article.isPresent())
         {
             return updateArticle(article.get(), mendeley, crossref,
@@ -250,7 +289,8 @@ public class ArticleController
 
         return articleService.addArticle(Article.builder()
                 .title(title)
-                .authorSurname(author)
+                .authorName(authorName)
+                .authorSurname(authorSurname)
                 .mendeley(mendeley)
                 .crossref(crossref)
                 .scopus(scopus)

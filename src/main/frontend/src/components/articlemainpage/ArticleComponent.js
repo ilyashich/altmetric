@@ -11,25 +11,21 @@ const ARTICLE_URL = "/metrics/api/article";
 export default function ArticleComponent(){
     const [article, setArticle] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [title, setTitle] = useState("");
     const { search } = useLocation();
     const params = new URLSearchParams(search);
     const doi = params.get("doi");
     const articleTitle = params.get("title");
-    const articleAuthor = params.get("author");
+    const authorName = params.get("authorName");
+    const authorSurname = params.get("authorSurname");
     const getString = doi !== null ?
         "?doi=" + doi
-        : "?title=" + articleTitle + "&author=" + articleAuthor;
+        : "?title=" + articleTitle + "&authorName=" + authorName + "&authorSurname=" + authorSurname;
+    console.log(getString);
     useEffect(() => {
         const loadArticle = async () => {
             const response = await axios.get(ARTICLE_URL + getString);
             setArticle(response.data);
-            if(response.data.mendeley.title === null){
-                setTitle(response.data.crossref.title);
-            }
-            else{
-                setTitle(response.data.mendeley.title);
-            }
+            console.log(response.data);
             setLoading(false);
         }
 
@@ -42,8 +38,8 @@ export default function ArticleComponent(){
     if(!loading)
     {
         titleLink = article.doi == null ?
-            title
-            : <a className="article-title-link" target="_blank" rel="noreferrer" href={"https://doi.org/" + article.doi}>{title}</a>;
+            article.title
+            : <a className="article-title-link" target="_blank" rel="noreferrer" href={"https://doi.org/" + article.doi}>{article.title}</a>;
 
         const countAllMetrics =
             article.mendeley.readersCount +

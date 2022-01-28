@@ -27,15 +27,15 @@ import java.util.List;
 @Builder
 @Data
 @Document
-@CompoundIndex(def = "{ 'title': 1, 'authorSurname': 1 }", sparse = true, unique = true)
+@CompoundIndex(def = "{ 'title': 1, 'authorName': 1, 'authorSurname': 1 }", sparse = true, unique = true)
 @AllArgsConstructor
-public class Article
-{
+public class Article{
     @Id
     private String id;
     @Indexed(unique = true, sparse = true)
     private String doi;
     private String title;
+    private String authorName;
     private String authorSurname;
     @CreatedDate
     private Instant createdDate;

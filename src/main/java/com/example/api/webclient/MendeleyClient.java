@@ -62,8 +62,8 @@ public class MendeleyClient
         headers.add("Authorization", "Bearer " + API_TOKEN);
         request = new HttpEntity<>("parameters", headers);
 
-        ResponseEntity<String> mendeleyCatalogDto = restTemplate.exchange(
-                MENDELEY_URL + "/search/catalog?title=\"{title}\"&author={author}&limit=1&view=all",
+        ResponseEntity<String> mendeleyCatalogDto = callExchangeMethod(
+                "/search/catalog?title=\"{title}\"&author={author}&limit=1&view=all",
                 HttpMethod.GET,
                 request,
                 String.class,
@@ -100,7 +100,8 @@ public class MendeleyClient
         {
             authors.add(MendeleyAuthors.builder()
                     .scopusAuthorId(author.getScopusAuthorId())
-                    .name(author.getFirstName() + " " + author.getLastName())
+                    .name(author.getFirstName())
+                    .surname(author.getLastName())
                     .build());
         }
 
@@ -134,6 +135,17 @@ public class MendeleyClient
     private <T> ResponseEntity<T> callPostMethod(String url, HttpEntity<String> request, Class<T> responseType, Object...objects)
     {
         return restTemplate.postForEntity(url, request, responseType, objects);
+    }
+
+    private <T> ResponseEntity<T> callExchangeMethod(String url, HttpMethod method, HttpEntity<String> request, Class<T> responseType, Object... objects)
+    {
+        return restTemplate.exchange(
+                MENDELEY_URL + url,
+                method,
+                request,
+                responseType,
+                objects
+        );
     }
 
     public void checkIfTokenExpired()

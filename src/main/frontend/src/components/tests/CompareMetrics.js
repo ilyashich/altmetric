@@ -10,7 +10,8 @@ export default function CompareMetrics(){
     const params = new URLSearchParams(search);
     const doi = params.get("doi");
     const title = params.get("title");
-    const author = params.get("author");
+    const authorName = params.get("authorName");
+    const authorSurname = params.get("authorSurname");
 
     const [articleByTitle, setArticleByTitle] = useState(null);
     const [articleByDoi, setArticleByDoi] = useState(null);
@@ -20,12 +21,13 @@ export default function CompareMetrics(){
         const loadArticle = async () => {
             const responseDoi = await axios.get(ARTICLE_URL + "?doi=" + doi);
             setArticleByDoi(responseDoi.data);
-            const responseTitle = await axios.get(ARTICLE_URL + "?title=" + title + "&author=" + author);
+            const responseTitle = await axios.get(ARTICLE_URL + "?title=" + title + "&authorName=" + authorName +
+                                                                    "&authorSurname=" + authorSurname);
             setArticleByTitle(responseTitle.data);
             setLoading(false);
         }
         loadArticle()
-    }, [doi, title, author]);
+    }, [doi, title, authorName, authorSurname]);
 
     console.log(doi);
     console.log(title);

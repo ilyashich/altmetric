@@ -26,7 +26,7 @@ public class RedditClient
         headers.set("User-agent", "com.example.altmetric.webclient.twitter:v1.0");
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        String response = callExchangeMethod("q={link}", entity, String.class, url);
+        String response = callExchangeMethod("q={link}", HttpMethod.GET, entity, String.class, url);
 
         return getRedditDto(response);
     }
@@ -37,7 +37,7 @@ public class RedditClient
         headers.set("User-agent", "com.example.altmetric.webclient.twitter:v1.0");
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        String response = callExchangeMethod("q=\"{title}\"", entity, String.class, title);
+        String response = callExchangeMethod("q=\"{title}\"", HttpMethod.GET, entity, String.class, title);
 
         return getRedditDto(response);
     }
@@ -79,8 +79,8 @@ public class RedditClient
                 .build();
     }
 
-    private <T> T callExchangeMethod(String url, HttpEntity<String> entity, Class<T> responseType, Object... objects)
+    private <T> T callExchangeMethod(String url, HttpMethod method, HttpEntity<String> entity, Class<T> responseType, Object... objects)
     {
-        return restTemplate.exchange(REDDIT_API_URL + url, HttpMethod.GET, entity, responseType, objects).getBody();
+        return restTemplate.exchange(REDDIT_API_URL + url, method, entity, responseType, objects).getBody();
     }
 }

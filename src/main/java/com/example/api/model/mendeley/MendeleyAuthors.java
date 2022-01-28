@@ -8,5 +8,6 @@ import lombok.Data;
 public class MendeleyAuthors
 {
     private String name;
+    private String surname;
     private String scopusAuthorId;
 }

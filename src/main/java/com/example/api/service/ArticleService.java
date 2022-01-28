@@ -18,26 +18,31 @@ public class ArticleService
 
     public Article addArticle(Article newArticle)
     {
-        return this.repository.save(newArticle);
+        return repository.save(newArticle);
     }
 
     public List<Article> getAllArticles()
     {
-        return this.repository.findAll();
+        return repository.findAllByOrderByAuthorSurnameAscAuthorNameAsc();
     }
 
     public Optional<Article> getArticleById(String id)
     {
-        return this.repository.findById(id);
+        return repository.findById(id);
     }
 
     public Optional<Article> getArticleByDoi(String doi)
     {
-        return this.repository.findArticleByDoi(doi);
+        return repository.findArticleByDoi(doi);
     }
 
-    public Optional<Article> getArticleByTitleAndAuthorSurname(String title, String authorSurname)
+    public Optional<Article> getArticleByTitleAndAuthorName(String title, String authorName, String authorSurname)
     {
-        return this.repository.findArticleByTitleAndAuthorSurname(title, authorSurname);
+        return repository.findArticleByTitleAndAuthorNameAndAuthorSurname(title, authorName, authorSurname);
+    }
+
+    public List<Article> findByNameAndSurname(String surname, String name)
+    {
+        return repository.findArticlesByNameAndSurname(surname, name);
     }
 }

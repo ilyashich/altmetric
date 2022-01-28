@@ -19,8 +19,8 @@ public class CrossrefController
     }
 
     @GetMapping("/crossref/titlesearch")
-    public Crossref searchCrossrefByTitleAndAuthor(@RequestParam String title, @RequestParam String author)
+    public Crossref searchCrossrefByTitleAndAuthor(@RequestParam String title, @RequestParam String authorSurname)
     {
-        return crossrefService.searchCrossrefByTitleAndAuthor(title, author);
+        return crossrefService.searchCrossrefByTitleAndAuthor(title, authorSurname);
     }
 }

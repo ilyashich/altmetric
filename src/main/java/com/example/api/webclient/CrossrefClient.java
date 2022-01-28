@@ -23,34 +23,25 @@ public class CrossrefClient
         CrossrefSearchDto response = callGetMethod("q={link}", CrossrefSearchDto.class, doi);
 
         List<CrossrefAuthors> authors = new ArrayList<>();
-        for(CrossrefAuthorDto author : response.message.author)
+        for(CrossrefAuthorDto author : response.getMessage().getAuthor())
         {
             authors.add(CrossrefAuthors.builder()
-                    .name(author.given + " " + author.family)
+                    .name(author.getGiven())
+                    .surname(author.getFamily())
                     .build());
-        }
-        String published;
-        if(response.message.published.dateParts.get(0).size() > 2)
-        {
-            published = response.message.published.dateParts.get(0).get(1).toString() + "-1-" +
-                    response.message.published.dateParts.get(0).get(0).toString();
-        }
-        else
-        {
-            published = "1-1-" + response.message.published.dateParts.get(0).get(0).toString();
         }
 
         return Crossref.builder()
-                .referencedByCount(response.message.isReferencedByCount)
-                .issue(response.message.issue)
-                .volume(response.message.volume)
-                .page(response.message.page)
-                .publisher(response.message.publisher)
+                .referencedByCount(response.getMessage().getIsReferencedByCount())
+                .issue(response.getMessage().getIssue())
+                .volume(response.getMessage().getVolume())
+                .page(response.getMessage().getPage())
+                .publisher(response.getMessage().getPublisher())
                 .authors(authors)
-                .issn(response.message.issn)
-                .source(response.message.containerTitle.get(0))
-                .title(response.message.title.get(0))
-                .published(published)
+                .issn(response.getMessage().getIssn())
+                .source(response.getMessage().getContainerTitle().get(0))
+                .title(response.getMessage().getTitle().get(0))
+                .published(response.getMessage().getCreated().getDateTime())
                 .build();
     }
 
@@ -62,38 +53,29 @@ public class CrossrefClient
                 title,
                 authorName
         );
-        if(response.message.items.size() > 0)
+        if(response.getMessage().getItems().size() > 0)
         {
             List<CrossrefAuthors> authors = new ArrayList<>();
-            for (CrossrefByTitleAuthorDto author : response.message.items.get(0).author)
+            for (CrossrefByTitleAuthorDto author : response.getMessage().getItems().get(0).getAuthor())
             {
                 authors.add(CrossrefAuthors.builder()
-                        .name(author.given + " " + author.family)
+                        .name(author.getGiven())
+                        .surname(author.getFamily())
                         .build());
-            }
-            String published;
-            if(response.message.items.get(0).published.dateParts.get(0).size() > 2)
-            {
-                published = response.message.items.get(0).published.dateParts.get(0).get(1).toString() + "-1-" +
-                    response.message.items.get(0).published.dateParts.get(0).get(0).toString();
-            }
-            else
-            {
-                published = "1-1-" +  response.message.items.get(0).published.dateParts.get(0).get(0).toString();
             }
 
             return Crossref.builder()
-                    .referencedByCount(response.message.items.get(0).isReferencedByCount)
-                    .issue(response.message.items.get(0).issue)
-                    .volume(response.message.items.get(0).volume)
-                    .page(response.message.items.get(0).page)
-                    .publisher(response.message.items.get(0).publisher)
+                    .referencedByCount(response.getMessage().getItems().get(0).getIsReferencedByCount())
+                    .issue(response.getMessage().getItems().get(0).getIssue())
+                    .volume(response.getMessage().getItems().get(0).getVolume())
+                    .page(response.getMessage().getItems().get(0).getPage())
+                    .publisher(response.getMessage().getItems().get(0).getPublisher())
                     .authors(authors)
-                    .issn(response.message.items.get(0).issn)
-                    .source(response.message.items.get(0).containerTitle.get(0))
-                    .title(response.message.items.get(0).title.get(0))
-                    .doi(response.message.items.get(0).doi)
-                    .published(published)
+                    .issn(response.getMessage().getItems().get(0).getIssn())
+                    .source(response.getMessage().getItems().get(0).getContainerTitle().get(0))
+                    .title(response.getMessage().getItems().get(0).getTitle().get(0))
+                    .doi(response.getMessage().getItems().get(0).getDoi())
+                    .published(response.getMessage().getItems().get(0).getCreated().getDateTime())
                     .build();
         }
         return Crossref.builder().build();

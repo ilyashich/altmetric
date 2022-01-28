@@ -1,7 +1,8 @@
 import Moment from 'moment';
 import "./ArticleInfoComponent.css"
+import {Col, Row} from "react-bootstrap";
 
-export default function ArticleInfoComponent( { doi, mendeley, crossref } ) {
+export default function ArticleInfoComponent( { doi, mendeley, crossref, articleTitle } ) {
     const dateString = crossref.title === null ?
         mendeley.month + "-01-" + mendeley.year
         : crossref.published;
@@ -11,23 +12,36 @@ export default function ArticleInfoComponent( { doi, mendeley, crossref } ) {
     }
 
     const authorRow = (author, i) => {
-        if (author.scopusAuthorId !== null && author.scopusAuthorId !== undefined) {
-            return (
-                <a key={i} target="_blank" rel="noreferrer"
-                   href={"https://www.scopus.com/authid/detail.uri?authorId=" + author.scopusAuthorId}>
-                    <div>{author.name}</div>
-                </a>
-            );
-        } else {
-            return (
-                <div key={i}>{author.name}</div>
-            );
-        }
-    }
+        const hasScopusId = author.scopusAuthorId !== null && author.scopusAuthorId !== undefined;
+        return (
+            <Row>
+                <Col sm={2} className="author-name-col">
+                    <h6>
+                        {author.name + " " + author.surname}
+                    </h6>
+                </Col>
+                <Col sm={2} className="author-metrics-col">
+                    <a className="author-name-link" key={i} target="_blank" rel="noreferrer"
+                       href={"/metrics/author?authorName=" + author.name + "&authorSurname=" + author.surname}>
+                        <div>
+                            Check author metrics
+                        </div>
+                    </a>
+                </Col>
+                {hasScopusId &&
+                    <Col sm={2} className="author-scopus-col">
+                        <a className="author-name-link" key={i} target="_blank" rel="noreferrer"
+                           href={"https://www.scopus.com/authid/detail.uri?authorId=" + author.scopusAuthorId}>
+                            <div>
+                                Visit author Scopus page
+                            </div>
+                        </a>
+                    </Col>
+                }
+            </Row>
+        );
 
-    const title = mendeley.title === null ?
-        crossref.title
-        : mendeley.title;
+    }
 
     let published = "";
     let source = '';
@@ -76,7 +90,7 @@ export default function ArticleInfoComponent( { doi, mendeley, crossref } ) {
                     Title
                 </th>
                 <td className="text-md-start">
-                    {title}
+                    {articleTitle}
                 </td>
             </tr>
             <tr>

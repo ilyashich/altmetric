@@ -1,3 +1,18 @@
 #info-table{
     margin-top: 20px;
 }
+
+.author-name-link{
+    text-decoration: none;
+}
+
+.author-metrics-col{
+    width: 175px;
+}
+
+.author-name-col{
+    width: 185px;
+}
+.author-scopus-col{
+    width: 195px;
+}

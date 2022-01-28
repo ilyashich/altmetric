@@ -6,6 +6,7 @@ import com.example.api.model.wikipedia.Wikipedia;
 import com.example.api.dto.wikipedia.WikipediaResultDto;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import org.apache.commons.collections4.ListUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -82,7 +83,7 @@ public class WikipediaClient
         {
             if(result.getValue().size() > 0)
             {
-                StringBuilder builder = new StringBuilder();
+                List<String> pageids = new ArrayList<>();
 
                 for (WikipediaPageDto value : result.getValue())
                 {
@@ -93,43 +94,52 @@ public class WikipediaClient
                             .build()
                     );
 
-                    builder.append(value.getId());
-                    builder.append("|");
+                    pageids.add(value.getId().toString());
                 }
                 totalHits += result.getValue().size();
 
+                List<List<String>> partition = ListUtils.partition(pageids, 20);
 
-                builder.deleteCharAt(builder.length() - 1);
+                HashMap<String, String> descriptions = new HashMap<>();
 
-                String summary = callGetMethod(
-                        languagesTranslate.get(result.getKey()),
-                        String.class,
-                        builder
-                );
-
-                JsonObject parsed = new Gson().fromJson(summary, JsonObject.class);
-                HashMap<Integer, String> descr = new HashMap<>();
-
-                for (WikipediaPageDto page : result.getValue())
+                for(List<String> ids : partition)
                 {
-                    descr.put(page.getId(), parsed.get("query").getAsJsonObject()
-                            .get("pages").getAsJsonObject()
-                            .get(page.getId().toString()).getAsJsonObject()
-                            .get("extract").getAsString()
+                    StringBuilder concats = new StringBuilder();
+
+                    for(String id : ids)
+                    {
+                        concats.append(id);
+                        concats.append("|");
+                    }
+                    concats.deleteCharAt(concats.length() - 1);
+
+                    String response = callGetMethod(
+                            languagesTranslate.get(result.getKey()),
+                            String.class,
+                            concats.toString()
                     );
+
+                    JsonObject parsed = new Gson().fromJson(response, JsonObject.class);
+
+                    for(String id: ids)
+                    {
+                        descriptions.put(id, parsed.get("query").getAsJsonObject()
+                                .get("pages").getAsJsonObject()
+                                .get(id).getAsJsonObject()
+                                .get("extract").getAsString()
+                        );
+                    }
                 }
 
-                List<Integer> ids = new ArrayList<>(descr.keySet());
-
-                for (Integer id : ids)
+                for (String id : pageids)
                 {
-                    if(descr.get(id).length() > 255)
+                    if(descriptions.get(id).length() > 255)
                     {
-                        search.get(id).setDescription(descr.get(id).substring(0, 252) + "...");
+                        search.get(Integer.parseInt(id)).setDescription(descriptions.get(id).substring(0, 252) + "...");
                     }
                     else
                     {
-                        search.get(id).setDescription(descr.get(id));
+                        search.get(Integer.parseInt(id)).setDescription(descriptions.get(id));
                     }
                 }
             }
