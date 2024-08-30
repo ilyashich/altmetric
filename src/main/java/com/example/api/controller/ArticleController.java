@@ -58,7 +58,7 @@ public class ArticleController
     @GetMapping("/articles/author")
     public List<Article> getAuthorArticles(@RequestParam String authorName, @RequestParam String authorSurname)
     {
-        return articleService.findByNameAndSurname(authorSurname, authorName);
+        return articleService.getAuthorArticles(authorSurname, authorName);
     }
 
     @GetMapping("/article")
@@ -75,7 +75,7 @@ public class ArticleController
 
         if(title != null && authorName != null && authorSurname != null)
         {
-            return articleService.getArticleByTitleAndAuthorName(title, authorName, authorSurname).orElse(null);
+            return articleService.getArticleByTitleAndAuthor(title, authorName, authorSurname).orElse(null);
         }
 
         return null;
@@ -142,7 +142,7 @@ public class ArticleController
                                                        @RequestParam String authorName,
                                                        @RequestParam String authorSurname) throws IOException
     {
-        Optional<Article> article = articleService.getArticleByTitleAndAuthorName(title, authorName, authorSurname);
+        Optional<Article> article = articleService.getArticleByTitleAndAuthor(title, authorName, authorSurname);
         if(article.isEmpty())
         {
             return null;
@@ -278,7 +278,7 @@ public class ArticleController
 
         reddit.getArticles().sort(Comparator.comparing(RedditArticle::getCreated).reversed());
 
-        Optional<Article> article = articleService.getArticleByTitleAndAuthorName(title, authorName, authorSurname);
+        Optional<Article> article = articleService.getArticleByTitleAndAuthor(title, authorName, authorSurname);
         if(article.isPresent())
         {
             return updateArticle(article.get(), mendeley, crossref,

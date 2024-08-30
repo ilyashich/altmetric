@@ -23,7 +23,7 @@ public class ArticleService
 
     public List<Article> getAllArticles()
     {
-        return repository.findAllByOrderByAuthorSurnameAscAuthorNameAsc();
+        return repository.findAllByOrderByAuthorSurnameAsc();
     }
 
     public Optional<Article> getArticleById(String id)
@@ -36,12 +36,12 @@ public class ArticleService
         return repository.findArticleByDoi(doi);
     }
 
-    public Optional<Article> getArticleByTitleAndAuthorName(String title, String authorName, String authorSurname)
+    public Optional<Article> getArticleByTitleAndAuthor(String title, String authorName, String authorSurname)
     {
         return repository.findArticleByTitleAndAuthorNameAndAuthorSurname(title, authorName, authorSurname);
     }
 
-    public List<Article> findByNameAndSurname(String surname, String name)
+    public List<Article> getAuthorArticles(String surname, String name)
     {
         return repository.findArticlesByNameAndSurname(surname, name);
     }

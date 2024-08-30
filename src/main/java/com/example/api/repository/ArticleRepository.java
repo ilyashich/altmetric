@@ -17,5 +17,5 @@ public interface ArticleRepository extends MongoRepository<Article, String>
             "{ '$and' : [ { 'authorSurname'            : ?0 }, { 'authorName'            : ?1 } ] }" +
             "] }")
     List<Article> findArticlesByNameAndSurname(String surname, String name);
-    List<Article> findAllByOrderByAuthorSurnameAscAuthorNameAsc();
+    List<Article> findAllByOrderByAuthorSurnameAsc();
 }
